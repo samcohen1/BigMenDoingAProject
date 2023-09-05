@@ -5,18 +5,27 @@
 #include <memory>
 
 enum class Direction {
-    LEFT = -1,
+    RIGHT = -1,
     UP,
-    RIGHT,
+    LEFT,
     DOWN
+};
+
+struct Position {
+    float x_left = 1172.52f;
+    float x_right = 1250.0f;
+    float y = 300.0f;
 };
 
 class Player{
     private:
-        float x_position_ = 1096.4f;
-        float y_position_ = 300.f;
+
+        Position position_;
         float scale_player_ = 0.08f;
-        float player_speed_ = 0.2f;
+        float player_speed_ = 0.01f;
+        float vertical_speed_ = 0.2f;
+        float base_speed_ = 0.15f;
+        float acceleration_ = 0.0008f;
 
         Direction prev_direction_;
 
@@ -25,12 +34,13 @@ class Player{
 
         float y_min_pos_ = 120.f;
         float y_max_pos_ = 800.f-this->player_sprite_.getGlobalBounds().height;
-        const float x_default_right = 1096.4f;
+        const float x_default_right = 1250.f;
         const float x_default_left = 150.f;
 
 
         void init_player();
         void flip_player();
+        void update_position(Direction);
         bool direction_changed(Direction direction);
 
     public:
@@ -41,7 +51,7 @@ class Player{
 
         float get_x_default_right() const;
         float get_x_default_left() const;
-
+        Position get_position();
 };
 
 #endif

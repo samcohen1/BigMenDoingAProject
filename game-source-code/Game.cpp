@@ -36,12 +36,27 @@ void Game::update() {
 }
 
 void Game::handle_player_movement() {
+    float x_right = this->player_->get_position().x_right;
+    float x_left = this->player_->get_position().x_left;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-        this->player_->move_player(Direction::RIGHT);
+        if(x_left > this->player_->get_x_default_left()) {
+            this->player_->move_player(Direction::LEFT);
+        }
+        else {
+            this->background_sprite_.move(-0.2f, 0.f);
+        }
     }
+    
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-        this->player_->move_player(Direction::LEFT);
+         if(x_right < this->player_->get_x_default_right()) {
+            this->player_->move_player(Direction::RIGHT);
+        }
+        else {
+            this->background_sprite_.move(0.2f, 0.f);
+        }
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) this->player_->move_player(Direction::UP);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) this->player_->move_player(Direction::DOWN);
 }

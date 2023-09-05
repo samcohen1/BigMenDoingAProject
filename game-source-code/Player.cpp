@@ -10,17 +10,24 @@ Player::Player() {
 void Player::init_player() {
     if(!this->player_texture_.loadFromFile("resources/Player.PNG")) return;
     this->player_sprite_.setTexture(this->player_texture_);
-    this->player_sprite_.setPosition(this->x_position_,this->y_position_);
+    this->player_sprite_.setPosition(this->position_.x_left,this->position_.y);
     this->player_sprite_.setScale(this->scale_player_,this->scale_player_);
-    this->prev_direction_ = Direction::RIGHT;
+    this->prev_direction_ = Direction::LEFT;
     this->flip_player();
+    std::cout << this->player_sprite_.getGlobalBounds().width;
 }
 
 void Player::flip_player() {
+    this->player_speed_ = this->base_speed_;
     float prev_direction_flag = static_cast<float>(this->prev_direction_);
     this->player_sprite_.setScale(-1.f*this->scale_player_*prev_direction_flag, this->scale_player_);
     this->player_sprite_.setOrigin(((prev_direction_flag+1)/2.f)*this->player_sprite_.getGlobalBounds().width/this->scale_player_, 0.f);
     this->prev_direction_ = static_cast<Direction>(-1*prev_direction_flag);
+}
+
+void Player::update_position(Direction direction) {
+    this->position_.x_left -= static_cast<float>(direction)*this->player_speed_;
+    this->position_.x_right -= static_cast<float>(direction)*this->player_speed_;
 }
 
 bool Player::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
@@ -29,18 +36,22 @@ void Player::move_player(Direction direction) {
     float bottom = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height + 10.f;
     switch (direction) {
     case Direction::LEFT:
+            this->player_speed_ += acceleration_;
             this->player_sprite_.move(-this->player_speed_, 0.f);
+            this->update_position(direction);
             if (this->direction_changed(direction)) this->flip_player();
             break;
     case Direction::RIGHT:
+            this->player_speed_ += acceleration_;
             this->player_sprite_.move(this->player_speed_, 0.f);
+            this->update_position(direction);
             if (this->direction_changed(direction)) this->flip_player();
             break;
     case Direction::UP:
-            if (this->player_sprite_.getGlobalBounds().top > this->y_min_pos_) this->player_sprite_.move(0.f, -this->player_speed_);
+            if (this->player_sprite_.getGlobalBounds().top > this->y_min_pos_) this->player_sprite_.move(0.f, -this->vertical_speed_);
             break;
     case Direction::DOWN:
-            if(bottom < this->y_max_pos_) this->player_sprite_.move(0.f, this->player_speed_);
+            if(bottom < this->y_max_pos_) this->player_sprite_.move(0.f, this->vertical_speed_);
             break;
     default: return;
     }
@@ -52,3 +63,7 @@ void Player::render(sf::RenderTarget &target) {
 
 float Player::get_x_default_right() const { return this->x_default_right; }
 float Player::get_x_default_left() const { return this->x_default_left; }
+
+Position Player::get_position() {
+    return this->position_;
+}
