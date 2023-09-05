@@ -16,14 +16,8 @@
 #include <ctime>
 #include <iostream>
 
+#include "Game.h"
 
-
-// Define some global constants
-const float pi = 3.14159f; /**< Pi */
-const int gameWidth = 800; /**< The width of the game screen */
-const int gameHeight = 600; /**< The height of the game screen */
-const float ballRadius = 10.f; /**< The radius of the ball */
-const sf::Vector2f paddleSize{25, 100}; /**< Represents the dimensions of the paddle's rectangle */
 
 /** \fn int main()
  *  \brief This function contains the majority of the code for the game
@@ -31,8 +25,9 @@ const sf::Vector2f paddleSize{25, 100}; /**< Represents the dimensions of the pa
  *  \return The application exit code: 0 for successful completion; a negative number to indicate an error
  *
  */
-int main()
-{
+int main() {
+    auto game = Game{};
+    game.run();
 
     return EXIT_SUCCESS;
 }
