@@ -19,10 +19,10 @@ class Game {
         const float game_height_ = 800;
         const float x_scale_ = this->game_width_/this->original_background_width_;
         const float y_scale_ = this->game_height_/this->original_background_height_;
-        float background_location_ = 0;
-        
         const float x_default_right = 1096.4f;
         const float x_defautl_left = 150.f;
+        float background_location_ = 0;
+        float background_movement_ = 0;
 
         void _init_window();
         void _init_background();
