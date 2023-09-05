@@ -3,9 +3,11 @@
 
 #include "Game.h"
 
+
 Game::Game() {
     this->_init_window();
     this->_init_background();
+    this->_init_player();
 }
 
 void Game::_init_window() {
@@ -19,7 +21,12 @@ void Game::_init_background() {
     this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
 }
 
+void Game::_init_player() {
+    this->player_ = std::make_unique<Player>();
+}
+
 void Game::update() {
+    
     sf::Event event;
     while (this->window_->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -31,7 +38,7 @@ void Game::update() {
 void Game::render() {
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
-
+    this->player_->render(*this->window_);
     this->window_->display();
 }
 

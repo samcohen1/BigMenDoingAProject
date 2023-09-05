@@ -3,12 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include "Player.h"
 
 class Game {
     private:
         std::shared_ptr<sf::RenderWindow> window_;
         sf::Texture background_texture_;
         sf::Sprite background_sprite_;
+        std::unique_ptr<Player> player_;
 
         // CONSTANTS
         const float original_background_width_ = 1920;
@@ -20,6 +22,7 @@ class Game {
 
         void _init_window();
         void _init_background();
+        void _init_player();
         void update();
         void render();
 
