@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
-
+#include <iostream>
 #include "Game.h"
 
 
@@ -44,7 +44,10 @@ void Game::handle_player_movement() {
             this->player_->move_player(Direction::LEFT);
         }
         else {
-            this->background_sprite_.move(-0.2f, 0.f);
+            if(this->background_location_>-2*this->game_width_) {
+                this->background_sprite_.move(-0.2f, 0.f);
+                this->background_location_-=0.2f;
+            }
         }
     }
     
@@ -53,7 +56,11 @@ void Game::handle_player_movement() {
             this->player_->move_player(Direction::RIGHT);
         }
         else {
-            this->background_sprite_.move(0.2f, 0.f);
+            
+            if(this->background_location_<2*this->game_width_) {
+                this->background_sprite_.move(0.2f, 0.f);
+                this->background_location_ += 0.2f;
+            }
         }
     }
 

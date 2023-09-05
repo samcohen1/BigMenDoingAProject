@@ -14,7 +14,6 @@ void Player::init_player() {
     this->player_sprite_.setScale(this->scale_player_,this->scale_player_);
     this->prev_direction_ = Direction::LEFT;
     this->flip_player();
-    std::cout << this->player_sprite_.getGlobalBounds().width;
 }
 
 void Player::flip_player() {
