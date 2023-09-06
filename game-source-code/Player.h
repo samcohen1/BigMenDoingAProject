@@ -41,8 +41,8 @@ class Player{
         const float x_default_right_ = 1250.f;
         const float x_default_left_ = 150.f;
 
-        int current_cool_down = 0;
-        int max_cool_down = 500;
+        int current_cool_down = 400;
+        int max_cool_down = 400;
 
         std::vector<std::shared_ptr<Bullet>> bullets_;
 
@@ -60,6 +60,9 @@ class Player{
         void correct_edge_positions();
         void magnetise_player();
         void render(sf::RenderTarget& target);
+
+        void render_bullets(sf::RenderTarget& target, float);
+        void increment_cool_down();
 
         float get_x_default_right() const;
         float get_x_default_left() const;

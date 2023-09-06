@@ -32,7 +32,8 @@ class Game {
         float background_acceleration_ = 0.0003f;
 
         bool prev_in_edge = false;
-        bool prev_bullet_shot = false;
+        
+        bool shot_held = false;
 
         void _init_textures();
 

@@ -20,15 +20,17 @@ class Bullet {
 
         float x_location_;
         float y_location_;
-        float bullet_scale_ = 0.01f;
-        float bullet_movement = 1.0f;
+        float bullet_scale_ = 0.3f;
+        float bullet_movement = .7f;
         Direction direction_;
 
     public:
         Bullet(float x_location, float y_location, Direction, sf::Texture&);
 
 
-        sf::Vector2f get_location();
+        sf::Vector2f get_location();        
+        float get_bullet_width();
+
         void move_bullet(float background_movement);
         void draw_bullet(sf::RenderTarget& target);
 

@@ -18,7 +18,7 @@ void Game::_init_window() {
 
 void Game::_init_textures () {
     sf::Texture bullet_texture;
-    if(!bullet_texture.loadFromFile("resources/Bullet.PNG")) return;
+    if(!bullet_texture.loadFromFile("resources/Bullet.png")) return;
     this->textures.push_back(bullet_texture);
 }
 
@@ -56,13 +56,14 @@ bool Game::approx_innequality (float a, float b, bool greater_than) {
 }
 
 void Game::check_player_shoot() {
-    if(!this->prev_bullet_shot) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
-            this->player_->shoot_bullet(this->textures[static_cast<int>(Textures::BULLET)]);
-        } else this->prev_bullet_shot = true;
-    } 
-    else this->prev_bullet_shot = false;
-    
+    this->player_->increment_cool_down();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && !this->shot_held) {
+        this->player_->shoot_bullet(this->textures[static_cast<int>(Textures::BULLET)]);
+        this->shot_held = true;
+    }
+    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+        this->shot_held = false;
+    }
 }
 
 void Game::handle_boundary_background_movement () {
@@ -160,6 +161,7 @@ void Game::render() {
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
     this->player_->render(*this->window_);
+    this->player_->render_bullets(*this->window_, this->background_movement_);
     auto test = sf::RectangleShape();
     this->window_->draw(test);
     this->window_->display();

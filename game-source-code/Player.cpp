@@ -94,21 +94,17 @@ void Player::magnetise_player() {
     this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
 }
 
-void Player::render(sf::RenderTarget &target) {
-    int count = 0;
-    for(auto bullet : this->bullets_){
-
-        if(bullet->get_location().x > 0.f && bullet->get_location().x < 1400.f){
-            bullet->move_bullet(0.f);
-            bullet->draw_bullet(target);
-        }
-        //else erase_bullet(count);
-
-        count++;
-       
+void Player::render_bullets(sf::RenderTarget &target, float background_movement) {
+    for (auto i = 0; i < this->bullets_.size(); i++) {
+         if(this->bullets_[i]->get_location().x > 0.f && this->bullets_[i]->get_location().x < 1400.f){
+            this->bullets_[i]->move_bullet(background_movement);
+            this->bullets_[i]->draw_bullet(target);
+        } else erase_bullet(i);
     }
-    target.draw(player_sprite_);
+}
 
+void Player::render(sf::RenderTarget &target) {
+    target.draw(player_sprite_);
 }
 
 float Player::get_x_default_right() const { return this->x_default_right_; }
@@ -125,18 +121,19 @@ Position Player::get_position() {
 std::vector<std::shared_ptr<Bullet>> Player::get_bullets() const { return this->bullets_; }
 
 void Player::shoot_bullet(sf::Texture& texture) {
-    if (this->current_cool_down++ < this->max_cool_down) return;
+    if (this->current_cool_down < this->max_cool_down) return;
     else this->current_cool_down = 0;
     auto x_position = 0.f;
-    auto y_position = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height - 12.5f;
+    auto y_position = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height - 11.f;
     if (this->prev_direction_ == Direction::LEFT) {
-        x_position = this->player_sprite_.getGlobalBounds().left + this->player_sprite_.getGlobalBounds().width;
+        x_position = this->player_sprite_.getGlobalBounds().left + 2*this->player_sprite_.getGlobalBounds().width;
     }
     else x_position = this->player_sprite_.getGlobalBounds().left;
     this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_, texture));
 }
 
+void Player::increment_cool_down() { this->current_cool_down++; }
+
 void Player::erase_bullet(int position) {
     this->bullets_.erase(this->bullets_.begin()+position);
-    std::cout << bullets_.size() <<std::endl;
 }
