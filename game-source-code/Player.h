@@ -47,7 +47,7 @@ class Player{
         Player();
         
         void move_player_horizontal(Direction direction);
-        void move_player_verticle(Direction direction);
+        void move_player_vertical(Direction direction);
         void magnatise_player();
         void render(sf::RenderTarget& target);
 

@@ -31,7 +31,7 @@ void Player::update_position(Direction direction) {
 
 bool Player::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
 
-void Player::move_player_verticle(Direction direction) {
+void Player::move_player_vertical(Direction direction) {
     float bottom = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height + 10.f;
     switch (direction) {
         case Direction::UP:
@@ -53,14 +53,14 @@ void Player::move_player_horizontal(Direction direction) {
 }
 
 void Player::magnatise_player() {
-    float tolerance = 3.f;
-    if(this->position_.x_left <= this->x_default_left_+tolerance || this->position_.x_right >= this->x_default_right_-tolerance) {
+    float acceleration_constant = 0.1f;
+    if(this->position_.x_left <= this->x_default_left_ || this->position_.x_right >= this->x_default_right_) {
         return;
     }
     float delta_x = this->prev_direction_ == Direction::LEFT ? (this->position_.x_left-this->x_default_left_) : -(this->position_.x_right-this->x_default_right_);
-    float acceleration = 0.06f/delta_x;
+    float acceleration = acceleration_constant/delta_x;
     this->player_speed_ += acceleration;
-    this->player_sprite_.move(-1.f*static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
+    this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
     this->update_position(this->prev_direction_);
 }
 
