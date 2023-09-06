@@ -101,23 +101,23 @@ void Game::handle_player_movement() {
         if(x_left > this->player_->get_x_default_left()) {
             this->player_->move_player_horizontal(Direction::LEFT);
         }
-        else {
-            std::cout << "location = " << this->background_location_ << std::endl;
+        else if (this->background_location_ > -2*this->game_width_) {
+            //std::cout << "location = " << this->background_location_ << std::endl;
             this->background_speed_ = this->background_base_speed_;
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_location_ += -this->background_base_speed_;
-        }
+        } else this->background_speed_ = 0;
     }
     
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
         if(x_right < this->player_->get_x_default_right()) {
             this->player_->move_player_horizontal(Direction::RIGHT);
         }
-        else {
+        else if (this->background_location_ < -2*this->game_width_)  {
             this->background_speed_ = this->background_base_speed_;
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_location_ += this->background_base_speed_;
-        }
+        } else this->background_speed_ = 0;
     }
 }
 
