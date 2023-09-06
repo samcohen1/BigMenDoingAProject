@@ -3,13 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <vector>
+#include "Bullet.h"
 
-enum class Direction {
-    RIGHT = -1,
-    UP,
-    LEFT,
-    DOWN
-};
+// enum class Direction {
+//     RIGHT = -1,
+//     UP,
+//     LEFT,
+//     DOWN
+// };
 
 struct Position {
     float x_left;
@@ -39,6 +41,8 @@ class Player{
         const float x_default_right_ = 1250.f;
         const float x_default_left_ = 150.f;
 
+        std::vector<std::shared_ptr<Bullet>> bullets_;
+
         void init_player();
         void flip_player();
         bool direction_changed(Direction);
@@ -58,6 +62,9 @@ class Player{
         float get_x_default_left() const;
         float get_player_speed() const;
         Position get_position();
+        std::vector<std::shared_ptr<Bullet>> get_bullets() const;
+        void shoot_bullet();
+        void erase_bullet(int position);
 };
 
 #endif

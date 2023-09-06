@@ -3,6 +3,8 @@
 #include <memory>
 #include <iostream>
 #include <ctime>
+#include <algorithm>
+#include "Bullet.h"
 
 Player::Player() {
     this->init_player();
@@ -93,7 +95,11 @@ void Player::magnetise_player() {
 }
 
 void Player::render(sf::RenderTarget &target) {
+    for(auto bullet : this->bullets_){
+        bullet->draw_bullet(target);
+    }
     target.draw(player_sprite_);
+
 }
 
 float Player::get_x_default_right() const { return this->x_default_right_; }
@@ -105,4 +111,20 @@ Position Player::get_position() {
     global_position.x_right = this->player_sprite_.getGlobalBounds().left + this->player_sprite_.getGlobalBounds().width;
     global_position.y = this->player_sprite_.getGlobalBounds().top;
     return global_position;
+}
+
+std::vector<std::shared_ptr<Bullet>> Player::get_bullets() const { return this->bullets_; }
+
+void Player::shoot_bullet() {
+    auto x_position = 0.f;
+    auto y_position = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height - 12.5f;
+    if (this->prev_direction_ == Direction::LEFT) {
+        x_position = this->player_sprite_.getGlobalBounds().left + this->player_sprite_.getGlobalBounds().width;
+    }
+    else x_position = this->player_sprite_.getGlobalBounds().left;
+    this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_));
+}
+
+void Player::erase_bullet(int position) {
+    this->bullets_.erase(this->bullets_.begin()+position);
 }

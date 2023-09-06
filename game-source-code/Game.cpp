@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include "Game.h"
+#include "Bullet.h"
 
 Game::Game() {
     this->_init_window();
@@ -33,6 +34,7 @@ void Game::update() {
         }
     }
     this->handle_player_movement();
+    this->check_player_shoot();
 }
 
 bool Game::approx_equal (float a, float b) {
@@ -44,6 +46,10 @@ bool Game::approx_innequality (float a, float b, bool greater_than) {
     float tolerance = 0.01;
     if (greater_than) return a > b+tolerance;
     return a < b+tolerance;
+}
+
+void Game::check_player_shoot() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) this->player_->shoot_bullet();
 }
 
 void Game::handle_boundary_background_movement () {
@@ -141,6 +147,8 @@ void Game::render() {
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
     this->player_->render(*this->window_);
+    auto test = sf::RectangleShape();
+    this->window_->draw(test);
     this->window_->display();
 }
 

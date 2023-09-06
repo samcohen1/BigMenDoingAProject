@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "Player.h"
+#include "Bullet.h"
 
 class Game {
     private:
@@ -41,6 +42,7 @@ class Game {
 
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);
+        void check_player_shoot();
 
     public:
         Game();
