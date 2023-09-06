@@ -6,6 +6,10 @@
 #include "Player.h"
 #include "Bullet.h"
 
+enum class Textures{
+    BULLET = 0
+};
+
 class Game {
     private:
         std::shared_ptr<sf::RenderWindow> window_;
@@ -14,6 +18,7 @@ class Game {
         std::unique_ptr<Player> player_;
 
         // CONSTANTS
+        std::vector<sf::Texture> textures;
         const float original_background_width_ = 1920;
         const float original_background_height_ = 1080;
         const float game_width_ = 1400;
@@ -27,6 +32,9 @@ class Game {
         float background_acceleration_ = 0.0003f;
 
         bool prev_in_edge = false;
+        bool prev_bullet_shot = false;
+
+        void _init_textures();
 
         void _init_window();
         void _init_background();

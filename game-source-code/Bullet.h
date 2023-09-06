@@ -23,7 +23,7 @@ class Bullet {
         float bullet_scale_ = 0.01f;
 
     public:
-        Bullet(float x_location, float y_location, Direction);
+        Bullet(float x_location, float y_location, Direction, sf::Texture&);
 
 
         sf::Vector2f get_location();

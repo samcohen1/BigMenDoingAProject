@@ -41,6 +41,9 @@ class Player{
         const float x_default_right_ = 1250.f;
         const float x_default_left_ = 150.f;
 
+        int current_cool_down = 0;
+        int max_cool_down = 200;
+
         std::vector<std::shared_ptr<Bullet>> bullets_;
 
         void init_player();
@@ -63,7 +66,7 @@ class Player{
         float get_player_speed() const;
         Position get_position();
         std::vector<std::shared_ptr<Bullet>> get_bullets() const;
-        void shoot_bullet();
+        void shoot_bullet(sf::Texture&);
         void erase_bullet(int position);
 };
 

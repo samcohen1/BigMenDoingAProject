@@ -2,8 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-Bullet::Bullet(float x_location, float y_location, Direction direction) : x_location_(x_location), y_location_(y_location) {
-    if(!this->bullet_texture_.loadFromFile("resources/Bullet.PNG")) return;
+Bullet::Bullet(float x_location, float y_location, Direction direction, sf::Texture& texture) : x_location_(x_location), y_location_(y_location), bullet_texture_(texture) {
     this->bullet_sprite_.setTexture(this->bullet_texture_);
     this->bullet_sprite_.setScale(static_cast<float>(direction) * this->bullet_scale_, this->bullet_scale_);
     this->bullet_sprite_.setOrigin(((static_cast<float>(direction)+1)/2.f)*this->bullet_sprite_.getGlobalBounds().width/this->bullet_scale_, 0.f);

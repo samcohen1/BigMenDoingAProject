@@ -115,14 +115,16 @@ Position Player::get_position() {
 
 std::vector<std::shared_ptr<Bullet>> Player::get_bullets() const { return this->bullets_; }
 
-void Player::shoot_bullet() {
+void Player::shoot_bullet(sf::Texture& texture) {
+    if (this->current_cool_down++ < this->max_cool_down) return;
+    else this->current_cool_down = 0;
     auto x_position = 0.f;
     auto y_position = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height - 12.5f;
     if (this->prev_direction_ == Direction::LEFT) {
         x_position = this->player_sprite_.getGlobalBounds().left + this->player_sprite_.getGlobalBounds().width;
     }
     else x_position = this->player_sprite_.getGlobalBounds().left;
-    this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_));
+    this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_, texture));
 }
 
 void Player::erase_bullet(int position) {

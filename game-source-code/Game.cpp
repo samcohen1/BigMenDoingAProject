@@ -9,10 +9,17 @@ Game::Game() {
     this->_init_window();
     this->_init_background();
     this->_init_player();
+    this->_init_textures();
 }
 
 void Game::_init_window() {
     this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Byte Defenders", sf::Style::Titlebar | sf::Style::Close);
+}
+
+void Game::_init_textures () {
+    sf::Texture bullet_texture;
+    if(!bullet_texture.loadFromFile("resources/Bullet.PNG")) return;
+    this->textures.push_back(bullet_texture);
 }
 
 void Game::_init_background() {
@@ -49,7 +56,13 @@ bool Game::approx_innequality (float a, float b, bool greater_than) {
 }
 
 void Game::check_player_shoot() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) this->player_->shoot_bullet();
+    if(!this->prev_bullet_shot) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+            this->player_->shoot_bullet(this->textures[static_cast<int>(Textures::BULLET)]);
+        } else this->prev_bullet_shot = true;
+    } 
+    else this->prev_bullet_shot = false;
+    
 }
 
 void Game::handle_boundary_background_movement () {
