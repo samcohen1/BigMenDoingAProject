@@ -12,9 +12,7 @@ enum class Direction {
 };
 
 class Bullet {
-
     private:
-
         sf::Texture bullet_texture_;
         sf::Sprite bullet_sprite_;
 
@@ -26,7 +24,6 @@ class Bullet {
 
     public:
         Bullet(float x_location, float y_location, Direction, sf::Texture&);
-
 
         sf::Vector2f get_location();        
         float get_bullet_width();
