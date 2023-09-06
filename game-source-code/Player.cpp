@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <iostream>
+#include <ctime>
 
 Player::Player() {
     this->init_player();
@@ -53,8 +54,29 @@ void Player::edge_player_movement(Direction direction) {
     this->prev_direction_ = direction;
 }
 
+void Player::correct_edge_positions() {
+    if (this->player_sprite_.getGlobalBounds().left < 700.f) {
+        this->player_sprite_.setPosition(this->x_default_left_, this->player_sprite_.getGlobalBounds().top);
+        return;
+    }
+    this->player_sprite_.setPosition(this->x_default_right_, this->player_sprite_.getGlobalBounds().top);
+}
+
 void Player::magnatise_player() {
     float acceleration_constant = 0.1f;
+    if ((this->player_sprite_.getGlobalBounds().left <= this->x_default_left_ && this->prev_direction_ == Direction::RIGHT)) {
+        float delta_x = -((this->player_sprite_.getGlobalBounds().left+this->player_sprite_.getGlobalBounds().width)-this->x_default_right_);
+        float acceleration = acceleration_constant/delta_x;
+        this->player_speed_ += acceleration;
+        this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
+        return;
+    } else if (this->player_sprite_.getGlobalBounds().left+this->player_sprite_.getGlobalBounds().width >= this->x_default_right_ && this->prev_direction_ == Direction::LEFT) {
+        float delta_x = this->player_sprite_.getGlobalBounds().left-this->x_default_left_;
+        float acceleration = acceleration_constant/delta_x;
+        this->player_speed_ += acceleration;
+        this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
+        return;
+    }
     if(this->player_sprite_.getGlobalBounds().left <= this->x_default_left_ || this->player_sprite_.getGlobalBounds().left+this->player_sprite_.getGlobalBounds().width >= this->x_default_right_) {
         return;
     }

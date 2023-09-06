@@ -24,6 +24,8 @@ class Game {
         float background_location_ = 0.f;
         float background_movement_ = 0.f;
 
+        bool prev_in_edge = false;
+
         void _init_window();
         void _init_background();
         void _init_player();
