@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <iostream>
+#include <ctime>
 #include "Game.h"
 
 Game::Game() {
@@ -93,8 +94,10 @@ void Game::internal_movement (float x_right, float x_left) {
     if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))) {
         this->player_->magnatise_player();
         if ((x_right < this->player_->get_x_default_right() && this->player_->get_player_speed() < 0) || 
-            (x_left > this->player_->get_x_default_left() && this->player_->get_player_speed() > 0)) this->handle_internal_background_movement();
-        this->handle_boundary_background_movement();
+            (x_left > this->player_->get_x_default_left() && this->player_->get_player_speed() > 0)) {
+                std::cout << time(0) << std::endl;
+                this->handle_internal_background_movement();
+            } else this->handle_boundary_background_movement();
     }
     this->background_location_ += this->background_movement_;
 }
@@ -112,19 +115,23 @@ void Game::edge_movement(float x_right, float x_left) {
 void Game::handle_player_movement() {
     float x_right = this->player_->get_position().x_right;
     float x_left = this->player_->get_position().x_left;
-    float edge_tolerance = 4.f;
-    bool in_edge_case = (this->background_location_ > 2*this->game_width_ && x_right <= this->player_->get_x_default_right()+edge_tolerance) || 
-                        (this->background_location_ < -2*this->game_width_ && x_left >= this->player_->get_x_default_left()-edge_tolerance);
+    float edge_tolerance = 2.f;
+    // bool in_edge_case = (this->background_location_ > 2*this->game_width_ && x_right <= this->player_->get_x_default_right()+edge_tolerance) || 
+    //                     (this->background_location_ < -2*this->game_width_ && x_left >= this->player_->get_x_default_left()-edge_tolerance);
 
-    std::cout << x_left<<"\n";
+    bool in_edge_case = (this->background_location_ > 2*this->game_width_-edge_tolerance && x_left <= this->player_->get_x_default_right()+edge_tolerance) || 
+                        (this->background_location_ < -2*this->game_width_ && x_right >= this->player_->get_x_default_left()-edge_tolerance);
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) this->player_->move_player_vertical(Direction::UP);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) this->player_->move_player_vertical(Direction::DOWN);
+
+    // std::cout << "background = " << (this->background_location_ > 2*this->game_width_) << std::endl;
+    // std::cout << "Player = " << (x_right <= this->player_->get_x_default_right()+edge_tolerance) << std::endl;
 
     if (in_edge_case) {
         this->edge_movement(x_right, x_left);
         return;
-    }
-    this->internal_movement(x_right, x_left);
+    } else this->internal_movement(x_right, x_left);
 }
 
 
