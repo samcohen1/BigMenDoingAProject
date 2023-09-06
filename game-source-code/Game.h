@@ -20,7 +20,7 @@ class Game {
         const float x_scale_ = this->game_width_/this->original_background_width_;
         const float y_scale_ = this->game_height_/this->original_background_height_;
 
-        float background_base_speed_ = 0.3f;
+        float background_base_speed_ = 0.5f;
         float background_location_ = 0.f;
         float background_movement_ = 0.f;
 
@@ -31,7 +31,8 @@ class Game {
         void render();
 
         void handle_player_movement();
-        void handle_background_movement();
+        void handle_boundary_background_movement();
+        void handle_internal_background_movement();
 
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);

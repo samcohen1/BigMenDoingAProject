@@ -24,7 +24,7 @@ class Player{
         float scale_player_ = 0.08f;
         float player_speed_ = 0.01f;
         float vertical_speed_ = 0.2f;
-        float base_speed_ = 0.15f;
+        float flip_base_speed_ = 0.15f;
         float acceleration_ = 0.0008f;
 
         Direction prev_direction_;
@@ -48,13 +48,14 @@ class Player{
         
         void move_player_horizontal(Direction direction);
         void move_player_vertical(Direction direction);
+        void edge_player_movement(Direction);
         void magnatise_player();
         void render(sf::RenderTarget& target);
 
         float get_x_default_right() const;
         float get_x_default_left() const;
+        float get_player_speed() const;
         Position get_position();
-        Direction get_prev_direction();
 };
 
 #endif

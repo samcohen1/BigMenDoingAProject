@@ -36,17 +36,17 @@ void Game::update() {
 }
 
 bool Game::approx_equal (float a, float b) {
-    float tolerance = 0.6f;
+    float tolerance = 0.01f;
     return abs(a-b) <= tolerance;
 }
 
 bool Game::approx_innequality (float a, float b, bool greater_than) {
-    float tolerance = 0.6;
+    float tolerance = 0.01;
     if (greater_than) return a > b+tolerance;
     return a < b+tolerance;
 }
 
-void Game::handle_background_movement () {
+void Game::handle_boundary_background_movement () {
     float tolerance = 0.0001f;
     if (this->background_location_<2*this->game_width_ && this->background_location_>-2*this->game_width_) {
         if (this->background_movement_ > tolerance) {
@@ -60,6 +60,12 @@ void Game::handle_background_movement () {
     } else this->background_movement_ = 0.f;
 }
 
+void Game::handle_internal_background_movement () {
+    float player_internal_movement = this->player_->get_player_speed();
+    this->background_sprite_.move(-player_internal_movement, 0.f); //REMEMBER SIGN
+    this->background_location_ += -player_internal_movement;
+}
+
 void Game::handle_player_movement() {
     float x_right = this->player_->get_position().x_right;
     float x_left = this->player_->get_position().x_left;
@@ -70,28 +76,38 @@ void Game::handle_player_movement() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
         if(x_left > this->player_->get_x_default_left()) {
             this->player_->move_player_horizontal(Direction::LEFT);
+            this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
         }
         else if (this->background_location_ > -2*(this->game_width_)) {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_movement_ = -this->background_base_speed_;
-        } else this->background_movement_ = 0.f;
+        } else {
+            this->player_->edge_player_movement(Direction::RIGHT);
+            this->background_movement_ = 0.f;
+        }
     }
     
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
         if(x_right < this->player_->get_x_default_right()) {
             this->player_->move_player_horizontal(Direction::RIGHT);
+            this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
         }
         else if (this->background_location_ < 2*(this->game_width_))  {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_movement_ = this->background_base_speed_;
-        } else this->background_movement_ = 0.f;
+        } else {
+            this->player_->edge_player_movement(Direction::LEFT);
+            this->background_movement_ = 0.f;
+        }
     }
 
     if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))) {
         this->player_->magnatise_player();
-        this->handle_background_movement();
+        if ((x_right < this->player_->get_x_default_right() && this->player_->get_player_speed() < 0) || 
+            (x_left > this->player_->get_x_default_left() && this->player_->get_player_speed() > 0)) this->handle_internal_background_movement();
+        this->handle_boundary_background_movement();
     }
     this->background_location_ += this->background_movement_;
 }

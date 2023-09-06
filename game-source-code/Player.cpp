@@ -17,7 +17,7 @@ void Player::init_player() {
 }
 
 void Player::flip_player() {
-    this->player_speed_ = this->base_speed_;
+    this->player_speed_ = this->flip_base_speed_;
     float prev_direction_flag = static_cast<float>(this->prev_direction_);
     this->player_sprite_.setScale(-1.f*this->scale_player_*prev_direction_flag, this->scale_player_);
     this->player_sprite_.setOrigin(((prev_direction_flag+1)/2.f)*this->player_sprite_.getGlobalBounds().width/this->scale_player_, 0.f);
@@ -52,6 +52,13 @@ void Player::move_player_horizontal(Direction direction) {
     this->prev_direction_ = direction;
 }
 
+void Player::edge_player_movement(Direction direction) {
+    this->player_sprite_.move(-static_cast<float>(direction)*this->player_speed_, 0.f);
+    this->update_position(direction);
+    if (this->direction_changed(direction)) this->flip_player();
+    this->prev_direction_ = direction;
+}
+
 void Player::magnatise_player() {
     float acceleration_constant = 0.1f;
     if(this->position_.x_left <= this->x_default_left_ || this->position_.x_right >= this->x_default_right_) {
@@ -70,5 +77,5 @@ void Player::render(sf::RenderTarget &target) {
 
 float Player::get_x_default_right() const { return this->x_default_right_; }
 float Player::get_x_default_left() const { return this->x_default_left_; }
+float Player::get_player_speed() const { return this->player_speed_*static_cast<float>(this->prev_direction_); }
 Position Player::get_position() { return this->position_; }
-Direction Player::get_prev_direction() { return this->prev_direction_; }
