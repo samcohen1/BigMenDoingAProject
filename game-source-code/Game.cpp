@@ -3,7 +3,6 @@
 #include <iostream>
 #include "Game.h"
 
-
 Game::Game() {
     this->_init_window();
     this->_init_background();
@@ -62,45 +61,33 @@ void Game::handle_boundary_background_movement () {
 
 void Game::handle_internal_background_movement () {
     float player_internal_movement = this->player_->get_player_speed();
-    this->background_sprite_.move(-player_internal_movement, 0.f); //REMEMBER SIGN
+    this->background_sprite_.move(-player_internal_movement, 0.f);
     this->background_location_ += -player_internal_movement;
 }
 
-void Game::handle_player_movement() {
-    float x_right = this->player_->get_position().x_right;
-    float x_left = this->player_->get_position().x_left;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) this->player_->move_player_vertical(Direction::UP);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) this->player_->move_player_vertical(Direction::DOWN);
-
+void Game::internal_movement (float x_right, float x_left) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-        if(x_left > this->player_->get_x_default_left()) {
+        if (x_left > this->player_->get_x_default_left()) {
             this->player_->move_player_horizontal(Direction::LEFT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
         }
-        else if (this->background_location_ > -2*(this->game_width_)) {
+        else if (this->background_location_ > -2*this->game_width_) {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_movement_ = -this->background_base_speed_;
-        } else {
-            this->player_->edge_player_movement(Direction::RIGHT);
-            this->background_movement_ = 0.f;
-        }
+        } else this->background_movement_ = 0.f;
     }
-    
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
         if(x_right < this->player_->get_x_default_right()) {
             this->player_->move_player_horizontal(Direction::RIGHT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
         }
-        else if (this->background_location_ < 2*(this->game_width_))  {
+        else if (this->background_location_ < 2*this->game_width_)  {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_movement_ = this->background_base_speed_;
-        } else {
-            this->player_->edge_player_movement(Direction::LEFT);
-            this->background_movement_ = 0.f;
-        }
+        } else this->background_movement_ = 0.f;
     }
 
     if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))) {
@@ -110,6 +97,34 @@ void Game::handle_player_movement() {
         this->handle_boundary_background_movement();
     }
     this->background_location_ += this->background_movement_;
+}
+
+void Game::edge_movement(float x_right, float x_left) {
+    bool is_in_left = this->background_location_ > 0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && this->player_->get_position().x_right <= 1377.f) {
+        this->player_->edge_player_movement(Direction::LEFT);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && this->player_->get_position().x_left >= 23.f) {
+        this->player_->edge_player_movement(Direction::RIGHT);
+    }
+}
+
+void Game::handle_player_movement() {
+    float x_right = this->player_->get_position().x_right;
+    float x_left = this->player_->get_position().x_left;
+    float edge_tolerance = 4.f;
+    bool in_edge_case = (this->background_location_ > 2*this->game_width_ && x_right <= this->player_->get_x_default_right()+edge_tolerance) || 
+                        (this->background_location_ < -2*this->game_width_ && x_left >= this->player_->get_x_default_left()-edge_tolerance);
+
+    std::cout << x_left<<"\n";
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) this->player_->move_player_vertical(Direction::UP);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) this->player_->move_player_vertical(Direction::DOWN);
+
+    if (in_edge_case) {
+        this->edge_movement(x_right, x_left);
+        return;
+    }
+    this->internal_movement(x_right, x_left);
 }
 
 

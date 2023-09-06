@@ -31,6 +31,8 @@ class Game {
         void render();
 
         void handle_player_movement();
+        void edge_movement(float, float);
+        void internal_movement(float, float);
         void handle_boundary_background_movement();
         void handle_internal_background_movement();
 

@@ -12,15 +12,14 @@ enum class Direction {
 };
 
 struct Position {
-    float x_left = 1172.52f;
-    float x_right = 1250.0f;
-    float y = 300.0f;
+    float x_left;
+    float x_right;
+    float y;
 };
 
 class Player{
     private:
 
-        Position position_;
         float scale_player_ = 0.08f;
         float player_speed_ = 0.01f;
         float vertical_speed_ = 0.2f;
@@ -34,13 +33,12 @@ class Player{
 
         float y_min_pos_ = 120.f;
         float y_max_pos_ = 800.f-this->player_sprite_.getGlobalBounds().height;
+        float default_y_ = 300.f;
         const float x_default_right_ = 1250.f;
         const float x_default_left_ = 150.f;
 
-
         void init_player();
         void flip_player();
-        void update_position(Direction);
         bool direction_changed(Direction);
 
     public:
