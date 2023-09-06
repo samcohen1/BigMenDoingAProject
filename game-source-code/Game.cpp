@@ -50,11 +50,11 @@ void Game::handle_boundary_background_movement () {
     float tolerance = 0.0001f;
     if (this->background_location_<2*this->game_width_ && this->background_location_>-2*this->game_width_) {
         if (this->background_movement_ > tolerance) {
-            this->background_movement_ -= tolerance;
+            this->background_movement_ -= background_acceleration_;
             this->background_sprite_.move(this->background_movement_,0.f);
         }
         else if (this->background_movement_ < -tolerance) {
-            this->background_movement_ += tolerance;
+            this->background_movement_ += background_acceleration_;
             this->background_sprite_.move(this->background_movement_,0.f); 
         } else this->background_movement_ = 0;
     } else this->background_movement_ = 0.f;
@@ -93,7 +93,7 @@ void Game::internal_movement (float x_right, float x_left) {
     }
 
     if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))) {
-        this->player_->magnatise_player();
+        this->player_->magnetise_player();
         if ((x_right < this->player_->get_x_default_right() && this->player_->get_player_speed() < 0) || 
             (x_left > this->player_->get_x_default_left() && this->player_->get_player_speed() > 0)) {
                 this->handle_internal_background_movement();
@@ -104,13 +104,19 @@ void Game::internal_movement (float x_right, float x_left) {
 }
 
 void Game::edge_movement(float x_right, float x_left) {
-    bool is_in_left = this->background_location_ > 0;
+    bool sideKey = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && this->player_->get_position().x_right <= 1377.f) {
+        sideKey = true;
         this->player_->edge_player_movement(Direction::LEFT);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && this->player_->get_position().x_left >= 23.f) {
+        sideKey = true;
         this->player_->edge_player_movement(Direction::RIGHT);
     }
+    if(!sideKey && this->player_->get_position().x_left >= 23.f && this->player_->get_position().x_right <= 1377.f) {
+        this->player_->edge_decelerate();
+    }
+
     this->prev_in_edge = true;
 }
 

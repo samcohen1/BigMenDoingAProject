@@ -48,10 +48,16 @@ void Player::move_player_horizontal(Direction direction) {
 }
 
 void Player::edge_player_movement(Direction direction) {
-    float player_edge_speed = 0.5f;
+    this->player_edge_speed = 0.5f;
     this->player_sprite_.move(static_cast<float>(direction)*player_edge_speed, 0.f);
     if (this->direction_changed(direction)) this->flip_player();
     this->prev_direction_ = direction;
+
+}
+
+void Player::edge_decelerate() {
+    if(player_edge_speed>=0) this->player_edge_speed -= this->edge_acceleration_;
+    this->player_sprite_.move(static_cast<float>(this->prev_direction_)*player_edge_speed, 0.f);
 }
 
 void Player::correct_edge_positions() {
@@ -62,7 +68,7 @@ void Player::correct_edge_positions() {
     this->player_sprite_.setPosition(this->x_default_right_, this->player_sprite_.getGlobalBounds().top);
 }
 
-void Player::magnatise_player() {
+void Player::magnetise_player() {
     float acceleration_constant = 0.1f;
     if ((this->player_sprite_.getGlobalBounds().left <= this->x_default_left_ && this->prev_direction_ == Direction::RIGHT)) {
         float delta_x = -((this->player_sprite_.getGlobalBounds().left+this->player_sprite_.getGlobalBounds().width)-this->x_default_right_);
