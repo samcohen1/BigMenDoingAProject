@@ -95,8 +95,17 @@ void Player::magnetise_player() {
 }
 
 void Player::render(sf::RenderTarget &target) {
+    int count = 0;
     for(auto bullet : this->bullets_){
-        bullet->draw_bullet(target);
+
+        if(bullet->get_location().x > 0.f && bullet->get_location().x < 1400.f){
+            bullet->move_bullet(0.f);
+            bullet->draw_bullet(target);
+        }
+        //else erase_bullet(count);
+
+        count++;
+       
     }
     target.draw(player_sprite_);
 
@@ -129,4 +138,5 @@ void Player::shoot_bullet(sf::Texture& texture) {
 
 void Player::erase_bullet(int position) {
     this->bullets_.erase(this->bullets_.begin()+position);
+    std::cout << bullets_.size() <<std::endl;
 }

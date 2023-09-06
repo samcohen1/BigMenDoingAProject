@@ -42,7 +42,7 @@ class Player{
         const float x_default_left_ = 150.f;
 
         int current_cool_down = 0;
-        int max_cool_down = 200;
+        int max_cool_down = 500;
 
         std::vector<std::shared_ptr<Bullet>> bullets_;
 

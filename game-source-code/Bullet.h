@@ -21,6 +21,8 @@ class Bullet {
         float x_location_;
         float y_location_;
         float bullet_scale_ = 0.01f;
+        float bullet_movement = 1.0f;
+        Direction direction_;
 
     public:
         Bullet(float x_location, float y_location, Direction, sf::Texture&);
