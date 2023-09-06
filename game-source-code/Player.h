@@ -34,24 +34,27 @@ class Player{
 
         float y_min_pos_ = 120.f;
         float y_max_pos_ = 800.f-this->player_sprite_.getGlobalBounds().height;
-        const float x_default_right = 1250.f;
-        const float x_default_left = 150.f;
+        const float x_default_right_ = 1250.f;
+        const float x_default_left_ = 150.f;
 
 
         void init_player();
         void flip_player();
         void update_position(Direction);
-        bool direction_changed(Direction direction);
+        bool direction_changed(Direction);
 
     public:
         Player();
         
-        void move_player(Direction direction);
+        void move_player_horizontal(Direction direction);
+        void move_player_verticle(Direction direction);
+        void magnatise_player();
         void render(sf::RenderTarget& target);
 
         float get_x_default_right() const;
         float get_x_default_left() const;
         Position get_position();
+        Direction get_prev_direction();
 };
 
 #endif
