@@ -15,6 +15,7 @@
 #include "Professor.h"
 #include "Bullet.h"
 #include "Professor.h"
+#include "Professor_Assignment.h"
 
 Professor::Professor(sf::Texture& texture) {
     this->init_professor(texture);
@@ -95,7 +96,12 @@ void Professor::correct_edge_positions() {
 }
 
 void Professor::render_bullets(sf::RenderTarget &target, float background_movement) {
-    
+    for (auto i = 0; i < this->assignments_.size(); i++) {
+        if(this->assignments_[i]->get_location().x > 0.f && this->assignments_[i]->get_location().x < 1400.f) {
+            this->assignments_[i]->move_assignment(background_movement);
+            this->assignments_[i]->draw_assignment(target);
+        } else this->erase_assignment(i);
+    }
 }
 
 void Professor::render(sf::RenderTarget &target) {
@@ -104,16 +110,22 @@ void Professor::render(sf::RenderTarget &target) {
 
 // float Professor::get_professor_speed() const { return this->professor_vertical_speed_*static_cast<float>(this->prev_direction_); }
 
-// std::vector<std::shared_ptr<Bullet>> Professor::get_bullets() const { return this->bullets_; }
+std::vector<std::shared_ptr<Professor_Assignment>> Professor::get_assignments() const { return this->assignments_; }
 
-void Professor::shoot_bullet(sf::Texture& texture) {
-    
+void Professor::shoot_assignment(sf::Texture& texture, sf::Vector2f player_position) {
+    if(this->current_cool_down < this->max_cool_down) return;
+    this-> current_cool_down = 0;
+    std::random_device device;
+    std::mt19937 generator(device());
+    std::uniform_int_distribution<> cool_down_distribution(2000, 4000);
+    this->max_cool_down = cool_down_distribution(generator);
+    this->assignments_.push_back(std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position));    
 }
 
 void Professor::increment_cool_down() {
-    
+    this->current_cool_down++;
 }
 
-void Professor::erase_bullet(int position) {
-    
+void Professor::erase_assignment(int position) {
+    this->assignments_.erase(this->assignments_.begin() + position);
 }

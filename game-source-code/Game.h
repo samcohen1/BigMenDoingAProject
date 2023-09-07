@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Professor.h"
+#include "Professor_Assignment.h"
 
 enum class Textures{
     BULLET = 0,
@@ -23,7 +24,7 @@ class Game {
         sf::Texture background_texture_;
         sf::Sprite background_sprite_;
         std::unique_ptr<Player> player_;
-        std::unique_ptr<Professor> professor_;
+        std::vector<std::unique_ptr<Professor>> professors_;
 
         // CONSTANTS
         std::vector<sf::Texture> textures;
@@ -61,6 +62,7 @@ class Game {
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);
         void check_player_shoot();
+        void check_professors_shoot();
 
     public:
         Game();

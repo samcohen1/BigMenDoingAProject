@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "Professor.h"
 #include "Player.h"
+#include "Professor_Assignment.h"
 
 Game::Game() {
     srand(time(0));
@@ -26,14 +27,20 @@ void Game::update() {
     }
     this->handle_player_movement();
     this->check_player_shoot();
-    this->professor_->move_professor(this->background_location_);
+    this->check_professors_shoot();
+    for (auto i = 0; i < professors_.size(); i++) {
+        this->professors_[i]->move_professor(this->background_location_);
+    }
+    
 }
 
 void Game::render() {
     this->window_->clear(sf::Color(110,66,26));
     this->window_->draw(this->background_sprite_);
     this->player_->render(*this->window_);
-    this->professor_->render(*this->window_);
+    for (auto i = 0; i < professors_.size(); i++) {
+        this->professors_[i]->render(*this->window_);
+    }
     this->player_->render_bullets(*this->window_, this->background_movement_);
     this->window_->display();
 }
@@ -80,7 +87,7 @@ void Game::_init_player() {
 }
 
 void Game::_init_professor() {
-    this->professor_ = std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]);
+    this->professors_.push_back(std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]));
 }
 
 bool Game::approx_equal (float a, float b) {
@@ -102,6 +109,13 @@ void Game::check_player_shoot() {
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
         this->shot_held = false;
+    }
+}
+
+void Game::check_professors_shoot() {
+    for (auto i = 0; i < this->professors_.size(); i++){
+        this->professors_[i]->increment_cool_down();
+        this->professors_[i]->shoot_assignment(this->textures[static_cast<int>(Textures::PROFESSOR_ASSIGNMENT)], sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
 }
 

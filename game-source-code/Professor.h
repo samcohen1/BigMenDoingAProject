@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "Bullet.h"
+#include "Professor_Assignment.h"
 
 class Professor {
     private:
@@ -14,6 +15,7 @@ class Professor {
         float acceleration_ = 0.0008f;
         float edge_acceleration_ = 0.0005f;
         float professor_edge_speed = 0.5f;
+
 
         Direction prev_direction_;
 
@@ -35,11 +37,11 @@ class Professor {
         float initial_y_position = 0;
         float world_position = 0;
 
-        int current_cool_down = 400;
-        int max_cool_down = 400;
+        int current_cool_down = 0;
+        int max_cool_down = 1000;
         
 
-        // std::vector<std::shared_ptr<Bullet>> bullets_;
+        std::vector<std::shared_ptr<Professor_Assignment>> assignments_;
 
         void init_professor(sf::Texture&);
         void flip_professor();
@@ -60,9 +62,9 @@ class Professor {
 
         float get_professor_speed() const;
         sf::Vector2f get_location();     
-        // std::vector<std::shared_ptr<Bullet>> get_bullets() const;
-        void shoot_bullet(sf::Texture&);
-        void erase_bullet(int position);
+        std::vector<std::shared_ptr<Professor_Assignment>> get_assignments() const;
+        void shoot_assignment(sf::Texture&, sf::Vector2f);
+        void erase_assignment(int position);
 };
 
 #endif
