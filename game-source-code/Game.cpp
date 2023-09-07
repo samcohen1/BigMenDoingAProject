@@ -132,18 +132,21 @@ void Game::handle_boundary_background_movement () {
 }
 
 void Game::handle_internal_background_movement () {
+    this->background_movement_flag = true;
     float player_internal_movement = this->player_->get_player_speed();
     this->background_sprite_.move(-player_internal_movement, 0.f);
-    this->background_location_ += -player_internal_movement;
+    this->background_movement_ = -player_internal_movement;
+    //this->background_location_ += -player_internal_movement;
 }
 
 void Game::internal_movement (float x_right, float x_left) {
+    this->background_movement_flag = false;
     if (this->prev_in_edge) this->player_->correct_edge_positions();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
         if (x_left > this->player_->get_x_default_left()) {
             this->player_->move_player_horizontal(Direction::LEFT);
             this->handle_internal_background_movement();
-            this->background_movement_ = 0.f;
+            // this->background_movement_ = 0.f;
         }
         else if (this->background_location_ > -2*this->game_width_) {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
@@ -155,7 +158,7 @@ void Game::internal_movement (float x_right, float x_left) {
         if(x_right < this->player_->get_x_default_right()) {
             this->player_->move_player_horizontal(Direction::RIGHT);
             this->handle_internal_background_movement();
-            this->background_movement_ = 0.f;
+            // this->background_movement_ = 0.f;
         }
         else if (this->background_location_ < 2*this->game_width_)  {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
@@ -170,6 +173,7 @@ void Game::internal_movement (float x_right, float x_left) {
                 this->handle_internal_background_movement();
             } else this->handle_boundary_background_movement();
     }
+    if (this->background_movement_flag) this->background_movement_ = 0;
     this->background_location_ += this->background_movement_;
     this->prev_in_edge = false;
 }

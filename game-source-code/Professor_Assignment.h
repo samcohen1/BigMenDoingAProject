@@ -23,7 +23,7 @@ class Professor_Assignment {
         Professor_Assignment(sf::Texture&, sf::Vector2f, sf::Vector2f);
 
         sf::Vector2f get_location();
-        void move_assignment(float background_movement);
+        void move_assignment(float);
         void draw_assignment(sf::RenderTarget& target);
 
 };
