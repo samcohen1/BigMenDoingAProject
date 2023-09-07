@@ -67,13 +67,14 @@ void Player::edge_player_movement(Direction direction) {
 }
 
 void Player::edge_decelerate() {
+    if ((this->get_position().x_left >= this->x_default_right_ && this->prev_direction_ == Direction::LEFT) || (this->get_position().x_right <= this->x_default_left_ && this->prev_direction_ == Direction::RIGHT)) return;
     if(player_edge_speed>=0) this->player_edge_speed -= this->edge_acceleration_;
     this->player_sprite_.move(static_cast<float>(this->prev_direction_)*player_edge_speed, 0.f);
 }
 
 void Player::correct_edge_positions() {
     if (this->player_sprite_.getGlobalBounds().left < 700.f) {
-        this->player_sprite_.setPosition(this->x_default_left_, this->player_sprite_.getGlobalBounds().top);
+        this->player_sprite_.setPosition(this->x_default_left_-this->player_sprite_.getGlobalBounds().width, this->player_sprite_.getGlobalBounds().top);
         return;
     }
     this->player_sprite_.setPosition(this->x_default_right_, this->player_sprite_.getGlobalBounds().top);

@@ -142,10 +142,8 @@ void Game::internal_movement (float x_right, float x_left) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
         if (x_left > this->player_->get_x_default_left()) {
             this->player_->move_player_horizontal(Direction::LEFT);
-            std::cout << this->background_location_ << std::endl;
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
-            std::cout << this->background_location_ << std::endl << std::endl;
         }
         else if (this->background_location_ > -2*this->game_width_) {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
@@ -189,7 +187,6 @@ void Game::edge_movement(float x_right, float x_left) {
     if(!sideKey && this->player_->get_position().x_left >= 23.f && this->player_->get_position().x_right <= 1377.f) {
         this->player_->edge_decelerate();
     }
-
     this->prev_in_edge = true;
 }
 
