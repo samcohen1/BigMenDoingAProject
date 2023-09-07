@@ -22,7 +22,7 @@ void Professor_Assignment::move_assignment(float background_movement) {
     float x_component = this->assignment_speed_*cos(this->angle_);
     float y_component = this->assignment_speed_*sin(this->angle_);
 
-    this->assignment_sprite_.move(x_component, y_component);
+    this->assignment_sprite_.move(x_component + background_movement, y_component);
 }
 
 void Professor_Assignment::draw_assignment(sf::RenderTarget &target) {
