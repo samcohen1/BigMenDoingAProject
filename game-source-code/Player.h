@@ -19,18 +19,21 @@ struct Position {
     float y;
 };
 
-class Player{
+class Player {
     private:
 
         float scale_player_ = 0.08f;
         float player_speed_ = 0.01f;
         float vertical_speed_ = 0.2f;
+        float vertical_base_speed = this->vertical_speed_;
         float flip_base_speed_ = 0.15f;
         float acceleration_ = 0.0008f;
+        float vertical_acceleration_ = 0.0004f;
         float edge_acceleration_ = 0.0005f;
         float player_edge_speed = 0.5f;
 
         Direction prev_direction_;
+        Direction prev_vertical_direction_;
 
         sf::Texture player_texture_;
         sf::Sprite player_sprite_;
@@ -53,24 +56,25 @@ class Player{
     public:
         Player();
         
-        void move_player_horizontal(Direction direction);
-        void move_player_vertical(Direction direction);
+        void move_player_horizontal(Direction);
+        void move_player_vertical(Direction, bool);
         void edge_player_movement(Direction);
         void edge_decelerate();
         void correct_edge_positions();
         void magnetise_player();
-        void render(sf::RenderTarget& target);
+        void render(sf::RenderTarget&);
 
-        void render_bullets(sf::RenderTarget& target, float);
+        void render_bullets(sf::RenderTarget&, float);
         void increment_cool_down();
 
         float get_x_default_right() const;
         float get_x_default_left() const;
         float get_player_speed() const;
         Position get_position();
+        Direction get_prev_vertical_direction();
         std::vector<std::shared_ptr<Bullet>> get_bullets() const;
         void shoot_bullet(sf::Texture&);
-        void erase_bullet(int position);
+        void erase_bullet(int);
 };
 
 #endif

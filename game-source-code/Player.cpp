@@ -16,6 +16,7 @@ void Player::init_player() {
     this->player_sprite_.setScale(this->scale_player_,this->scale_player_);
     this->player_sprite_.setPosition(this->x_default_right_-this->player_sprite_.getGlobalBounds().width,this->default_y_);
     this->prev_direction_ = Direction::LEFT;
+    this->prev_vertical_direction_ = Direction::LEFT; // Prevent initial move
     this->flip_player();
 }
 
@@ -29,21 +30,29 @@ void Player::flip_player() {
 
 bool Player::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
 
-void Player::move_player_vertical(Direction direction) {
+void Player::move_player_vertical(Direction direction, bool pressed) {
     float bottom = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height + 10.f;
+    if (pressed) this->vertical_speed_ = this->vertical_base_speed;
+    else if (this->vertical_speed_ > 0) this->vertical_speed_ -= this->vertical_acceleration_;
     switch (direction) {
         case Direction::UP:
-                if (this->player_sprite_.getGlobalBounds().top > this->y_min_pos_) this->player_sprite_.move(0.f, -this->vertical_speed_);
+                if (this->player_sprite_.getGlobalBounds().top > this->y_min_pos_) {
+                    this->player_sprite_.move(0.f, -this->vertical_speed_);
+                }
+                this->prev_vertical_direction_ = Direction::UP;
                 break;
         case Direction::DOWN:
-                if(bottom < this->y_max_pos_) this->player_sprite_.move(0.f, this->vertical_speed_);
+                if(bottom < this->y_max_pos_) {
+                    this->player_sprite_.move(0.f, this->vertical_speed_);
+                }
+                this->prev_vertical_direction_ = Direction::DOWN;
                 break;
         default: return;
     }
 }
 
 void Player::move_player_horizontal(Direction direction) {
-    this->player_speed_ += acceleration_;
+    this->player_speed_ += this->acceleration_;
     this->player_sprite_.move(-static_cast<float>(direction)*this->player_speed_, 0.f);
     if (this->direction_changed(direction)) this->flip_player();
     this->prev_direction_ = direction;
@@ -137,3 +146,5 @@ void Player::increment_cool_down() { this->current_cool_down++; }
 void Player::erase_bullet(int position) {
     this->bullets_.erase(this->bullets_.begin()+position);
 }
+
+Direction Player::get_prev_vertical_direction() { return this->prev_vertical_direction_; }

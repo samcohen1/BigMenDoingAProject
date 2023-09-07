@@ -11,7 +11,7 @@ Bullet::Bullet(float x_location, float y_location, Direction direction, sf::Text
 
 void Bullet::move_bullet(float background_movement) {
     this->bullet_sprite_.move(static_cast<float>(this->direction_) * this->bullet_movement, 0.f);
-    x_location_ += (static_cast<float>(this->direction_)*this->bullet_movement) + background_movement;
+    x_location_ += (static_cast<float>(this->direction_)*this->bullet_movement) - background_movement;
 }
 
 void Bullet::draw_bullet(sf::RenderTarget& target) {
