@@ -37,11 +37,10 @@ void Game::update() {
 void Game::render() {
     this->window_->clear(sf::Color(110,66,26));
     this->window_->draw(this->background_sprite_);
-    this->player_->render(*this->window_);
+    this->player_->render(*this->window_, this->background_movement_);
     for (auto i = 0; i < professors_.size(); i++) {
-        this->professors_[i]->render(*this->window_);
+        this->professors_[i]->render(*this->window_, this->background_movement_);
     }
-    this->player_->render_bullets(*this->window_, this->background_movement_);
     this->window_->display();
 }
 

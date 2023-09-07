@@ -112,8 +112,9 @@ void Player::render_bullets(sf::RenderTarget &target, float background_movement)
     }
 }
 
-void Player::render(sf::RenderTarget &target) {
+void Player::render(sf::RenderTarget &target, float background_movement) {
     target.draw(player_sprite_);
+    this->render_bullets(target, background_movement);
 }
 
 float Player::get_x_default_right() const { return this->x_default_right_; }

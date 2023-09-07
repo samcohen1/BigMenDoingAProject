@@ -95,7 +95,7 @@ void Professor::correct_edge_positions() {
     
 }
 
-void Professor::render_bullets(sf::RenderTarget &target, float background_movement) {
+void Professor::render_assignments(sf::RenderTarget &target, float background_movement) {
     for (auto i = 0; i < this->assignments_.size(); i++) {
         if(this->assignments_[i]->get_location().x > 0.f && this->assignments_[i]->get_location().x < 1400.f) {
             this->assignments_[i]->move_assignment(background_movement);
@@ -104,7 +104,8 @@ void Professor::render_bullets(sf::RenderTarget &target, float background_moveme
     }
 }
 
-void Professor::render(sf::RenderTarget &target) {
+void Professor::render(sf::RenderTarget &target, float background_movement) {
+    this->render_assignments(target, background_movement);
     target.draw(this->professor_sprite_);
 }
 
@@ -119,7 +120,8 @@ void Professor::shoot_assignment(sf::Texture& texture, sf::Vector2f player_posit
     std::mt19937 generator(device());
     std::uniform_int_distribution<> cool_down_distribution(2000, 4000);
     this->max_cool_down = cool_down_distribution(generator);
-    this->assignments_.push_back(std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position));    
+    this->assignments_.push_back(std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position));
+    std::cout << assignments_.size()<<std::endl;    
 }
 
 void Professor::increment_cool_down() {

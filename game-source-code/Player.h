@@ -42,10 +42,12 @@ class Player {
         int max_cool_down = 400;
 
         std::vector<std::shared_ptr<Bullet>> bullets_;
-
+        
+        bool direction_changed(Direction);
         void init_player(sf::Texture&);
         void flip_player();
-        bool direction_changed(Direction);
+        void render_bullets(sf::RenderTarget&, float);
+     
 
     public:
         Player(sf::Texture&);
@@ -56,9 +58,8 @@ class Player {
         void edge_decelerate();
         void correct_edge_positions();
         void magnetise_player();
-        void render(sf::RenderTarget&);
+        void render(sf::RenderTarget&, float);
 
-        void render_bullets(sf::RenderTarget&, float);
         void increment_cool_down();
 
         float get_x_default_right() const;

@@ -45,6 +45,7 @@ class Professor {
 
         void init_professor(sf::Texture&);
         void flip_professor();
+        void render_assignments(sf::RenderTarget& target, float);
         bool direction_changed(Direction);
         float movement_function();
 
@@ -55,9 +56,9 @@ class Professor {
         void edge_professor_movement(Direction);
         void edge_decelerate();
         void correct_edge_positions();
-        void render(sf::RenderTarget& target);
+        void render(sf::RenderTarget& target, float);
 
-        void render_bullets(sf::RenderTarget& target, float);
+        
         void increment_cool_down();
 
         float get_professor_speed() const;
