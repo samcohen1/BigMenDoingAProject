@@ -40,8 +40,11 @@ void Professor::init_professor(sf::Texture& texture) {
     this->initial_y_position = 120+rand()%(630);
     this->world_position = this->initial_x_position;
 
-    if (amplitude_distributor(generator) > 0) {
+    int choose_direction = amplitude_distributor(generator);
+    std::cout << choose_direction << std::endl;
+    if (choose_direction > 0) {
         this->horizontal_speed_ *= -1;
+        this->flip_professor();
     } else this->flip_professor();
 }
 
@@ -51,7 +54,7 @@ float Professor::movement_function() {
 }
 
 void Professor::flip_professor() {
-    this->horizontal_speed_ *= -1.f;
+    this->horizontal_speed_ *= -1;
     int prev_direction_flag = this->horizontal_speed_ >= 0 ? 1 : -1;
     this->professor_sprite_.setScale(-prev_direction_flag*this->scale_professor_, this->scale_professor_);
     this->professor_sprite_.setOrigin(((prev_direction_flag+1)/2.f)*this->professor_sprite_.getGlobalBounds().width/this->scale_professor_, 0.f);

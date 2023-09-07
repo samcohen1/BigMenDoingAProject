@@ -40,6 +40,8 @@ class Game {
         float background_movement_ = 0.f;
         float background_acceleration_ = 0.0003f;
 
+        float background_movement_tracker = 0.f;
+
         bool prev_in_edge = false;
 
         bool shot_held = false;
