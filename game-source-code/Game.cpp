@@ -2,35 +2,19 @@
 #include <memory>
 #include <iostream>
 #include <ctime>
+
 #include "Game.h"
 #include "Bullet.h"
+#include "Professor.h"
+#include "Player.h"
 
 Game::Game() {
+    srand(time(0));
     this->_init_window();
     this->_init_background();
-    this->_init_player();
     this->_init_textures();
-}
-
-void Game::_init_window() {
-    this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Byte Defenders", sf::Style::Titlebar | sf::Style::Close);
-}
-
-void Game::_init_textures () {
-    sf::Texture bullet_texture;
-    if(!bullet_texture.loadFromFile("resources/Bullet.png")) return;
-    this->textures.push_back(bullet_texture);
-}
-
-void Game::_init_background() {
-    if(!(this->background_texture_.loadFromFile("resources/Background.png"))) return;
-    this->background_sprite_.setTexture(this->background_texture_);
-    this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
-    this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
-}
-
-void Game::_init_player() {
-    this->player_ = std::make_unique<Player>();
+    this->_init_player();
+    this->_init_professor();
 }
 
 void Game::update() {
@@ -42,6 +26,61 @@ void Game::update() {
     }
     this->handle_player_movement();
     this->check_player_shoot();
+    this->professor_->move_professor(this->background_location_);
+}
+
+void Game::render() {
+    this->window_->clear(sf::Color(110,66,26));
+    this->window_->draw(this->background_sprite_);
+    this->player_->render(*this->window_);
+    this->professor_->render(*this->window_);
+    this->player_->render_bullets(*this->window_, this->background_movement_);
+    this->window_->display();
+}
+
+void Game::run() {
+    while(this->window_->isOpen()) {
+        this->update();
+        this->render();
+    }
+}
+
+void Game::_init_window() {
+    this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Byte Defenders", sf::Style::Titlebar | sf::Style::Close);
+}
+
+void Game::_init_textures () {
+    // Initialise Player Bullet Texture
+    sf::Texture bullet_texture;
+    if(!bullet_texture.loadFromFile("resources/Bullet.png")) return;
+    this->textures.push_back(bullet_texture);
+    // Initialise Player-sheet Texture
+    sf::Texture player_sheet_texture;
+    if(!player_sheet_texture.loadFromFile("resources/Player_Spritesheet.png")) return;
+    this->textures.push_back(player_sheet_texture);
+    // Initialise Professor-sheet Texture
+    sf::Texture professor_sheet_texture;
+    if(!professor_sheet_texture.loadFromFile("resources/Evil_Professor_Spritesheet.png")) return;
+    this->textures.push_back(professor_sheet_texture);
+    // Initialise Professor-Assignment Texture
+    sf::Texture professor_assignment_texture;
+    if(!professor_assignment_texture.loadFromFile("resources/ProfessorBullet.png")) return;
+    this->textures.push_back(professor_assignment_texture);
+}
+
+void Game::_init_background() {
+    if(!(this->background_texture_.loadFromFile("resources/Background.png"))) return;
+    this->background_sprite_.setTexture(this->background_texture_);
+    this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
+    this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
+}
+
+void Game::_init_player() {
+    this->player_ = std::make_unique<Player>(this->textures[static_cast<int>(Textures::PLAYER_SHEET)]);
+}
+
+void Game::_init_professor() {
+    this->professor_ = std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]);
 }
 
 bool Game::approx_equal (float a, float b) {
@@ -159,21 +198,4 @@ void Game::handle_player_movement() {
         this->edge_movement(x_right, x_left);
         return;
     } else this->internal_movement(x_right, x_left);
-}
-
-void Game::render() {
-    this->window_->clear();
-    this->window_->draw(this->background_sprite_);
-    this->player_->render(*this->window_);
-    this->player_->render_bullets(*this->window_, this->background_movement_);
-    auto test = sf::RectangleShape();
-    this->window_->draw(test);
-    this->window_->display();
-}
-
-void Game::run() {
-    while(this->window_->isOpen()) {
-        this->update();
-        this->render();
-    }
 }

@@ -4,14 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
-#include "Bullet.h"
 
-// enum class Direction {
-//     RIGHT = -1,
-//     UP,
-//     LEFT,
-//     DOWN
-// };
+#include "Bullet.h"
 
 struct Position {
     float x_left;
@@ -49,12 +43,12 @@ class Player {
 
         std::vector<std::shared_ptr<Bullet>> bullets_;
 
-        void init_player();
+        void init_player(sf::Texture&);
         void flip_player();
         bool direction_changed(Direction);
 
     public:
-        Player();
+        Player(sf::Texture&);
         
         void move_player_horizontal(Direction);
         void move_player_vertical(Direction, bool);

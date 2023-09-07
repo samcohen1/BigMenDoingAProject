@@ -3,11 +3,18 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <random>
+#include <ctime>
+
 #include "Player.h"
 #include "Bullet.h"
+#include "Professor.h"
 
 enum class Textures{
-    BULLET = 0
+    BULLET = 0,
+    PLAYER_SHEET,
+    PROFESSOR_SHEET,
+    PROFESSOR_ASSIGNMENT
 };
 
 class Game {
@@ -16,6 +23,7 @@ class Game {
         sf::Texture background_texture_;
         sf::Sprite background_sprite_;
         std::unique_ptr<Player> player_;
+        std::unique_ptr<Professor> professor_;
 
         // CONSTANTS
         std::vector<sf::Texture> textures;
@@ -32,7 +40,7 @@ class Game {
         float background_acceleration_ = 0.0003f;
 
         bool prev_in_edge = false;
-        
+
         bool shot_held = false;
 
         void _init_textures();
@@ -40,6 +48,7 @@ class Game {
         void _init_window();
         void _init_background();
         void _init_player();
+        void _init_professor();
         void update();
         void render();
 

@@ -6,13 +6,13 @@
 #include <algorithm>
 #include "Bullet.h"
 
-Player::Player() {
-    this->init_player();
+Player::Player(sf::Texture& texture) {
+    this->init_player(texture);
 }
 
-void Player::init_player() {
-    if(!this->player_texture_.loadFromFile("resources/Player.PNG")) return;
-    this->player_sprite_.setTexture(this->player_texture_);
+void Player::init_player(sf::Texture& texture) {
+    this->player_sprite_.setTexture(texture);
+    this->player_sprite_.setTextureRect(sf::IntRect(1054.f, 0.f, 985.f, 414.f));
     this->player_sprite_.setScale(this->scale_player_,this->scale_player_);
     this->player_sprite_.setPosition(this->x_default_right_-this->player_sprite_.getGlobalBounds().width,this->default_y_);
     this->prev_direction_ = Direction::LEFT;
@@ -132,6 +132,7 @@ std::vector<std::shared_ptr<Bullet>> Player::get_bullets() const { return this->
 void Player::shoot_bullet(sf::Texture& texture) {
     if (this->current_cool_down < this->max_cool_down) return;
     else this->current_cool_down = 0;
+    this->player_sprite_.setTextureRect(sf::IntRect(0.f, 0.f, 985.f, 414.f));
     auto x_position = 0.f;
     auto y_position = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height - 11.f;
     if (this->prev_direction_ == Direction::LEFT) {
@@ -141,7 +142,10 @@ void Player::shoot_bullet(sf::Texture& texture) {
     this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_, texture));
 }
 
-void Player::increment_cool_down() { this->current_cool_down++; }
+void Player::increment_cool_down() {
+    if (this->current_cool_down > 100) this->player_sprite_.setTextureRect(sf::IntRect(1054.f, 0.f, 985.f, 414.f));
+    this->current_cool_down++; 
+}
 
 void Player::erase_bullet(int position) {
     this->bullets_.erase(this->bullets_.begin()+position);
