@@ -121,7 +121,6 @@ void Professor::shoot_assignment(sf::Texture& texture, sf::Vector2f player_posit
     std::uniform_int_distribution<> cool_down_distribution(2000, 4000);
     this->max_cool_down = cool_down_distribution(generator);
     this->assignments_.push_back(std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position));
-    std::cout << assignments_.size()<<std::endl;    
 }
 
 void Professor::increment_cool_down() {
