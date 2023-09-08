@@ -30,7 +30,7 @@ void Professor_Assignment::draw_assignment(sf::RenderTarget &target) {
 }
 
 void Professor_Assignment::calculate_angle_of_assignment () {
-    float angle_radians = std::atan((initial_player_location.y - initial_professor_location.y) / (initial_player_location.x - initial_professor_location.x));
+    float angle_radians = std::atan((initial_player_location.y+20 - initial_professor_location.y) / (initial_player_location.x+20 - initial_professor_location.x));
     if (this->get_relative_side() == -1) angle_radians += M_PI;
     this->angle_ = angle_radians;
 }

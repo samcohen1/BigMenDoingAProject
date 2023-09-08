@@ -27,7 +27,7 @@ class Professor {
 
         int frames_since_spawn = 0;
         float vertical_speed_ = 0.02f;
-        float horizontal_speed_ = 0.1f;
+        float horizontal_speed_ = 0.05f;
         float y_shift = 0;
         float movement_amplitude = 0;
         float movement_period = 0;
@@ -53,15 +53,11 @@ class Professor {
         Professor(sf::Texture&);
         
         void move_professor(float);
-        void edge_professor_movement(Direction);
-        void edge_decelerate();
-        void correct_edge_positions();
         void render(sf::RenderTarget& target, float);
 
         
         void increment_cool_down();
 
-        float get_professor_speed() const;
         sf::Vector2f get_location();     
         std::vector<std::shared_ptr<Professor_Assignment>> get_assignments() const;
         void shoot_assignment(sf::Texture&, sf::Vector2f);

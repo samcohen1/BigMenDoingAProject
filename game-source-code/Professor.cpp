@@ -85,19 +85,6 @@ void Professor::move_professor(float background_location) {
     this->professor_sprite_.setPosition(this->initial_x_position + x + background_location, y);
 }
 
-void Professor::edge_professor_movement(Direction direction) {
-    
-
-}
-
-void Professor::edge_decelerate() {
-    
-}
-
-void Professor::correct_edge_positions() {
-    
-}
-
 void Professor::render_assignments(sf::RenderTarget &target, float background_movement) {
     for (auto i = 0; i < this->assignments_.size(); i++) {
         if(this->assignments_[i]->get_location().x > 0.f && this->assignments_[i]->get_location().x < 1400.f) {
@@ -111,8 +98,6 @@ void Professor::render(sf::RenderTarget &target, float background_movement) {
     this->render_assignments(target, background_movement);
     target.draw(this->professor_sprite_);
 }
-
-// float Professor::get_professor_speed() const { return this->professor_vertical_speed_*static_cast<float>(this->prev_direction_); }
 
 std::vector<std::shared_ptr<Professor_Assignment>> Professor::get_assignments() const { return this->assignments_; }
 
@@ -132,4 +117,8 @@ void Professor::increment_cool_down() {
 
 void Professor::erase_assignment(int position) {
     this->assignments_.erase(this->assignments_.begin() + position);
+}
+
+sf::Vector2f Professor::get_location() {
+    return this->professor_sprite_.getPosition();
 }
