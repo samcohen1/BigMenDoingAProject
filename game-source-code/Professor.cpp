@@ -18,15 +18,17 @@
 #include "Professor_Assignment.h"
 
 Professor::Professor(sf::Texture& texture) {
+    num_professors_++;
     this->init_professor(texture);
     this->professor_sprite_.setTextureRect(sf::IntRect(0.f, 488.f, 461.f, 380.f));
     this->professor_sprite_.setScale(this->scale_professor_,this->scale_professor_);
     this->professor_sprite_.setPosition(this->initial_x_position, this->initial_y_position); // for now just in window
 }
+int Professor::get_num_professors() { return num_professors_; }
 
 void Professor::init_professor(sf::Texture& texture) {
     this->professor_sprite_.setTexture(texture);
-    // constants
+
     std::random_device device;
     std::mt19937 generator(device());
     std::uniform_int_distribution<> amplitude_distributor(-400, 400);

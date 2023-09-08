@@ -31,6 +31,16 @@ void Game::update() {
     for (auto i = 0; i < professors_.size(); i++) {
         this->professors_[i]->move_professor(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
+    this->teleport_professor();
+    // if (Professor::get_num_professors() < 5) {
+    //     if(this->professor_cool_down > this->max_professor_cool_down) {
+    //         this->_init_professor();
+    //         this->professor_cool_down = 0;
+    //     }
+    //     else {
+    //         this->professor_cool_down++;
+    //     }
+    // }
 }
 
 void Game::render() {
@@ -86,6 +96,18 @@ void Game::_init_player() {
 
 void Game::_init_professor() {
     this->professors_.push_back(std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]));
+}
+
+void Game::teleport_professor () {
+    if (Professor::get_num_professors() < 5) {
+        if(this->professor_cool_down > this->max_professor_cool_down) {
+            this->_init_professor();
+            this->professor_cool_down = 0;
+        }
+        else {
+            this->professor_cool_down++;
+        }
+    }
 }
 
 bool Game::approx_equal (float a, float b) {

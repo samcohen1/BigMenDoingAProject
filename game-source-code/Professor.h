@@ -7,9 +7,10 @@
 #include "Bullet.h"
 #include "Professor_Assignment.h"
 
+static int num_professors_{0};
+
 class Professor {
     private:
-
         float scale_professor_ = 0.1f;
 
         Direction prev_direction_;
@@ -47,6 +48,7 @@ class Professor {
 
     public:
         Professor(sf::Texture&);
+        static int get_num_professors();
         
         void move_professor(float, sf::Vector2f);
         void render(sf::RenderTarget& target, float);

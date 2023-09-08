@@ -40,6 +40,9 @@ class Game {
         float background_movement_ = 0.f;
         float background_acceleration_ = 0.0003f;
 
+        int professor_cool_down = 0;
+        int max_professor_cool_down = 8000;
+
         float background_movement_tracker = 0.f;
 
         bool prev_in_edge = false;
@@ -54,6 +57,8 @@ class Game {
         void _init_professor();
         void update();
         void render();
+
+        void teleport_professor();
 
         void handle_player_movement();
         void edge_movement(float, float);
