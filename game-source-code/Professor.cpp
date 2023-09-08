@@ -41,7 +41,6 @@ void Professor::init_professor(sf::Texture& texture) {
     this->world_position = this->initial_x_position;
 
     int choose_direction = amplitude_distributor(generator);
-    std::cout << choose_direction << std::endl;
     if (choose_direction > 0) {
         this->horizontal_speed_ *= -1;
         this->flip_professor();
@@ -63,9 +62,19 @@ void Professor::flip_professor() {
     this->frames_since_spawn = 0;
 }
 
+void Professor::face_player (sf::Vector2f player_position) {
+    if (this->professor_sprite_.getGlobalBounds().left < player_position.x) {
+        this->professor_sprite_.setScale(-this->scale_professor_, this->scale_professor_);
+        this->professor_sprite_.setOrigin(this->professor_sprite_.getGlobalBounds().width/this->scale_professor_, 0.f);
+    } else {
+        this->professor_sprite_.setScale(this->scale_professor_, this->scale_professor_);
+        this->professor_sprite_.setOrigin(0.f, 0.f);
+    }
+}
+
 bool Professor::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
 
-void Professor::move_professor(float background_location) {
+void Professor::move_professor(float background_location, sf::Vector2f player_position) {
     this->frames_since_spawn++;
     float x = this->frames_since_spawn*this->horizontal_speed_;
     float y = this->initial_y_position + this->movement_function() + this->y_shift;
@@ -83,11 +92,12 @@ void Professor::move_professor(float background_location) {
     }
 
     this->professor_sprite_.setPosition(this->initial_x_position + x + background_location, y);
+    this->face_player(player_position);
 }
 
 void Professor::render_assignments(sf::RenderTarget &target, float background_movement) {
     for (auto i = 0; i < this->assignments_.size(); i++) {
-        if(this->assignments_[i]->get_location().x > 0.f && this->assignments_[i]->get_location().x < 1400.f) {
+        if(this->assignments_[i]->get_location().x > -700.f && this->assignments_[i]->get_location().x < 2100.f) {
             this->assignments_[i]->move_assignment(background_movement);
             this->assignments_[i]->draw_assignment(target);
         } else this->erase_assignment(i);
@@ -106,13 +116,15 @@ void Professor::shoot_assignment(sf::Texture& texture, sf::Vector2f player_posit
     this-> current_cool_down = 0;
     std::random_device device;
     std::mt19937 generator(device());
-    std::uniform_int_distribution<> cool_down_distribution(2000, 4000);
+    std::uniform_int_distribution<> cool_down_distribution(4000, 8000);
     this->max_cool_down = cool_down_distribution(generator);
     this->assignments_.push_back(std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position));
 }
 
 void Professor::increment_cool_down() {
-    this->current_cool_down++;
+    if (this->professor_sprite_.getGlobalBounds().left > 0 && this->professor_sprite_.getGlobalBounds().left < 1400.f) {
+        this->current_cool_down++;
+    }
 }
 
 void Professor::erase_assignment(int position) {

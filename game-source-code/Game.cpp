@@ -29,7 +29,7 @@ void Game::update() {
     this->check_player_shoot();
     this->check_professors_shoot();
     for (auto i = 0; i < professors_.size(); i++) {
-        this->professors_[i]->move_professor(this->background_location_);
+        this->professors_[i]->move_professor(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
 }
 

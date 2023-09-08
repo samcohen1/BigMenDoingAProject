@@ -11,11 +11,6 @@ class Professor {
     private:
 
         float scale_professor_ = 0.1f;
-        float flip_base_speed_ = 0.15f;
-        float acceleration_ = 0.0008f;
-        float edge_acceleration_ = 0.0005f;
-        float professor_edge_speed = 0.5f;
-
 
         Direction prev_direction_;
 
@@ -27,7 +22,7 @@ class Professor {
 
         int frames_since_spawn = 0;
         float vertical_speed_ = 0.02f;
-        float horizontal_speed_ = 0.05f;
+        float horizontal_speed_ = 0.03f;
         float y_shift = 0;
         float movement_amplitude = 0;
         float movement_period = 0;
@@ -45,6 +40,7 @@ class Professor {
 
         void init_professor(sf::Texture&);
         void flip_professor();
+        void face_player(sf::Vector2f);
         void render_assignments(sf::RenderTarget& target, float);
         bool direction_changed(Direction);
         float movement_function();
@@ -52,7 +48,7 @@ class Professor {
     public:
         Professor(sf::Texture&);
         
-        void move_professor(float);
+        void move_professor(float, sf::Vector2f);
         void render(sf::RenderTarget& target, float);
 
         
