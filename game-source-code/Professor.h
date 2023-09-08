@@ -35,6 +35,8 @@ class Professor {
 
         int current_cool_down = 0;
         int max_cool_down = 1000;
+        int is_dying_counter = 0;
+        bool is_dead = false;
         
 
         std::vector<std::shared_ptr<Professor_Assignment>> assignments_;
@@ -48,18 +50,22 @@ class Professor {
 
     public:
         Professor(sf::Texture&);
+        ~Professor();
         static int get_num_professors();
         
         void move_professor(float, sf::Vector2f);
         void render(sf::RenderTarget& target, float);
+        void destroy();
 
-        
         void increment_cool_down();
 
-        sf::Vector2f get_location();     
+        sf::Vector2f get_location();  
+        sf::FloatRect get_bounds();    
         std::vector<std::shared_ptr<Professor_Assignment>> get_assignments() const;
         void shoot_assignment(sf::Texture&, sf::Vector2f);
         void erase_assignment(int position);
+        bool get_is_dead();
+        bool is_dying();
 };
 
 #endif

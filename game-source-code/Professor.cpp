@@ -24,6 +24,9 @@ Professor::Professor(sf::Texture& texture) {
     this->professor_sprite_.setScale(this->scale_professor_,this->scale_professor_);
     this->professor_sprite_.setPosition(this->initial_x_position, this->initial_y_position); // for now just in window
 }
+Professor::~Professor() {
+    num_professors_--;
+}
 int Professor::get_num_professors() { return num_professors_; }
 
 void Professor::init_professor(sf::Texture& texture) {
@@ -133,6 +136,21 @@ void Professor::erase_assignment(int position) {
     this->assignments_.erase(this->assignments_.begin() + position);
 }
 
-sf::Vector2f Professor::get_location() {
-    return this->professor_sprite_.getPosition();
+void Professor::destroy() {
+    if (this->is_dying_counter++ < 100) this->professor_sprite_.setTextureRect(sf::IntRect(0.f, 870.f, 334.f, 275.f));
+    else if (this->is_dying_counter++ < 500) { 
+        this->professor_sprite_.setTextureRect(sf::IntRect(0.f, 0.f, 461.f, 471.f)); 
+    } else {
+        this->is_dead = true;
+        this->is_dying_counter = 0;
+    }
+}
+bool Professor::get_is_dead () { return this->is_dead; }
+bool Professor::is_dying() {return this->is_dying_counter > 0; }
+
+sf::Vector2f Professor::get_location() { return this->professor_sprite_.getPosition(); }
+sf::FloatRect Professor::get_bounds() {
+    auto global = this->professor_sprite_.getGlobalBounds();
+    auto tight_bounds = sf::FloatRect(global.left+20.f, global.top, global.width-40.f, global.height);
+    return tight_bounds;
 }

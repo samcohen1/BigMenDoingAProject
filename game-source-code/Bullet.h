@@ -25,7 +25,8 @@ class Bullet {
     public:
         Bullet(float x_location, float y_location, Direction, sf::Texture&);
 
-        sf::Vector2f get_location();        
+        sf::Vector2f get_location();  
+        sf::FloatRect get_bounds();      
         float get_bullet_width();
 
         void move_bullet(float background_movement);

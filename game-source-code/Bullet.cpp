@@ -18,8 +18,6 @@ void Bullet::draw_bullet(sf::RenderTarget& target) {
     target.draw(this->bullet_sprite_);
 }
 
-sf::Vector2f Bullet::get_location() {
-    return this->bullet_sprite_.getPosition();
-}
-
+sf::Vector2f Bullet::get_location() { return this->bullet_sprite_.getPosition(); }
+sf::FloatRect Bullet::get_bounds() { return this->bullet_sprite_.getGlobalBounds(); }
 float Bullet::get_bullet_width() { return this->bullet_sprite_.getGlobalBounds().width; }

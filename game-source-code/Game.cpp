@@ -25,22 +25,20 @@ void Game::update() {
             this->window_->close();
         }
     }
-    this->handle_player_movement();
+    this->move_player();
     this->check_player_shoot();
     this->check_professors_shoot();
-    for (auto i = 0; i < professors_.size(); i++) {
-        this->professors_[i]->move_professor(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
-    }
+    this->move_professors();
     this->teleport_professor();
+
+    this->handle_collisions();
 }
 
 void Game::render() {
     this->window_->clear(sf::Color(110,66,26));
     this->window_->draw(this->background_sprite_);
     this->player_->render(*this->window_, this->background_movement_);
-    for (auto i = 0; i < professors_.size(); i++) {
-        this->professors_[i]->render(*this->window_, this->background_movement_tracker);
-    }
+    this->render_professors();
     this->window_->display();
 }
 
@@ -99,6 +97,47 @@ void Game::teleport_professor () {
             this->professor_cool_down++;
         }
     }
+}
+
+void Game::move_professors () {
+    for (auto i = 0; i < this->professors_.size(); i++) {
+        if (!this->professors_[i]->is_dying()) this->professors_[i]->move_professor(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+    }
+}
+
+void Game::render_professors () {
+    for (auto i = 0; i < professors_.size(); i++) {
+        this->professors_[i]->render(*this->window_, this->background_movement_tracker);
+    }
+}
+
+void Game::handle_collisions () {
+    this->check_bullet_professor_collision();
+}
+
+void Game::check_bullet_professor_collision () {
+    // TESTING COLISSIONS 1
+    for (auto i = 0; i < this->professors_.size(); i++) {
+        if (this->professors_[i]->is_dying()) {
+            this->professors_[i]->destroy();
+            break;
+        }
+        if (this->professors_[i]->get_is_dead()) {
+            this-> erase_professor(i);
+            continue;
+        }
+        for (auto j = 0; j < this->player_->get_bullets().size(); j++) {
+            bool hit = this->professors_[i]->get_bounds().intersects(this->player_->get_bullets()[j]->get_bounds());
+            if (hit) {
+                this->player_->erase_bullet(j);
+                this->professors_[i]->destroy();
+            }
+        }
+    }
+}
+
+void Game::erase_professor (int position) {
+    this->professors_.erase(this->professors_.begin() + position);
 }
 
 bool Game::approx_equal (float a, float b) {
@@ -221,7 +260,7 @@ void Game::edge_movement(float x_right, float x_left) {
     this->prev_in_edge = true;
 }
 
-void Game::handle_player_movement() {
+void Game::move_player() {
     float x_right = this->player_->get_position().x_right;
     float x_left = this->player_->get_position().x_left;
     float edge_tolerance = 2.f;

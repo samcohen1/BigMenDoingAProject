@@ -58,13 +58,20 @@ class Game {
         void update();
         void render();
 
-        void teleport_professor();
-
-        void handle_player_movement();
+        void move_player();
         void edge_movement(float, float);
         void internal_movement(float, float);
         void handle_boundary_background_movement();
         void handle_internal_background_movement();
+
+        void teleport_professor();
+        void move_professors();
+        void render_professors();
+        void erase_professor(int);
+
+        void handle_collisions();
+        void check_bullet_professor_collision();
+
 
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);
