@@ -27,7 +27,7 @@ class Professor {
 
         int frames_since_spawn = 0;
         float vertical_speed_ = 0.02f;
-        float horizontal_speed_ = 0.03f;
+        float horizontal_speed_ = 0.1f;
         float y_shift = 0;
         float movement_amplitude = 0;
         float movement_period = 0;

@@ -31,10 +31,10 @@ void Professor::init_professor(sf::Texture& texture) {
     std::mt19937 generator(device());
     std::uniform_int_distribution<> amplitude_distributor(-400, 400);
     std::uniform_int_distribution<> period_distributor(10, 20);
-    std::uniform_int_distribution<> gradient_distributor(-5, 5);
+    std::uniform_int_distribution<> gradient_distributor(-10, 10);
     this->movement_amplitude = amplitude_distributor(generator);
     this->movement_period = float(period_distributor(generator))/1000;
-    this->movement_gradient = float(gradient_distributor(generator))/1000;
+    this->movement_gradient = float(gradient_distributor(generator))/200;
 
     this->initial_x_position = 23+rand()%(1400-46);
     this->initial_y_position = 120+rand()%(630);
@@ -54,7 +54,7 @@ float Professor::movement_function() {
 }
 
 void Professor::flip_professor() {
-    this->horizontal_speed_ *= -1;
+    this->horizontal_speed_ *= -1.f;
     int prev_direction_flag = this->horizontal_speed_ >= 0 ? 1 : -1;
     this->professor_sprite_.setScale(-prev_direction_flag*this->scale_professor_, this->scale_professor_);
     this->professor_sprite_.setOrigin(((prev_direction_flag+1)/2.f)*this->professor_sprite_.getGlobalBounds().width/this->scale_professor_, 0.f);
@@ -78,7 +78,7 @@ void Professor::move_professor(float background_location) {
         y = y_max_pos_ - (y-y_max_pos_);
     }
 
-     if(this->world_position <= -2750.f || this->world_position >= 4150.f){
+     if(this->world_position <= -2775.f || this->world_position >= 4177.f - this->professor_sprite_.getGlobalBounds().width){
        this->flip_professor();
     }
 
