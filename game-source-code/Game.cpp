@@ -32,15 +32,6 @@ void Game::update() {
         this->professors_[i]->move_professor(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
     this->teleport_professor();
-    // if (Professor::get_num_professors() < 5) {
-    //     if(this->professor_cool_down > this->max_professor_cool_down) {
-    //         this->_init_professor();
-    //         this->professor_cool_down = 0;
-    //     }
-    //     else {
-    //         this->professor_cool_down++;
-    //     }
-    // }
 }
 
 void Game::render() {
@@ -163,6 +154,7 @@ void Game::handle_boundary_background_movement () {
 
 void Game::handle_internal_background_movement () {
     float player_internal_movement = this->player_->get_player_speed();
+    player_internal_movement += this->player_->get_player_speed() >= 0 ? 0.1f : -0.1f;
     this->background_movement_tracker = -player_internal_movement;
     this->background_sprite_.move(-player_internal_movement, 0.f);
     this->background_location_ += -player_internal_movement;
