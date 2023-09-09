@@ -37,6 +37,7 @@ class Player {
         float default_y_ = 300.f;
         const float x_default_right_ = 1250.f;
         const float x_default_left_ = 150.f;
+        sf::Vector2f world_position;
 
         int current_cool_down = 400;
         int max_cool_down = 400;
@@ -64,6 +65,7 @@ class Player {
 
         float get_x_default_right() const;
         float get_x_default_left() const;
+        sf::FloatRect get_world_bounds();
         float get_player_speed() const;
         Position get_position();
         Direction get_prev_vertical_direction();

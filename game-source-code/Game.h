@@ -11,6 +11,9 @@
 #include "Professor.h"
 #include "Professor_Assignment.h"
 
+#include "Enemy.h"
+#include "Throwable.h"
+
 enum class Textures{
     BULLET = 0,
     PLAYER_SHEET,
@@ -24,7 +27,11 @@ class Game {
         sf::Texture background_texture_;
         sf::Sprite background_sprite_;
         std::unique_ptr<Player> player_;
-        std::vector<std::unique_ptr<Professor>> professors_;
+
+        std::vector<std::unique_ptr<Enemy>> enemies_;
+        std::vector<std::shared_ptr<Throwable>> throwables_;
+
+        std::vector<std::vector<Enemy>> enemy_vicinities_;
 
         // CONSTANTS
         std::vector<sf::Texture> textures;
@@ -64,10 +71,12 @@ class Game {
         void handle_boundary_background_movement();
         void handle_internal_background_movement();
 
-        void teleport_professor();
-        void move_professors();
-        void render_professors();
-        void erase_professor(int);
+        void teleport_enemies();
+        void move_enemies();
+        void render_enemies();
+        void render_throwables();
+        void erase_enemy(int);
+        void erase_throwable(int);
 
         void handle_collisions();
         void check_bullet_professor_collision();
@@ -76,7 +85,7 @@ class Game {
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);
         void check_player_shoot();
-        void check_professors_shoot();
+        void check_enemies_shoot();
 
     public:
         Game();

@@ -29,9 +29,9 @@ void Game::update() {
     }
     this->move_player();
     this->check_player_shoot();
-    this->check_professors_shoot();
-    this->move_professors();
-    this->teleport_professor();
+    this->check_enemies_shoot();
+    this->move_enemies();
+    this->teleport_enemies();
 
     this->handle_collisions();
 }
@@ -40,7 +40,8 @@ void Game::render() {
     this->window_->clear(sf::Color(110,66,26));
     this->window_->draw(this->background_sprite_);
     this->player_->render(*this->window_, this->background_movement_);
-    this->render_professors();
+    this->render_enemies();
+    this->render_throwables();
     this->window_->display();
 }
 
@@ -86,10 +87,10 @@ void Game::_init_player() {
 }
 
 void Game::_init_professor() {
-    this->professors_.push_back(std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]));
+    this->enemies_.push_back(std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]));
 }
 
-void Game::teleport_professor () {
+void Game::teleport_enemies () {
     if (Professor::get_num_professors() < 5) {
         if(this->professor_cool_down > this->max_professor_cool_down) {
             this->_init_professor();
@@ -101,15 +102,26 @@ void Game::teleport_professor () {
     }
 }
 
-void Game::move_professors () {
-    for (auto i = 0; i < this->professors_.size(); i++) {
-        if (!this->professors_[i]->is_dying()) this->professors_[i]->move(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+void Game::move_enemies () {
+    for (auto i = 0; i < this->enemies_.size(); i++) {
+        if (!this->enemies_[i]->is_dying()) this->enemies_[i]->move(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
 }
 
-void Game::render_professors () {
-    for (auto i = 0; i < professors_.size(); i++) {
-        this->professors_[i]->render(*this->window_, this->background_movement_tracker);
+void Game::render_enemies () {
+    for (auto i = 0; i < enemies_.size(); i++) {
+        this->enemies_[i]->render(*this->window_, this->background_movement_tracker);
+    }
+}
+
+void Game::render_throwables () {
+    for (auto i = 0; i < this->throwables_.size(); i++) {
+        auto in_horizontal = this->throwables_[i]->get_location().x > -700.f && this->throwables_[i]->get_location().x < 2100.f;
+        auto in_vertical = this->throwables_[i]->get_location().y > -30.f && this->throwables_[i]->get_location().y < 830.f;
+        if(in_horizontal && in_vertical) {
+            this->throwables_[i]->move(this->background_movement_tracker);
+            this->throwables_[i]->draw(*this->window_);
+        } else this->erase_throwable(i);
     }
 }
 
@@ -119,27 +131,30 @@ void Game::handle_collisions () {
 
 void Game::check_bullet_professor_collision () {
     // TESTING COLISSIONS 1
-    for (auto i = 0; i < this->professors_.size(); i++) {
-        if (this->professors_[i]->is_dying()) {
-            this->professors_[i]->destroy();
+    for (auto i = 0; i < this->enemies_.size(); i++) {
+        if (this->enemies_[i]->is_dying()) {
+            this->enemies_[i]->destroy();
             break;
         }
-        if (this->professors_[i]->get_is_dead()) {
-            this-> erase_professor(i);
+        if (this->enemies_[i]->get_is_dead()) {
+            this-> erase_enemy(i);
             continue;
         }
         for (auto j = 0; j < this->player_->get_bullets().size(); j++) {
-            bool hit = this->professors_[i]->get_bounds().intersects(this->player_->get_bullets()[j]->get_bounds());
+            bool hit = this->enemies_[i]->get_bounds().intersects(this->player_->get_bullets()[j]->get_bounds());
             if (hit) {
                 this->player_->erase_bullet(j);
-                this->professors_[i]->destroy();
+                this->enemies_[i]->destroy();
             }
         }
     }
 }
 
-void Game::erase_professor (int position) {
-    this->professors_.erase(this->professors_.begin() + position);
+void Game::erase_enemy(int position) {
+    this->enemies_.erase(this->enemies_.begin() + position);
+}
+void Game::erase_throwable (int position) {
+    this->throwables_.erase(this->throwables_.begin() + position);
 }
 
 bool Game::approx_equal (float a, float b) {
@@ -164,10 +179,11 @@ void Game::check_player_shoot() {
     }
 }
 
-void Game::check_professors_shoot() {
-    for (auto i = 0; i < this->professors_.size(); i++){
-        this->professors_[i]->increment_cool_down();
-        this->professors_[i]->shoot_throwable(this->textures[static_cast<int>(Textures::PROFESSOR_ASSIGNMENT)], sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+void Game::check_enemies_shoot() {
+    for (auto i = 0; i < this->enemies_.size(); i++){
+        this->enemies_[i]->increment_cool_down();
+        auto new_throwable = this->enemies_[i]->shoot_throwable(this->textures[static_cast<int>(Textures::PROFESSOR_ASSIGNMENT)], sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+        if (new_throwable != nullptr) this->throwables_.push_back(new_throwable);
     }
 }
 

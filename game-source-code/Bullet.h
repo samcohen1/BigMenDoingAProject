@@ -13,13 +13,14 @@ enum class Direction {
     DOWN
 };
 
-class Bullet : public Throwable {
+class Bullet {
     private:
         sf::Texture bullet_texture_;
         sf::Sprite bullet_sprite_;
 
         float x_location_;
         float y_location_;
+        sf::Vector2f world_position;
         float bullet_scale_ = 0.3f;
         float bullet_movement = 1.f;
         Direction direction_;
@@ -27,11 +28,11 @@ class Bullet : public Throwable {
     public:
         Bullet(float x_location, float y_location, Direction, sf::Texture&);
 
-        virtual sf::Vector2f get_location() override;
-        virtual void move(float) override;
-        virtual void draw(sf::RenderTarget& target) override;
-
-        virtual sf::FloatRect get_bounds() override;
+        sf::Vector2f get_location();
+        void move(float);
+        void draw(sf::RenderTarget& target);
+        sf::FloatRect get_world_bounds();
+        sf::FloatRect get_bounds();
 };
 
 #endif

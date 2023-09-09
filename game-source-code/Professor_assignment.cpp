@@ -12,6 +12,7 @@ Professor_Assignment::Professor_Assignment(sf::Texture& texture, sf::Vector2f pr
     this->assignment_sprite_.setRotation(this->angle_*(180/M_PI));
     this->assignment_sprite_.setScale(this->assignment_scale_, this->assignment_scale_);
     this->assignment_sprite_.setPosition(professor_location);
+    this->world_position = this->assignment_sprite_.getPosition();
 }
 
 sf::Vector2f Professor_Assignment::get_location() {
@@ -23,6 +24,7 @@ void Professor_Assignment::move(float background_movement) {
     float y_component = this->assignment_speed_*sin(this->angle_);
 
     this->assignment_sprite_.move(x_component + background_movement, y_component);
+    this->world_position = this->assignment_sprite_.getPosition();
 }
 
 void Professor_Assignment::draw(sf::RenderTarget &target) {
@@ -41,3 +43,7 @@ int Professor_Assignment::get_relative_side () {
 }
 
 sf::FloatRect Professor_Assignment::get_bounds() { return this->assignment_sprite_.getGlobalBounds(); }
+sf::FloatRect Professor_Assignment::get_world_bounds() { 
+    auto world_bounds = sf::FloatRect(this->world_position.x, this->world_position.y, this->assignment_sprite_.getGlobalBounds().width, this->assignment_sprite_.getGlobalBounds().height);
+    return world_bounds; 
+}

@@ -33,15 +33,13 @@ class Professor : public Enemy {
 
         float initial_x_position = 0;
         float initial_y_position = 0;
-        float world_position = 0;
+        sf::Vector2f world_position;
+        sf::FloatRect world_bounds;
 
         int current_cool_down = 0;
         int max_cool_down = 1000;
         int is_dying_counter = 0;
         bool is_dead = false;
-        
-
-        std::vector<std::shared_ptr<Professor_Assignment>> assignments_;
 
         void init_professor(sf::Texture&);
         void flip_professor();
@@ -63,12 +61,12 @@ class Professor : public Enemy {
         virtual void increment_cool_down() override;
 
         virtual sf::Vector2f get_location() override;  
+        virtual sf::FloatRect get_world_bounds() override;
         virtual sf::FloatRect get_bounds() override;    
-        virtual std::vector<std::shared_ptr<Professor_Assignment>> get_assignments();
-        virtual void shoot_throwable(sf::Texture&, sf::Vector2f) override;
-        virtual void erase_throwable(int position) override;
         virtual bool get_is_dead() override;
         virtual bool is_dying() override;
+
+        virtual std::shared_ptr<Throwable> shoot_throwable(sf::Texture&, sf::Vector2f) override;
 };
 
 #endif

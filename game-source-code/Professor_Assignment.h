@@ -16,6 +16,7 @@ class Professor_Assignment : public Throwable {
 
         sf::Vector2f initial_professor_location;
         sf::Vector2f initial_player_location;
+        sf::Vector2f world_position;
 
         void calculate_angle_of_assignment();
         int get_relative_side();
@@ -27,6 +28,7 @@ class Professor_Assignment : public Throwable {
         virtual void move(float) override;
         virtual void draw(sf::RenderTarget& target) override;
         virtual sf::FloatRect get_bounds() override;
+        virtual sf::FloatRect get_world_bounds() override;
 
 };
 

@@ -14,6 +14,7 @@ class Throwable {
         virtual void draw(sf::RenderTarget&) = 0;
 
         virtual sf::FloatRect get_bounds() = 0;
+        virtual sf::FloatRect get_world_bounds() = 0;
 };
 
 #endif
