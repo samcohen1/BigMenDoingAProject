@@ -3,8 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include "Throwable.h"
 
-class Professor_Assignment {
+class Professor_Assignment : public Throwable {
     private:
         sf::Texture assignment_texture_;
         sf::Sprite assignment_sprite_;
@@ -22,9 +23,10 @@ class Professor_Assignment {
     public:
         Professor_Assignment(sf::Texture&, sf::Vector2f, sf::Vector2f);
 
-        sf::Vector2f get_location();
-        void move_assignment(float);
-        void draw_assignment(sf::RenderTarget& target);
+        virtual sf::Vector2f get_location() override;
+        virtual void move(float) override;
+        virtual void draw(sf::RenderTarget& target) override;
+        virtual sf::FloatRect get_bounds() override;
 
 };
 

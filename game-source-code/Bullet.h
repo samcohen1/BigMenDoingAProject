@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
+#include "Throwable.h"
+
 enum class Direction {
     RIGHT = -1,
     UP,
@@ -11,7 +13,7 @@ enum class Direction {
     DOWN
 };
 
-class Bullet {
+class Bullet : public Throwable {
     private:
         sf::Texture bullet_texture_;
         sf::Sprite bullet_sprite_;
@@ -25,12 +27,11 @@ class Bullet {
     public:
         Bullet(float x_location, float y_location, Direction, sf::Texture&);
 
-        sf::Vector2f get_location();  
-        sf::FloatRect get_bounds();      
-        float get_bullet_width();
+        virtual sf::Vector2f get_location() override;
+        virtual void move(float) override;
+        virtual void draw(sf::RenderTarget& target) override;
 
-        void move_bullet(float background_movement);
-        void draw_bullet(sf::RenderTarget& target);
+        virtual sf::FloatRect get_bounds() override;
 };
 
 #endif

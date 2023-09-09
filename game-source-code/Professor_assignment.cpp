@@ -18,14 +18,14 @@ sf::Vector2f Professor_Assignment::get_location() {
     return assignment_sprite_.getPosition();
 }
 
-void Professor_Assignment::move_assignment(float background_movement) {
+void Professor_Assignment::move(float background_movement) {
     float x_component = this->assignment_speed_*cos(this->angle_);
     float y_component = this->assignment_speed_*sin(this->angle_);
 
     this->assignment_sprite_.move(x_component + background_movement, y_component);
 }
 
-void Professor_Assignment::draw_assignment(sf::RenderTarget &target) {
+void Professor_Assignment::draw(sf::RenderTarget &target) {
     target.draw(this->assignment_sprite_);
 }
 
@@ -39,3 +39,5 @@ int Professor_Assignment::get_relative_side () {
     if (this->initial_professor_location.x < this->initial_player_location.x) return 1;
     return -1;
 }
+
+sf::FloatRect Professor_Assignment::get_bounds() { return this->assignment_sprite_.getGlobalBounds(); }

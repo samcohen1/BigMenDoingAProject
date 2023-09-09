@@ -9,15 +9,14 @@ Bullet::Bullet(float x_location, float y_location, Direction direction, sf::Text
     this->bullet_sprite_.setPosition(x_location, y_location);
 }
 
-void Bullet::move_bullet(float background_movement) {
+void Bullet::move(float background_movement) {
     this->bullet_sprite_.move(static_cast<float>(this->direction_) * this->bullet_movement, 0.f);
     x_location_ += (static_cast<float>(this->direction_)*this->bullet_movement) - background_movement;
 }
 
-void Bullet::draw_bullet(sf::RenderTarget& target) {
+void Bullet::draw(sf::RenderTarget& target) {
     target.draw(this->bullet_sprite_);
 }
 
 sf::Vector2f Bullet::get_location() { return this->bullet_sprite_.getPosition(); }
 sf::FloatRect Bullet::get_bounds() { return this->bullet_sprite_.getGlobalBounds(); }
-float Bullet::get_bullet_width() { return this->bullet_sprite_.getGlobalBounds().width; }

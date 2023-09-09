@@ -6,10 +6,12 @@
 #include <vector>
 #include "Bullet.h"
 #include "Professor_Assignment.h"
+#include "Throwable.h"
+#include "Enemy.h"
 
 static int num_professors_{0};
 
-class Professor {
+class Professor : public Enemy {
     private:
         float scale_professor_ = 0.1f;
 
@@ -50,22 +52,23 @@ class Professor {
 
     public:
         Professor(sf::Texture&);
+        Professor();
         ~Professor();
         static int get_num_professors();
         
-        void move_professor(float, sf::Vector2f);
-        void render(sf::RenderTarget& target, float);
-        void destroy();
+        virtual void move(float, sf::Vector2f) override;
+        virtual void render(sf::RenderTarget& target, float) override;
+        virtual void destroy() override;
 
-        void increment_cool_down();
+        virtual void increment_cool_down() override;
 
-        sf::Vector2f get_location();  
-        sf::FloatRect get_bounds();    
-        std::vector<std::shared_ptr<Professor_Assignment>> get_assignments() const;
-        void shoot_assignment(sf::Texture&, sf::Vector2f);
-        void erase_assignment(int position);
-        bool get_is_dead();
-        bool is_dying();
+        virtual sf::Vector2f get_location() override;  
+        virtual sf::FloatRect get_bounds() override;    
+        virtual std::vector<std::shared_ptr<Professor_Assignment>> get_assignments();
+        virtual void shoot_throwable(sf::Texture&, sf::Vector2f) override;
+        virtual void erase_throwable(int position) override;
+        virtual bool get_is_dead() override;
+        virtual bool is_dying() override;
 };
 
 #endif

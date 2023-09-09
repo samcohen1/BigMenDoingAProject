@@ -16,6 +16,9 @@
 #include "Bullet.h"
 #include "Professor.h"
 #include "Professor_Assignment.h"
+#include "Throwable.h"
+
+Professor::Professor() {}
 
 Professor::Professor(sf::Texture& texture) {
     num_professors_++;
@@ -79,7 +82,7 @@ void Professor::face_player (sf::Vector2f player_position) {
 
 bool Professor::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
 
-void Professor::move_professor(float background_location, sf::Vector2f player_position) {
+void Professor::move(float background_location, sf::Vector2f player_position) {
     this->frames_since_spawn++;
     float x = this->frames_since_spawn*this->horizontal_speed_;
     float y = this->initial_y_position + this->movement_function() + this->y_shift;
@@ -103,9 +106,9 @@ void Professor::move_professor(float background_location, sf::Vector2f player_po
 void Professor::render_assignments(sf::RenderTarget &target, float background_movement) {
     for (auto i = 0; i < this->assignments_.size(); i++) {
         if(this->assignments_[i]->get_location().x > -700.f && this->assignments_[i]->get_location().x < 2100.f) {
-            this->assignments_[i]->move_assignment(background_movement);
-            this->assignments_[i]->draw_assignment(target);
-        } else this->erase_assignment(i);
+            this->assignments_[i]->move(background_movement);
+            this->assignments_[i]->draw(target);
+        } else this->erase_throwable(i);
     }
 }
 
@@ -114,9 +117,9 @@ void Professor::render(sf::RenderTarget &target, float background_movement) {
     target.draw(this->professor_sprite_);
 }
 
-std::vector<std::shared_ptr<Professor_Assignment>> Professor::get_assignments() const { return this->assignments_; }
+std::vector<std::shared_ptr<Professor_Assignment>> Professor::get_assignments() { return this->assignments_; }
 
-void Professor::shoot_assignment(sf::Texture& texture, sf::Vector2f player_position) {
+void Professor::shoot_throwable(sf::Texture& texture, sf::Vector2f player_position) {
     if(this->current_cool_down < this->max_cool_down) return;
     this-> current_cool_down = 0;
     std::random_device device;
@@ -132,7 +135,7 @@ void Professor::increment_cool_down() {
     }
 }
 
-void Professor::erase_assignment(int position) {
+void Professor::erase_throwable(int position) {
     this->assignments_.erase(this->assignments_.begin() + position);
 }
 

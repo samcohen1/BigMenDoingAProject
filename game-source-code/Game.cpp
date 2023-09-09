@@ -8,6 +8,8 @@
 #include "Professor.h"
 #include "Player.h"
 #include "Professor_Assignment.h"
+#include "Enemy.h"
+#include "Throwable.h"
 
 Game::Game() {
     srand(time(0));
@@ -101,7 +103,7 @@ void Game::teleport_professor () {
 
 void Game::move_professors () {
     for (auto i = 0; i < this->professors_.size(); i++) {
-        if (!this->professors_[i]->is_dying()) this->professors_[i]->move_professor(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+        if (!this->professors_[i]->is_dying()) this->professors_[i]->move(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
 }
 
@@ -165,7 +167,7 @@ void Game::check_player_shoot() {
 void Game::check_professors_shoot() {
     for (auto i = 0; i < this->professors_.size(); i++){
         this->professors_[i]->increment_cool_down();
-        this->professors_[i]->shoot_assignment(this->textures[static_cast<int>(Textures::PROFESSOR_ASSIGNMENT)], sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+        this->professors_[i]->shoot_throwable(this->textures[static_cast<int>(Textures::PROFESSOR_ASSIGNMENT)], sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
 }
 
@@ -193,7 +195,9 @@ void Game::handle_boundary_background_movement () {
 
 void Game::handle_internal_background_movement () {
     float player_internal_movement = this->player_->get_player_speed();
-    player_internal_movement += this->player_->get_player_speed() >= 0 ? 0.1f : -0.1f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
+        player_internal_movement += this->player_->get_player_speed() >= 0 ? 0.4f : -0.4f;
+    }
     this->background_movement_tracker = -player_internal_movement;
     this->background_sprite_.move(-player_internal_movement, 0.f);
     this->background_location_ += -player_internal_movement;

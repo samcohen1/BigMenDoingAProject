@@ -107,8 +107,8 @@ void Player::magnetise_player() {
 void Player::render_bullets(sf::RenderTarget &target, float background_movement) {
     for (auto i = 0; i < this->bullets_.size(); i++) {
          if(this->bullets_[i]->get_location().x > 0.f && this->bullets_[i]->get_location().x < 1400.f){
-            this->bullets_[i]->move_bullet(background_movement);
-            this->bullets_[i]->draw_bullet(target);
+            this->bullets_[i]->move(background_movement);
+            this->bullets_[i]->draw(target);
         } else erase_bullet(i);
     }
 }
