@@ -16,7 +16,7 @@
 #include <ctime>
 #include <iostream>
 
-#include "Game.h"
+#include "Splash_Screen.h"
 
 
 /** \fn int main()
@@ -26,8 +26,11 @@
  *
  */
 int main() {
-    auto game = Game{};
-    game.run();
+    auto splash_screen = Splash_Screen();
+    splash_screen.run();
+
+    // auto game = Game{};
+    // game.run();
 
     return EXIT_SUCCESS;
 }

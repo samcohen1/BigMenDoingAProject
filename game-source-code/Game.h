@@ -38,28 +38,35 @@ class Game {
         bool paused_pressed_ = false;
 
         // SPLASH
-        sf::Texture options_texture;
-        sf::Sprite message_screen_sprite;
-        sf::Texture message_screen_texture;
-        sf::Font font;
-        int home_option_selected = 0;
-        bool held_down = false;
-        bool mouse_over = false;
-        bool about_screen_showing = false;
-        std::vector<sf::Text> home_options;
-        std::vector<sf::Sprite> home_sprites;
-        std::vector<sf::Text> messages_;
-        bool option_is_selected = false;
-        bool is_playing = false;
+        // sf::Texture options_texture;
+        // sf::Sprite message_screen_sprite;
+        // sf::Texture message_screen_texture;
+        // sf::Font font;
+        // int home_option_selected = 0;
+        // bool held_down = false;
+        // bool mouse_over = false;
+        // bool about_screen_showing = false;
+        // std::vector<sf::Text> home_options;
+        // std::vector<sf::Sprite> home_sprites;
+        // std::vector<sf::Text> messages_;
+        // bool option_is_selected = false;
+        // bool is_playing = false;
 
         // CONSTANTS
         std::vector<sf::Texture> textures;
-        const float original_background_width_ = 1920;
-        const float original_background_height_ = 1080;
-        const float game_width_ = 1400;
-        const float game_height_ = 800;
-        const float x_scale_ = this->game_width_/this->original_background_width_;
-        const float y_scale_ = this->game_height_/this->original_background_height_;
+        // const float original_background_width_ = 1920;
+        // const float original_background_height_ = 1080;
+        // const float game_width_ = 1400;
+        // const float game_height_ = 800;
+        // const float x_scale_ = this->game_width_/this->original_background_width_;
+        // const float y_scale_ = this->game_height_/this->original_background_height_;
+
+        const float original_background_width_;
+        const float original_background_height_;
+        const float game_width_;
+        const float game_height_;
+        const float x_scale_;
+        const float y_scale_;
 
         float background_base_speed_ = 0.5f;
         float background_location_ = 0.f;
@@ -110,18 +117,19 @@ class Game {
         void check_enemies_shoot();
 
         // SPLASH
-        void _init_home_screen();
-        void _init_about_screen();
-        void update_home();
-        void render_home();
+        // void _init_home_screen();
+        // void _init_about_screen();
+        // void update_home();
+        // void render_home();
 
-        void update_about();
-        void render_about();
-        void shift_option_down();
-        void shift_option_up();
-        void select_using_mouse();
+        // void update_about();
+        // void render_about();
+        // void shift_option_down();
+        // void shift_option_up();
+        // void select_using_mouse();
 
     public:
+        Game(std::shared_ptr<sf::RenderWindow>, float, float, float, float, float, float);
         Game();
         void run();
         

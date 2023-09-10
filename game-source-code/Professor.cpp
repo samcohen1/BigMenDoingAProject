@@ -136,8 +136,8 @@ void Professor::destroy() {
 bool Professor::get_is_dead () { return this->is_dead; }
 bool Professor::is_dying() {return this->is_dying_counter > 0; }
 
-sf::FloatRect Professor::get_world_bounds() { 
-    auto world_bounds = sf::FloatRect(this->world_position.x, this->world_position.y, this->professor_sprite_.getGlobalBounds().width, this->professor_sprite_.getGlobalBounds().height);
+sf::FloatRect Professor::get_world_bounds() {
+    auto world_bounds = sf::FloatRect(this->world_position.x + 20.f, this->world_position.y + 5.f, this->professor_sprite_.getGlobalBounds().width-40.f, this->professor_sprite_.getGlobalBounds().height-10.f);
     return world_bounds; 
 }
 sf::Vector2f Professor::get_location() { return this->professor_sprite_.getPosition(); }
