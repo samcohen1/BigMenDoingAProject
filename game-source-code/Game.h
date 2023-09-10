@@ -33,6 +33,25 @@ class Game {
 
         std::vector<std::vector<int>> enemy_vicinities_;
 
+        // PAUSE
+        bool paused_ = false;
+        bool paused_pressed_ = false;
+
+        // SPLASH
+        sf::Texture options_texture;
+        sf::Sprite message_screen_sprite;
+        sf::Texture message_screen_texture;
+        sf::Font font;
+        int home_option_selected = 0;
+        bool held_down = false;
+        bool mouse_over = false;
+        bool about_screen_showing = false;
+        std::vector<sf::Text> home_options;
+        std::vector<sf::Sprite> home_sprites;
+        std::vector<sf::Text> messages_;
+        bool option_is_selected = false;
+        bool is_playing = false;
+
         // CONSTANTS
         std::vector<sf::Texture> textures;
         const float original_background_width_ = 1920;
@@ -74,6 +93,7 @@ class Game {
         void teleport_enemies();
         void move_enemies();
         void render_enemies();
+        void move_throwables();
         void render_throwables();
         void erase_enemy(int);
         void erase_throwable(int);
@@ -88,6 +108,18 @@ class Game {
         bool approx_innequality(float, float, bool);
         void check_player_shoot();
         void check_enemies_shoot();
+
+        // SPLASH
+        void _init_home_screen();
+        void _init_about_screen();
+        void update_home();
+        void render_home();
+
+        void update_about();
+        void render_about();
+        void shift_option_down();
+        void shift_option_up();
+        void select_using_mouse();
 
     public:
         Game();

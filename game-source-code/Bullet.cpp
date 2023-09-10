@@ -4,7 +4,7 @@
 #include <iostream>
 
 Bullet::Bullet(float x_location, float y_location, Direction direction, sf::Texture& texture, sf::FloatRect player_world_position) : 
-    bullet_texture_(texture), x_location_(x_location), y_location_(y_location), direction_(direction), world_bounds_(player_world_position) {
+    bullet_texture_(texture), x_location_(x_location), y_location_(y_location), world_bounds_(player_world_position), direction_(direction) {
     this->bullet_sprite_.setTexture(this->bullet_texture_);
     this->bullet_sprite_.setScale(static_cast<float>(direction) * this->bullet_scale_, this->bullet_scale_);
     this->bullet_sprite_.setOrigin(((static_cast<float>(direction)+1)/2.f)*this->bullet_sprite_.getGlobalBounds().width/this->bullet_scale_, 0.f);

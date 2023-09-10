@@ -27,6 +27,7 @@ class Professor_Assignment : public Throwable {
         virtual sf::Vector2f get_location() override;
         virtual void move(float) override;
         virtual void draw(sf::RenderTarget& target) override;
+
         virtual sf::FloatRect get_bounds() override;
         virtual sf::FloatRect get_world_bounds() override;
 
