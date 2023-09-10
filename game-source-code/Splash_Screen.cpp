@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include <iostream>
 
 #include "Splash_Screen.h"
 #include "About_Screen.h"

@@ -20,7 +20,7 @@ class Splash_Screen {
         bool key_held_down_ = false;
         bool mouse_is_over_ = false;
 
-        Option option_selected_;
+        Option option_selected_ = Option::PLAY;
 
         sf::Texture background_texture_;
         sf::Texture options_texture_;
