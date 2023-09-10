@@ -131,10 +131,7 @@ void Professor::destroy() {
     if (this->is_dying_counter++ < 100) this->professor_sprite_.setTextureRect(sf::IntRect(0.f, 870.f, 334.f, 275.f));
     else if (this->is_dying_counter++ < 500) { 
         this->professor_sprite_.setTextureRect(sf::IntRect(0.f, 0.f, 461.f, 471.f)); 
-    } else {
-        this->is_dead = true;
-        this->is_dying_counter = 0;
-    }
+    } else this->is_dead = true;
 }
 bool Professor::get_is_dead () { return this->is_dead; }
 bool Professor::is_dying() {return this->is_dying_counter > 0; }

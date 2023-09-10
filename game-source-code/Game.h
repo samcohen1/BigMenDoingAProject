@@ -31,7 +31,7 @@ class Game {
         std::vector<std::unique_ptr<Enemy>> enemies_;
         std::vector<std::shared_ptr<Throwable>> throwables_;
 
-        std::vector<std::vector<Enemy>> enemy_vicinities_;
+        std::vector<std::vector<int>> enemy_vicinities_;
 
         // CONSTANTS
         std::vector<sf::Texture> textures;
@@ -78,11 +78,11 @@ class Game {
         void erase_enemy(int);
         void erase_throwable(int);
 
-        void bin_vicinity(sf::FloatRect, int);
-       std:: vector<int> get_vicinity(sf::FloatRect);
+        std::vector<int> get_vicinities(sf::FloatRect, int);
+        void bin_vicinities(std::vector<int>, int);
 
         void handle_collisions();
-        void check_bullet_professor_collision();
+        void check_bullet_enemy_collision();
 
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);

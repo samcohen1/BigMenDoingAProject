@@ -104,30 +104,38 @@ void Game::teleport_enemies () {
 }
 
 void Game::move_enemies () {
-    this->enemy_vicinities_ = std::vector<std::vector<Enemy>>(420);
+    this->enemy_vicinities_ = std::vector<std::vector<int>>(490);
     for (auto i = 0; i < this->enemies_.size(); i++) {
-        
-        if (!this->enemies_[i]->is_dying()) this->enemies_[i]->move(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+        if (!this->enemies_[i]->is_dying()) {
+            this->enemies_[i]->move(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
+            this->bin_vicinities(this->get_vicinities(this->enemies_[i]->get_world_bounds(), i), i);
+        } else if (!this->enemies_[i]->get_is_dead()) {
+            this->enemies_[i]->destroy();
+        } else {
+            this->erase_enemy(i);
+        }
     }
 }
-void Game::bin_vicinity (sf::FloatRect rect, int position) {
-    int left_bin = floor(rect.left/70);
-    int right_bin = floor((rect.left + rect.width)/70);
-    int top_bin = floor((rect.top)/6);
-    int bottom_bin = floor((rect.top+rect.height)/6);
 
+void Game::bin_vicinities (std::vector<int> vicinities, int position) {
+    for (auto vicinity_index : vicinities) enemy_vicinities_[vicinity_index].push_back(position);
 }
 
-std::vector<int> Game::get_vicinity (sf::FloatRect rect) {
+std::vector<int> Game::get_vicinities (sf::FloatRect rect, int position) {
     std::vector<int> vicinities;
-    vicinities.push_back(floor(rect.left/70));
-    vicinities.push_back(floor((rect.left + rect.width)/70));
-    vicinities.push_back(floor((rect.top)/6));
-    vicinities.push_back(floor((rect.top+rect.height)/6));
-    
-    std::sort(vicinities.begin(), vicinities.end());
-    auto new_end = std::unique(vicinities.begin(), vicinities.end());
+    int left_location = floor(rect.left/100)+28;
+    int right_location = floor((rect.left + rect.width)/100)+28;
+    int top_location = floor((rect.top)/100)-1;
+    int bottom_location = floor((rect.top+rect.height)/100)-1;
+    vicinities.push_back(left_location*7 + top_location);
+    vicinities.push_back(right_location*7 + top_location);
+    vicinities.push_back(left_location*7 + bottom_location);
+    vicinities.push_back(right_location*7 + bottom_location);
+
+    sort(vicinities.begin(), vicinities.end());
+    auto new_end = unique(vicinities.begin(), vicinities.end());
     vicinities.erase(new_end, vicinities.end());
+
     return vicinities;
 }
 
@@ -149,26 +157,24 @@ void Game::render_throwables () {
 }
 
 void Game::handle_collisions () {
-    this->check_bullet_professor_collision();
+    this->check_bullet_enemy_collision();
 }
 
-void Game::check_bullet_professor_collision () {
-    // TESTING COLISSIONS 1
-    for (auto i = 0; i < this->enemies_.size(); i++) {
-        if (this->enemies_[i]->is_dying()) {
-            this->enemies_[i]->destroy();
-            break;
-        }
-        if (this->enemies_[i]->get_is_dead()) {
-            this-> erase_enemy(i);
-            continue;
-        }
-        for (auto j = 0; j < this->player_->get_bullets().size(); j++) {
-            bool hit = this->enemies_[i]->get_bounds().intersects(this->player_->get_bullets()[j]->get_bounds());
-            if (hit) {
-                this->player_->erase_bullet(j);
-                this->enemies_[i]->destroy();
+void Game::check_bullet_enemy_collision () {
+    for (auto bullet_index = 0; bullet_index < this->player_->get_bullets().size(); bullet_index++) {
+        bool bullet_hit = false;
+        std::vector<int> bullet_vicinities = this->get_vicinities(this->player_->get_bullets()[bullet_index]->get_world_bounds(), -1);
+        for (auto bullet_vicinity_index = 0; bullet_vicinity_index < bullet_vicinities.size(); bullet_vicinity_index++) {
+            for (auto enemy_index = 0; enemy_index < this->enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]].size(); enemy_index++) {
+                bool hit = this->enemies_[enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]][enemy_index]]->get_world_bounds().intersects(this->player_->get_bullets()[bullet_index]->get_world_bounds());
+                if (hit) {
+                    this->enemies_[enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]][enemy_index]]->destroy();
+                    this->player_->erase_bullet(bullet_index);
+                    bullet_hit = true;
+                }
+                if (bullet_hit) break;
             }
+            if (bullet_hit) break;
         }
     }
 }
