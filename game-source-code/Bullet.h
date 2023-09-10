@@ -20,13 +20,13 @@ class Bullet {
 
         float x_location_;
         float y_location_;
-        sf::Vector2f world_position;
+        sf::FloatRect world_bounds_;
         float bullet_scale_ = 0.3f;
         float bullet_movement = 1.f;
         Direction direction_;
 
     public:
-        Bullet(float x_location, float y_location, Direction, sf::Texture&);
+        Bullet(float x_location, float y_location, Direction, sf::Texture&, sf::FloatRect);
 
         sf::Vector2f get_location();
         void move(float);

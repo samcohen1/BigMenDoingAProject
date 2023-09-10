@@ -117,7 +117,7 @@ std::shared_ptr<Throwable> Professor::shoot_throwable(sf::Texture& texture, sf::
     std::mt19937 generator(device());
     std::uniform_int_distribution<> cool_down_distribution(4000, 8000);
     this->max_cool_down = cool_down_distribution(generator);
-    auto assigment = std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position);
+    auto assigment = std::make_shared<Professor_Assignment>(texture, this->professor_sprite_.getPosition(), player_position, this->get_world_bounds());
     return assigment;
 }
 

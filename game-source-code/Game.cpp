@@ -28,6 +28,7 @@ void Game::update() {
         }
     }
     this->move_player();
+    this->player_->communicate_position(this->background_location_);
     this->check_player_shoot();
     this->check_enemies_shoot();
     this->move_enemies();
@@ -103,9 +104,31 @@ void Game::teleport_enemies () {
 }
 
 void Game::move_enemies () {
+    this->enemy_vicinities_ = std::vector<std::vector<Enemy>>(420);
     for (auto i = 0; i < this->enemies_.size(); i++) {
+        
         if (!this->enemies_[i]->is_dying()) this->enemies_[i]->move(this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
     }
+}
+void Game::bin_vicinity (sf::FloatRect rect, int position) {
+    int left_bin = floor(rect.left/70);
+    int right_bin = floor((rect.left + rect.width)/70);
+    int top_bin = floor((rect.top)/6);
+    int bottom_bin = floor((rect.top+rect.height)/6);
+
+}
+
+std::vector<int> Game::get_vicinity (sf::FloatRect rect) {
+    std::vector<int> vicinities;
+    vicinities.push_back(floor(rect.left/70));
+    vicinities.push_back(floor((rect.left + rect.width)/70));
+    vicinities.push_back(floor((rect.top)/6));
+    vicinities.push_back(floor((rect.top+rect.height)/6));
+    
+    std::sort(vicinities.begin(), vicinities.end());
+    auto new_end = std::unique(vicinities.begin(), vicinities.end());
+    vicinities.erase(new_end, vicinities.end());
+    return vicinities;
 }
 
 void Game::render_enemies () {

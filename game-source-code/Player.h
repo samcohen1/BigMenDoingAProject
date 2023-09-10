@@ -15,7 +15,6 @@ struct Position {
 
 class Player {
     private:
-
         float scale_player_ = 0.08f;
         float player_speed_ = 0.01f;
         float vertical_speed_ = 0.2f;
@@ -37,7 +36,7 @@ class Player {
         float default_y_ = 300.f;
         const float x_default_right_ = 1250.f;
         const float x_default_left_ = 150.f;
-        sf::Vector2f world_position;
+        sf::FloatRect world_bounds_;
 
         int current_cool_down = 400;
         int max_cool_down = 400;
@@ -60,6 +59,7 @@ class Player {
         void correct_edge_positions();
         void magnetise_player();
         void render(sf::RenderTarget&, float);
+        void communicate_position(float);
 
         void increment_cool_down();
 

@@ -78,9 +78,11 @@ class Game {
         void erase_enemy(int);
         void erase_throwable(int);
 
+        void bin_vicinity(sf::FloatRect, int);
+       std:: vector<int> get_vicinity(sf::FloatRect);
+
         void handle_collisions();
         void check_bullet_professor_collision();
-
 
         bool approx_equal(float, float);
         bool approx_innequality(float, float, bool);
@@ -89,7 +91,6 @@ class Game {
 
     public:
         Game();
-        
         void run();
         
 };

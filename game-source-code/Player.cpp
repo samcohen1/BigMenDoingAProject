@@ -15,7 +15,6 @@ void Player::init_player(sf::Texture& texture) {
     this->player_sprite_.setTextureRect(sf::IntRect(1054.f, 0.f, 985.f, 414.f));
     this->player_sprite_.setScale(this->scale_player_,this->scale_player_);
     this->player_sprite_.setPosition(this->x_default_right_-this->player_sprite_.getGlobalBounds().width,this->default_y_);
-    this->world_position = this->player_sprite_.getPosition();
     this->prev_direction_ = Direction::LEFT;
     this->prev_vertical_direction_ = Direction::LEFT;
     this->flip_player();
@@ -50,7 +49,6 @@ void Player::move_player_vertical(Direction direction, bool pressed) {
                 break;
         default: return;
     }
-    this->world_position = this->player_sprite_.getPosition();
 }
 
 void Player::move_player_horizontal(Direction direction) {
@@ -58,7 +56,6 @@ void Player::move_player_horizontal(Direction direction) {
     this->player_sprite_.move(-static_cast<float>(direction)*this->player_speed_, 0.f);
     if (this->direction_changed(direction)) this->flip_player();
     this->prev_direction_ = direction;
-    this->world_position = this->player_sprite_.getPosition();
 }
 
 void Player::edge_player_movement(Direction direction) {
@@ -66,7 +63,6 @@ void Player::edge_player_movement(Direction direction) {
     this->player_sprite_.move(static_cast<float>(direction)*player_edge_speed, 0.f);
     if (this->direction_changed(direction)) this->flip_player();
     this->prev_direction_ = direction;
-    this->world_position = this->player_sprite_.getPosition();
 }
 
 void Player::edge_decelerate() {
@@ -81,7 +77,6 @@ void Player::correct_edge_positions() {
         return;
     }
     this->player_sprite_.setPosition(this->x_default_right_, this->player_sprite_.getGlobalBounds().top);
-    this->world_position = this->player_sprite_.getPosition();
 }
 
 void Player::magnetise_player() {
@@ -91,14 +86,12 @@ void Player::magnetise_player() {
         float acceleration = acceleration_constant/delta_x;
         this->player_speed_ += acceleration;
         this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
-        this->world_position = this->player_sprite_.getPosition();
         return;
     } else if (this->player_sprite_.getGlobalBounds().left+this->player_sprite_.getGlobalBounds().width >= this->x_default_right_ && this->prev_direction_ == Direction::LEFT) {
         float delta_x = this->player_sprite_.getGlobalBounds().left-this->x_default_left_;
         float acceleration = acceleration_constant/delta_x;
         this->player_speed_ += acceleration;
         this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
-        this->world_position = this->player_sprite_.getPosition();
         return;
     }
     if(this->player_sprite_.getGlobalBounds().left <= this->x_default_left_ || this->player_sprite_.getGlobalBounds().left+this->player_sprite_.getGlobalBounds().width >= this->x_default_right_) {
@@ -108,7 +101,6 @@ void Player::magnetise_player() {
     float acceleration = acceleration_constant/delta_x;
     this->player_speed_ += acceleration;
     this->player_sprite_.move(-static_cast<float>(this->prev_direction_)*this->player_speed_, 0.f);
-    this->world_position = this->player_sprite_.getPosition();
 }
 
 void Player::render_bullets(sf::RenderTarget &target, float background_movement) {
@@ -148,7 +140,7 @@ void Player::shoot_bullet(sf::Texture& texture) {
         x_position = this->player_sprite_.getGlobalBounds().left + 2*this->player_sprite_.getGlobalBounds().width;
     }
     else x_position = this->player_sprite_.getGlobalBounds().left;
-    this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_, texture));
+    this->bullets_.push_back(std::make_shared<Bullet>(x_position, y_position, this->prev_direction_, texture, this->world_bounds_));
 }
 
 void Player::increment_cool_down() {
@@ -161,7 +153,12 @@ void Player::erase_bullet(int position) {
 }
 
 Direction Player::get_prev_vertical_direction() { return this->prev_vertical_direction_; }
+
+void Player::communicate_position(float background_location) {
+    auto new_world_bounds = sf::FloatRect(this->player_sprite_.getGlobalBounds().left-background_location, this->player_sprite_.getGlobalBounds().top, this->player_sprite_.getGlobalBounds().width, this->player_sprite_.getGlobalBounds().height);
+    this->world_bounds_ = new_world_bounds;
+}
+
 sf::FloatRect Player::get_world_bounds() { 
-    auto world_bounds = sf::FloatRect(this->world_position.x, this->world_position.y, this->player_sprite_.getGlobalBounds().width, this->player_sprite_.getGlobalBounds().width);
-    return world_bounds; 
+    return this->world_bounds_;
 }
