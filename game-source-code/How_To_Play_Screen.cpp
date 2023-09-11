@@ -5,11 +5,25 @@
 #include <vector>
 #include <iostream>
 
+/** 
+ * \fn How_To_Play_Screen::How_To_Play_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font)
+ * \brief Constructor for the How_To_Play_Screen class, initializes the screen with necessary parameters and calls initialization method
+ *
+ * \param window A shared pointer to the window object where the screen will be displayed
+ * \param background_sprite The sprite used as the background for the screen
+ * \param pixel_font The font used for text elements on the screen
+ */
 How_To_Play_Screen::How_To_Play_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font) : 
         window_(window), background_sprite_(background_sprite), pixel_font_(pixel_font) {
     this->_init_how_to_play_screen();
 }
 
+/** 
+ * \fn void How_To_Play_Screen::run()
+ * \brief Runs the main loop for the How_To_Play screen, checking for user inputs and updating the display
+ *
+ * \return void
+ */
 void How_To_Play_Screen::run() {
      while(this->window_->isOpen()) {
         if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) this->key_held_down_ = false;
@@ -19,6 +33,12 @@ void How_To_Play_Screen::run() {
     }
 }
 
+/** 
+ * \fn void How_To_Play_Screen::_init_how_to_play_screen()
+ * \brief Initializes elements of the How_To_Play screen including textures, sprites and text elements
+ * 
+ * \return void
+ */
 void How_To_Play_Screen::_init_how_to_play_screen () {
     if(!this->back_button_texture_.loadFromFile("resources/back_button_spritesheet.png") || !this->arrow_keys_texture_.loadFromFile("resources/arrow_keys.png") || !this->space_bar_texture.loadFromFile("resources/space_bar.png")) return;
     this->back_button_sprite_.setTexture(this->back_button_texture_);
@@ -62,6 +82,12 @@ void How_To_Play_Screen::_init_how_to_play_screen () {
     this->texts_[2].setCharacterSize(18.f);
 }
 
+/** 
+ * \fn void How_To_Play_Screen::update()
+ * \brief Handles events during the runtime of the How_To_Play screen, including window close and escape key press events
+ * 
+ * \return void
+ */
 void How_To_Play_Screen::update() {
     sf::Event event;
     while (this->window_->pollEvent(event)) {
@@ -72,6 +98,12 @@ void How_To_Play_Screen::update() {
     
 }
 
+/** 
+ * \fn void How_To_Play_Screen::render()
+ * \brief Renders all the elements of the How_To_Play screen to the window
+ * 
+ * \return void
+ */
 void How_To_Play_Screen::render() {
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
@@ -83,6 +115,13 @@ void How_To_Play_Screen::render() {
     this->window_->display();
 }
 
+/** 
+ * \fn bool How_To_Play_Screen::is_back_button_hovered()
+ * \brief Checks if the back button is hovered over by the mouse and updates the button's texture accordingly
+ *
+ * \return true If the back button is hovered over
+ * \return false Otherwise
+ */
 bool How_To_Play_Screen::is_back_button_hovered()
 {
     sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*this->window_).x, sf::Mouse::getPosition(*this->window_).y);
