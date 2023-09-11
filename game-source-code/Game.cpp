@@ -11,6 +11,20 @@
 #include "Enemy.h"
 #include "Throwable.h"
 
+/**
+ * \fn Game::Game(std::shared_ptr<sf::RenderWindow> window, float original_background_width, float original_background_height, float game_width, float game_height, float x_scale, float y_scale)
+ * \brief Constructor of the Game class which initializes several game elements such as background, textures, player and professor.
+ * 
+ * \param window A shared pointer to the RenderWindow object that represents the window where the game is rendered.
+ * \param original_background_width The original width of the background.
+ * \param original_background_height The original height of the background.
+ * \param game_width The width of the game area.
+ * \param game_height The height of the game area.
+ * \param x_scale The scale factor along the X-axis.
+ * \param y_scale The scale factor along the Y-axis.
+ * 
+ * \return No return value (constructor).
+ */
 Game::Game(std::shared_ptr<sf::RenderWindow> window, float original_background_width, float original_background_height, float game_width, float game_height, float x_scale, float y_scale) : 
         window_(window), original_background_width_(original_background_width), original_background_height_(original_background_height), game_width_(game_width), game_height_(game_height), x_scale_(x_scale), y_scale_(y_scale) {
     // this->_init_window();
@@ -22,6 +36,12 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window, float original_background_w
     this->_init_professor();
 }
 
+/**
+ * \fn void Game::update()
+ * \brief This function handles the game's updates including event polling and various gameplay updates based on game state.
+ * 
+ * \return No return value (void function).
+ */
 void Game::update() {
     sf::Event event;
     while (this->window_->pollEvent(event)) if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) this->window_->close();
@@ -44,6 +64,12 @@ void Game::update() {
     this->handle_collisions();
 }
 
+/**
+ * \fn void Game::render()
+ * \brief This function handles rendering various game elements like background, player, enemies and throwables on the game window.
+ *
+ * \return No return value (void function).
+ */
 void Game::render() {
     this->window_->clear(sf::Color(110,66,26));
     this->window_->draw(this->background_sprite_);
@@ -53,6 +79,12 @@ void Game::render() {
     this->window_->display();
 }
 
+/**
+ * \fn void Game::run()
+ * \brief This function contains the main loop where update and render functions are called continuously while the window is open.
+ *
+ * \return No return value (void function).
+ */
 void Game::run() {
     while(this->window_->isOpen()) {
         this->update();
@@ -64,6 +96,12 @@ void Game::run() {
 //     this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Byte Defenders", sf::Style::Titlebar | sf::Style::Close);
 // }
 
+/**
+ * \fn void Game::_init_textures()
+ * \brief This function initializes various textures used in the game including player, professor and bullet textures.
+ * 
+ * \return No return value (void function), but exits early if any texture fails to load.
+ */
 void Game::_init_textures () {
     // Initialise Player Bullet Texture
     sf::Texture bullet_texture;
@@ -83,6 +121,12 @@ void Game::_init_textures () {
     this->textures.push_back(professor_assignment_texture);
 }
 
+/**
+ * \fn void Game::_init_background()
+ * \brief This function initializes the background texture and sets up its sprite with appropriate properties.
+ * 
+ * \return No return value (void function), but exits early if the background texture fails to load.
+ */
 void Game::_init_background() {
     if(!(this->background_texture_.loadFromFile("resources/Background.png"))) return;
     this->background_sprite_.setTexture(this->background_texture_);
@@ -90,14 +134,33 @@ void Game::_init_background() {
     this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
 }
 
+/**
+ * \fn void Game::_init_player()
+ * \brief This function initializes the player object with the appropriate texture.
+ *
+ * \return No return value (void function).
+ */
 void Game::_init_player() {
     this->player_ = std::make_unique<Player>(this->textures[static_cast<int>(Textures::PLAYER_SHEET)]);
 }
 
+
+/**
+ * \fn void Game::_init_professor()
+ * \brief This function initializes a new professor enemy and adds it to the enemies list.
+ *
+ * \return No return value (void function).
+ */
 void Game::_init_professor() {
     this->enemies_.push_back(std::make_unique<Professor>(this->textures[static_cast<int>(Textures::PROFESSOR_SHEET)]));
 }
 
+/**
+ * \fn void Game::teleport_enemies()
+ * \brief This function handles the logic for spawning new professor enemies at regular intervals until a maximum limit is reached.
+ *
+ * \return No return value (void function).
+ */
 void Game::teleport_enemies () {
     if (Professor::get_num_professors() < 5) {
         if(this->professor_cool_down > this->max_professor_cool_down) {
@@ -110,6 +173,12 @@ void Game::teleport_enemies () {
     }
 }
 
+/**
+ * \fn void Game::move_enemies()
+ * \brief This function handles the movement and status updates for each enemy in the game. It also bins each enemy into the correct vacinity used for collision detection
+ *
+ * \return No return value (void function).
+ */
 void Game::move_enemies () {
     this->enemy_vicinities_ = std::vector<std::vector<int>>(490);
     for (auto i = 0; i < this->enemies_.size(); i++) {
@@ -124,10 +193,28 @@ void Game::move_enemies () {
     }
 }
 
+/**
+ * \fn void Game::bin_vicinities(std::vector<int> vicinities, int position)
+ * \brief This function updates the enemy vicinities based on the given position and vicinity indices.
+ *
+ * \param vicinities A vector containing the indices of the vicinities.
+ * \param position The position index.
+ * 
+ * \return No return value (void function).
+ */
 void Game::bin_vicinities (std::vector<int> vicinities, int position) {
     for (auto vicinity_index : vicinities) enemy_vicinities_[vicinity_index].push_back(position);
 }
 
+/**
+ * \fn std::vector<int> Game::get_vicinities(sf::FloatRect rect, int position)
+ * \brief This function calculates the vicinity indices based on a given rectangular area and position.
+ *
+ * \param rect A float rectangle that defines the area.
+ * \param position The position index.
+ * 
+ * \return A vector containing the unique vicinity indices.
+ */
 std::vector<int> Game::get_vicinities (sf::FloatRect rect, int position) {
     std::vector<int> vicinities;
     int left_location = floor(rect.left/100)+28;
@@ -146,12 +233,24 @@ std::vector<int> Game::get_vicinities (sf::FloatRect rect, int position) {
     return vicinities;
 }
 
+/**
+ * \fn void Game::render_enemies()
+ * \brief This function iterates over all enemies and triggers their render function.
+ *
+ * \return No return value (void function).
+ */
 void Game::render_enemies () {
     for (auto i = 0; i < enemies_.size(); i++) {
         this->enemies_[i]->render(*this->window_, this->background_movement_tracker);
     }
 }
 
+/**
+ * \fn void Game::move_throwables()
+ * \brief This function handles the movement of throwables in the game, removing them if they move out of the allowable area.
+ *
+ * \return No return value (void function).
+ */
 void Game::move_throwables () {
     for (auto i = 0; i < this->throwables_.size(); i++) {
         auto in_horizontal = this->throwables_[i]->get_location().x > -700.f && this->throwables_[i]->get_location().x < 2100.f;
@@ -162,16 +261,34 @@ void Game::move_throwables () {
     }
 }
 
+/**
+ * \fn void Game::render_throwables()
+ * \brief This function iterates over all throwables and triggers their draw function.
+ *
+ * \return No return value (void function).
+ */
 void Game::render_throwables () {
     for (auto i = 0; i < this->throwables_.size(); i++) {
             this->throwables_[i]->draw(*this->window_);
     }
 }
 
+/**
+ * \fn void Game::handle_collisions()
+ * \brief This function is a wrapper for various collision checking functions.
+ *
+ * \return No return value (void function).
+ */
 void Game::handle_collisions () {
     this->check_bullet_enemy_collision();
 }
 
+/**
+ * \fn void Game::check_bullet_enemy_collision()
+ * \brief This function checks for collisions between bullets and enemies, destroying any entities involved in a collision.
+ *
+ * \return No return value (void function).
+ */
 void Game::check_bullet_enemy_collision () {
     for (auto bullet_index = 0; bullet_index < this->player_->get_bullets().size(); bullet_index++) {
         bool bullet_hit = false;
@@ -191,24 +308,62 @@ void Game::check_bullet_enemy_collision () {
     }
 }
 
+/**
+ * \fn void Game::erase_enemy(int position)
+ * \brief This function removes an enemy from the enemies list at the specified position.
+ *
+ * \param position The index of the enemy to be removed.
+ * \return No return value (void function).
+ */
 void Game::erase_enemy(int position) {
     this->enemies_.erase(this->enemies_.begin() + position);
 }
+
+/** 
+ * \fn void Game::erase_throwable(int position)
+ * \brief Erases a throwable object from the list of throwables at the specified position
+ *
+ * \param position The position of the throwable object to erase
+ * \return void
+ */
 void Game::erase_throwable (int position) {
     this->throwables_.erase(this->throwables_.begin() + position);
 }
 
+/** 
+ * \fn bool Game::approx_equal(float a, float b)
+ * \brief Checks if two float values are approximately equal within a certain tolerance
+ *
+ * \param a First float value
+ * \param b Second float value
+ * \return Returns true if the values are approximately equal, false otherwise
+ */
 bool Game::approx_equal (float a, float b) {
     float tolerance = 0.01f;
     return abs(a-b) <= tolerance;
 }
 
+/** 
+ * \fn bool Game::approx_inequality(float a, float b, bool greater_than)
+ * \brief Checks if two float values are approximately unequal within a certain tolerance
+ *
+ * \param a First float value
+ * \param b Second float value
+ * \param greater_than A boolean indicating the direction of the inequality
+ * \return Returns true if the inequality holds, false otherwise
+ */
 bool Game::approx_innequality (float a, float b, bool greater_than) {
     float tolerance = 0.01;
     if (greater_than) return a > b+tolerance;
     return a < b+tolerance;
 }
 
+/** 
+ * \fn void Game::check_player_shoot()
+ * \brief Handles the player's shooting actions based on keyboard inputs
+ * 
+ * \return void
+ */
 void Game::check_player_shoot() {
     this->player_->increment_cool_down();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && !this->shot_held) {
@@ -220,6 +375,12 @@ void Game::check_player_shoot() {
     }
 }
 
+/** 
+ * \fn void Game::check_enemies_shoot()
+ * \brief Checks and handles shooting actions of all enemies
+ * 
+ * \return void
+ */
 void Game::check_enemies_shoot() {
     for (auto i = 0; i < this->enemies_.size(); i++){
         this->enemies_[i]->increment_cool_down();
@@ -228,6 +389,12 @@ void Game::check_enemies_shoot() {
     }
 }
 
+/** 
+ * \fn void Game::handle_boundary_background_movement()
+ * \brief Handles the background movement within specified boundaries based on background location and movement variables
+ * 
+ * \return void
+ */
 void Game::handle_boundary_background_movement () {
     float tolerance = 0.0001f;
     if (this->background_location_<2*this->game_width_ && this->background_location_>-2*this->game_width_) {
@@ -250,6 +417,12 @@ void Game::handle_boundary_background_movement () {
     }
 }
 
+/** 
+ * \fn void Game::handle_internal_background_movement()
+ * \brief Handles the internal background movement based on player's speed and keyboard inputs
+ * 
+ * \return void
+ */
 void Game::handle_internal_background_movement () {
     float player_internal_movement = this->player_->get_player_speed();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
@@ -260,6 +433,14 @@ void Game::handle_internal_background_movement () {
     this->background_location_ += -player_internal_movement;
 }
 
+/** 
+ * \fn void Game::internal_movement(float x_right, float x_left)
+ * \brief Handles the internal movement of the player and background based on various conditions and keyboard inputs
+ *
+ * \param x_right The right boundary for player movement
+ * \param x_left The left boundary for player movement
+ * \return void
+ */
 void Game::internal_movement (float x_right, float x_left) {
     if (this->prev_in_edge) this->player_->correct_edge_positions();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
@@ -305,6 +486,14 @@ void Game::internal_movement (float x_right, float x_left) {
     this->prev_in_edge = false;
 }
 
+/** 
+ * \fn void Game::edge_movement(float x_right, float x_left)
+ * \brief Handles player movement at the edges of the screen based on the player's current position and keyboard inputs
+ *
+ * \param x_right The right boundary for player movement
+ * \param x_left The left boundary for player movement
+ * \return void
+ */
 void Game::edge_movement(float x_right, float x_left) {
     bool sideKey = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && this->player_->get_position().x_right <= 1377.f) {
@@ -321,6 +510,12 @@ void Game::edge_movement(float x_right, float x_left) {
     this->prev_in_edge = true;
 }
 
+/** 
+ * \fn void Game::move_player()
+ * \brief Controls the player's movement by considering edge cases, background location, and keyboard inputs
+ * 
+ * \return void
+ */
 void Game::move_player() {
     float x_right = this->player_->get_position().x_right;
     float x_left = this->player_->get_position().x_left;
