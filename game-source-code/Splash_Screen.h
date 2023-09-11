@@ -28,6 +28,7 @@ class Splash_Screen {
         std::vector<sf::Sprite> option_sprites_;
 
         std::vector<sf::Text> texts_;
+        sf::Text heading_;
         sf::Font pixel_font_;
 
         const float original_background_width_ = 1920;
