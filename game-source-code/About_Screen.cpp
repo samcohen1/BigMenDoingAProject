@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include <iostream>
 
 About_Screen::About_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font) : 
         window_(window), background_sprite_(background_sprite), pixel_font_(pixel_font) {
@@ -11,9 +12,11 @@ About_Screen::About_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite 
 
 void About_Screen::run() {
      while(this->window_->isOpen()) {
-        if((this->is_back_button_hovered() && sf::Mouse::isButtonPressed(sf::Mouse::Left)) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) return;
+        if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) this->key_held_down_ = false;
+        if((this->is_back_button_hovered() && sf::Mouse::isButtonPressed(sf::Mouse::Left)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && !this->key_held_down_)) return;
         this->update();
         this->render();
+
 
     }
 }

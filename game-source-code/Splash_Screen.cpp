@@ -46,11 +46,11 @@ void Splash_Screen::update() {
     if(static_cast<int>(this->option_selected_) > static_cast<int>(Option::PLAY) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !key_held_down_) {
        this->shift_option_up();
     }
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){
         this->key_held_down_=false;
     }
     this->select_using_mouse();
-    if((mouse_is_over_ && sf::Mouse::isButtonPressed(sf::Mouse::Left))  || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) {
+    if((mouse_is_over_ && sf::Mouse::isButtonPressed(sf::Mouse::Left))  || (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && !this->key_held_down_)) {
         if(this->option_selected_ == Option::PLAY) {
             // GO INTO GAME
             auto game = Game(this->window_, original_background_width_, original_background_height_, game_width_, game_height_, x_scale_, y_scale_);
@@ -58,6 +58,7 @@ void Splash_Screen::update() {
         }
         if(this->option_selected_ == Option::ABOUT) {
             // GO INTO ABOUT
+            this->key_held_down_ = true;
             auto about_screen = About_Screen(this->window_, this->background_sprite_, this->pixel_font_);
             about_screen.run();
         }

@@ -178,7 +178,7 @@ void Game::check_bullet_enemy_collision () {
         std::vector<int> bullet_vicinities = this->get_vicinities(this->player_->get_bullets()[bullet_index]->get_world_bounds(), -1);
         for (auto bullet_vicinity_index = 0; bullet_vicinity_index < bullet_vicinities.size(); bullet_vicinity_index++) {
             for (auto enemy_index = 0; enemy_index < this->enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]].size(); enemy_index++) {
-                bool hit = this->enemies_[enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]][enemy_index]]->get_world_bounds().intersects(this->player_->get_bullets()[bullet_index]->get_world_bounds());
+                bool hit = this->enemies_[enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]][enemy_index]]->get_bounds().intersects(this->player_->get_bullets()[bullet_index]->get_bounds());
                 if (hit) {
                     this->enemies_[enemy_vicinities_[bullet_vicinities[bullet_vicinity_index]][enemy_index]]->destroy();
                     this->player_->erase_bullet(bullet_index);

@@ -21,6 +21,7 @@ class Enemy {
         virtual sf::Vector2f get_location() = 0;
         virtual sf::FloatRect get_bounds() = 0; 
         virtual sf::FloatRect get_world_bounds() = 0;
+        
 
         virtual bool get_is_dead() = 0;
         virtual bool is_dying() = 0;    

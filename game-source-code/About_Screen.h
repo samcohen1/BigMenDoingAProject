@@ -20,6 +20,8 @@ class About_Screen {
         sf::Font pixel_font_;
         std::vector<sf::Text> texts_;
 
+        bool key_held_down_ = true;
+
         void _init_about_screen();
         void update();
         void render();
