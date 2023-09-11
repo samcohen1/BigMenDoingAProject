@@ -5,6 +5,7 @@
 
 #include "Splash_Screen.h"
 #include "About_Screen.h"
+#include "How_To_Play_Screen.h"
 #include "Game.h"
 
 Splash_Screen::Splash_Screen() {
@@ -63,7 +64,9 @@ void Splash_Screen::update() {
             about_screen.run();
         }
         if(this->option_selected_ == Option::HOW_TO_PLAY) {
-            // GO INTO HOW TO PLAY
+            this->key_held_down_ = true;
+            auto how_to_play_screen = How_To_Play_Screen(this->window_, this->background_sprite_, this->pixel_font_);
+            how_to_play_screen.run();
         }
     }
 }
@@ -89,7 +92,7 @@ void Splash_Screen::_init_splash_screen() {
     this->heading_.setCharacterSize(40.f);
     this->heading_.setString("Graduation-Hat Hackers");
     this->heading_.setPosition(this->window_->getSize().x/2 - this->heading_.getGlobalBounds().width/2, 80.f);
-    this->heading_.setOutlineColor(sf::Color::White);
+    this->heading_.setOutlineColor(sf::Color(0, 192, 248));
     this->heading_.setOutlineThickness(3.f);
     float x_position = (this->window_->getSize().x/2.f) - 120.f;
     this->texts_[0].setFont(this->pixel_font_);
@@ -115,14 +118,14 @@ void Splash_Screen::_init_splash_screen() {
     this->texts_[1].setPosition(x_position + x_position_text, 375.f + y_position_text);
     this->option_sprites_[2].setTexture(this->options_texture_);
     this->option_sprites_[2].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-    this->option_sprites_[2].setPosition(x_position, 500.f);
+    this->option_sprites_[2].setPosition(x_position, 520.f);
     this->option_sprites_[2].setScale(0.5f, 0.5f);
     this->texts_[2].setFont(this->pixel_font_);
     this->texts_[2].setFillColor(sf::Color::White);
     this->texts_[2].setString("How to Play");
     this->texts_[2].setCharacterSize(18.f);
     x_position_text = this->option_sprites_[2].getGlobalBounds().width/2 - this->texts_[2].getGlobalBounds().width/2;
-    this->texts_[2].setPosition(x_position + x_position_text, 505.f + y_position_text);
+    this->texts_[2].setPosition(x_position + x_position_text, 525.f + y_position_text);
 }
 
 void Splash_Screen::shift_option_down() {

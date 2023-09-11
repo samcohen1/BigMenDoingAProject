@@ -31,7 +31,7 @@ void About_Screen::_init_about_screen () {
     this->texts_[0].setFillColor(sf::Color::White);
     this->texts_[0].setString("About Graduation-Hat Hackers");
     this->texts_[0].setPosition(this->window_->getSize().x/2 - this->texts_[0].getGlobalBounds().width/2, 100.f);
-    this->texts_[0].setCharacterSize(16.f);
+    this->texts_[0].setCharacterSize(24.f);
     this->texts_[1].setFont(this->pixel_font_);
     this->texts_[1].setFillColor(sf::Color::White);
     this->texts_[1].setCharacterSize(16.f);
@@ -47,7 +47,7 @@ void About_Screen::_init_about_screen () {
     this->box_sprite_.setTexture(this->box_texture_);
     this->box_sprite_.setScale(1.3f, 0.7f);
     this->box_sprite_.setPosition(this->window_->getSize().x/2 - this->box_sprite_.getGlobalBounds().width/2, 80.f);
-    this->texts_[1].setPosition(this->window_->getSize().x/2 - this->texts_[1].getGlobalBounds().width/2, 250.f);
+    this->texts_[1].setPosition(this->window_->getSize().x/2 - this->texts_[1].getGlobalBounds().width/2, 290.f);
     this->texts_[0].setPosition(this->window_->getSize().x/2 - this->texts_[0].getGlobalBounds().width/2, 150.f);
     this->back_button_sprite_.setPosition(this->box_sprite_.getPosition().x + 50.f, this->box_sprite_.getPosition().y + 30.f);
 }
