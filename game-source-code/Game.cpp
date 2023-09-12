@@ -128,7 +128,7 @@ void Game::_init_textures () {
  * \return No return value (void function), but exits early if the background texture fails to load.
  */
 void Game::_init_background() {
-    if(!(this->background_texture_.loadFromFile("resources/Background.png"))) return;
+    if(!(this->background_texture_.loadFromFile("resources/background_infinite.png"))) return;
     this->background_sprite_.setTexture(this->background_texture_);
     this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
     this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
@@ -449,13 +449,13 @@ void Game::internal_movement (float x_right, float x_left) {
             this->background_movement_ = 0.f;
 
         }
-        else if (this->background_location_ > -2*this->game_width_ + 1000) {
+        else if (this->background_location_ > -2*this->game_width_ - 0) {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_movement_ = -this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
         } else {
-            this->background_location_ = 2*this->game_width_ - 1000;
-            this->background_sprite_.setPosition(-1000.f,0.f);
+            this->background_location_ = 2*this->game_width_ + 0;
+            this->background_sprite_.setPosition(1400.f,0.f);
         }
     }
 
@@ -465,14 +465,13 @@ void Game::internal_movement (float x_right, float x_left) {
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
         }
-        else if (this->background_location_ < 2*this->game_width_ - 1000)  {
+        else if (this->background_location_ < 2*this->game_width_ + 0)  {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_movement_ = this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
         } else {
-
-            this->background_sprite_.setPosition(-4*game_width_ + 1000,0.f);
-            this->background_location_= -2*game_width_ + 1000;
+            this->background_location_= -2*game_width_ - 0;
+            this->background_sprite_.setPosition(-4*game_width_ - 0.f,0.f);
 
         }
     }
