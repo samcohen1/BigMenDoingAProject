@@ -48,7 +48,7 @@ class Professor : public Enemy {
         int is_dying_counter = 0;
         bool is_dead = false;
 
-        //void init_professor(sf::Texture&);
+        void init_professor(sf::Texture&);
         void flip_professor();
         void face_player(sf::Vector2f);
         void render_assignments(sf::RenderTarget& target, float);
@@ -59,7 +59,7 @@ class Professor : public Enemy {
         Professor(sf::Texture&);
         ~Professor();
 
-        void init_professor(sf::Texture&);
+
         static int get_num_professors();
         
         virtual void move(float, sf::Vector2f) override;

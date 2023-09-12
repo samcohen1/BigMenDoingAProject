@@ -29,7 +29,6 @@ class Player {
         float flip_base_speed_ = 0.15f;
         float acceleration_ = 0.0008f;
         float vertical_acceleration_ = 0.0004f;
-        float edge_acceleration_ = 0.0005f;
         float player_edge_speed = 0.5f;
 
         Direction prev_direction_;
@@ -61,8 +60,6 @@ class Player {
         
         void move_player_horizontal(Direction);
         void move_player_vertical(Direction, bool);
-        void edge_player_movement(Direction);
-        void edge_decelerate();
         void correct_edge_positions();
         void magnetise_player();
         void render(sf::RenderTarget&, float);

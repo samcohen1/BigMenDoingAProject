@@ -64,7 +64,6 @@ class Game {
 
         float background_movement_tracker = 0.f;
 
-        bool prev_in_edge = false;
 
         bool shot_held = false;
 
@@ -78,7 +77,6 @@ class Game {
         void render();
 
         void move_player();
-        void edge_movement(float, float);
         void internal_movement(float, float);
         void handle_boundary_background_movement();
         void handle_internal_background_movement();

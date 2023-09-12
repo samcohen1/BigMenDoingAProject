@@ -99,33 +99,7 @@ void Player::move_player_horizontal(Direction direction) {
     this->prev_direction_ = direction;
 }
 
-/** \fn void Player::edge_player_movement(Direction direction)
- *  \brief Move the player character at the edge of the screen.
- *  \param direction The direction of movement (LEFT or RIGHT).
- *  This function allows the player character to move at the edge of the screen and tells it how to move.
- */
-void Player::edge_player_movement(Direction direction) {
-    this->player_edge_speed = 0.5f;
-    this->player_sprite_.move(static_cast<float>(direction) * player_edge_speed, 0.f);
-    if (this->direction_changed(direction))
-        this->flip_player();
-    this->prev_direction_ = direction;
-}
 
-/** \fn void Player::edge_decelerate()
- *  \brief Decelerate the player character at the edge.
- *  This function decelerates the player character while in the edge of the screen.
- */
-void Player::edge_decelerate() {
-    if ((this->get_position().x_left >= this->x_default_right_ && this->prev_direction_ == Direction::LEFT) ||
-        (this->get_position().x_right <= this->x_default_left_ && this->prev_direction_ == Direction::RIGHT))
-        return;
-
-    if (player_edge_speed >= 0)
-        this->player_edge_speed -= this->edge_acceleration_;
-
-    this->player_sprite_.move(static_cast<float>(this->prev_direction_) * player_edge_speed, 0.f);
-}
 
 /** \fn void Player::correct_edge_positions()
  *  \brief Correct the player character's position at the screen edge.
