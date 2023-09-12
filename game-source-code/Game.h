@@ -97,8 +97,6 @@ class Game {
         void handle_collisions();
         void check_bullet_enemy_collision();
 
-        bool approx_equal(float, float);
-        bool approx_innequality(float, float, bool);
         void check_player_shoot();
         void check_enemies_shoot();
 

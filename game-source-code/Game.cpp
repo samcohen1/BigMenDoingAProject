@@ -331,34 +331,6 @@ void Game::erase_throwable (int position) {
 }
 
 /** 
- * \fn bool Game::approx_equal(float a, float b)
- * \brief Checks if two float values are approximately equal within a certain tolerance
- *
- * \param a First float value
- * \param b Second float value
- * \return Returns true if the values are approximately equal, false otherwise
- */
-bool Game::approx_equal (float a, float b) {
-    float tolerance = 0.01f;
-    return abs(a-b) <= tolerance;
-}
-
-/** 
- * \fn bool Game::approx_inequality(float a, float b, bool greater_than)
- * \brief Checks if two float values are approximately unequal within a certain tolerance
- *
- * \param a First float value
- * \param b Second float value
- * \param greater_than A boolean indicating the direction of the inequality
- * \return Returns true if the inequality holds, false otherwise
- */
-bool Game::approx_innequality (float a, float b, bool greater_than) {
-    float tolerance = 0.01;
-    if (greater_than) return a > b+tolerance;
-    return a < b+tolerance;
-}
-
-/** 
  * \fn void Game::check_player_shoot()
  * \brief Handles the player's shooting actions based on keyboard inputs
  * 
@@ -401,18 +373,16 @@ void Game::handle_boundary_background_movement () {
         this->background_movement_ -= background_acceleration_;
         this->background_movement_tracker = this->background_movement_;
         this->background_sprite_.move(this->background_movement_,0.f);
-        this->wrap();
     }
     else if (this->background_movement_ < -tolerance) {
         this->background_movement_ += background_acceleration_;
         this->background_movement_tracker = this->background_movement_;
         this->background_sprite_.move(this->background_movement_,0.f); 
-        this->wrap();
     } else {
         this->background_movement_ = 0;
         this->background_movement_tracker = this->background_movement_;
-        this->wrap();
     }
+    this->wrap();
 }
 
 /** 
@@ -446,12 +416,10 @@ void Game::internal_movement (float x_right, float x_left) {
             this->player_->move_player_horizontal(Direction::LEFT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
-            this->wrap();
         } else {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_movement_ = -this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
-            this->wrap();
         }
     }
 
@@ -460,12 +428,10 @@ void Game::internal_movement (float x_right, float x_left) {
             this->player_->move_player_horizontal(Direction::RIGHT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
-            this->wrap();
         } else {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_movement_ = this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
-            this->wrap();
         }
     }
 
@@ -489,14 +455,12 @@ void Game::internal_movement (float x_right, float x_left) {
 void Game::wrap() {
     auto left_bounds = 2600.f;
     auto right_bounds = -4350.f;
-    auto correction = 6950.f;
-    std::cout << "width: " << this->game_width_ << std::endl;
+    auto correction =left_bounds-right_bounds;
     if (this->background_location_ >= left_bounds) {
         this->background_location_ += -correction;
         this->background_sprite_.move(-correction, 0.f);
     }
     if (this->background_location_ <= right_bounds) {
-        std::cout << "enetered" << std::endl;
         this->background_location_ += correction;
         this->background_sprite_.move(correction, 0.f);
     }
@@ -519,6 +483,5 @@ void Game::move_player() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) this->player_->move_player_vertical(Direction::UP, true);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) this->player_->move_player_vertical(Direction::DOWN, true);
     }
-
     this->internal_movement(x_right, x_left);
 }

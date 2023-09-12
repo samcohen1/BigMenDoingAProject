@@ -52,13 +52,13 @@ class Professor : public Enemy {
         void flip_professor();
         void face_player(sf::Vector2f);
         void render_assignments(sf::RenderTarget& target, float);
+        void wrap();
         bool direction_changed(Direction);
         float movement_function();
 
     public:
         Professor(sf::Texture&);
         ~Professor();
-
 
         static int get_num_professors();
         

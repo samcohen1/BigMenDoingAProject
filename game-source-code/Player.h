@@ -29,7 +29,6 @@ class Player {
         float flip_base_speed_ = 0.15f;
         float acceleration_ = 0.0008f;
         float vertical_acceleration_ = 0.0004f;
-        float player_edge_speed = 0.5f;
 
         Direction prev_direction_;
         Direction prev_vertical_direction_;
