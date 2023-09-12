@@ -80,6 +80,7 @@ class Game {
         void internal_movement(float, float);
         void handle_boundary_background_movement();
         void handle_internal_background_movement();
+        void wrap();
 
         void teleport_enemies();
         void move_enemies();

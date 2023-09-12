@@ -397,24 +397,27 @@ void Game::check_enemies_shoot() {
  */
 void Game::handle_boundary_background_movement () {
     float tolerance = 0.0001f;
-    if (this->background_location_<2*this->game_width_ && this->background_location_>-2*this->game_width_) {
+    // if (this->background_location_<2*this->game_width_ && this->background_location_>-2*this->game_width_) {
         if (this->background_movement_ > tolerance) {
             this->background_movement_ -= background_acceleration_;
             this->background_movement_tracker = this->background_movement_;
             this->background_sprite_.move(this->background_movement_,0.f);
+            wrap();
         }
         else if (this->background_movement_ < -tolerance) {
             this->background_movement_ += background_acceleration_;
             this->background_movement_tracker = this->background_movement_;
             this->background_sprite_.move(this->background_movement_,0.f); 
+            wrap();
         } else {
             this->background_movement_ = 0;
             this->background_movement_tracker = this->background_movement_;
+            wrap();
         }
-    } else {
-        this->background_movement_ = 0;
-        this->background_movement_tracker = this->background_movement_;
-    }
+    // } else {
+    //     this->background_movement_ = 0;
+    //     this->background_movement_tracker = this->background_movement_;
+    // }
 }
 
 /** 
@@ -447,15 +450,16 @@ void Game::internal_movement (float x_right, float x_left) {
             this->player_->move_player_horizontal(Direction::LEFT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
-
         }
         else if (this->background_location_ > -2*this->game_width_ - 0) {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_movement_ = -this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
+            wrap();
         } else {
             this->background_location_ = 2*this->game_width_ + 0;
             this->background_sprite_.setPosition(1400.f,0.f);
+            wrap();
         }
     }
 
@@ -469,10 +473,11 @@ void Game::internal_movement (float x_right, float x_left) {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_movement_ = this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
+            wrap();
         } else {
             this->background_location_= -2*game_width_ - 0;
             this->background_sprite_.setPosition(-4*game_width_ - 0.f,0.f);
-
+            wrap();
         }
     }
 
@@ -484,6 +489,21 @@ void Game::internal_movement (float x_right, float x_left) {
             } else this->handle_boundary_background_movement();
     }
     this->background_location_ += this->background_movement_;
+    wrap();
+}
+
+void Game::wrap () {
+    std::cout << "BEFORE: " << this->background_location_ << std::endl;
+    // if (this->background_location_ <= -2800.f) {
+    //     this->background_movement_ += 2800.f;
+    //     this->background_location_ += 2*2800.f;
+    //     this->background_sprite_.move(this->background_movement_, 0.f);
+    // } else if (this->background_location_ >= 2800.f) {
+    //     this->background_movement_ -= 2800.f;
+    //     this->background_location_ -= 2*2800.f;
+    //     this->background_sprite_.move(this->background_movement_, 0.f);
+    // }
+    std::cout << "AFTER: " << this->background_location_ << std::endl;
 }
 
 
@@ -504,7 +524,6 @@ void Game::move_player() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) this->player_->move_player_vertical(Direction::UP, true);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) this->player_->move_player_vertical(Direction::DOWN, true);
     }
-
 
     this->internal_movement(x_right, x_left);
 }

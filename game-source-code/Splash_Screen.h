@@ -39,7 +39,7 @@ class Splash_Screen {
         sf::Font pixel_font_;
 
         const float original_background_width_ = 1920;
-        const float original_background_height_ = 1080;
+        const float original_background_height_ = 945;
         const float game_width_ = 1400;
         const float game_height_ = 800;
         const float x_scale_ = this->game_width_/this->original_background_width_;
