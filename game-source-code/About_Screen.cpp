@@ -5,11 +5,26 @@
 #include <vector>
 #include <iostream>
 
+/**
+ * \fn About_Screen::About_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font)
+ * \brief This constructor initializes the About_Screen class with the specified window, background sprite and pixel font.
+ *        It also calls the _init_about_screen method to initialize the about screen.
+ *
+ * \param window The render window to which the About_Screen is bound.
+ * \param background_sprite The background sprite used in the about screen.
+ * \param pixel_font The font used for the text in the about screen.
+ */
 About_Screen::About_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font) : 
         window_(window), background_sprite_(background_sprite), pixel_font_(pixel_font) {
     this->_init_about_screen();
 }
 
+/**
+ * \fn void About_Screen::run()
+ * \brief This function contains the main loop for the about screen, handling input and invoking update and render methods.
+ *
+ * \return Returns nothing but exits when the back button is hovered and clicked or the enter key is pressed.
+ */
 void About_Screen::run() {
      while(this->window_->isOpen()) {
         if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) this->key_held_down_ = false;
@@ -21,6 +36,12 @@ void About_Screen::run() {
     }
 }
 
+/**
+ * \fn void About_Screen::_init_about_screen()
+ * \brief This method initializes the various attributes for the about screen including back button, texts, and other graphical elements.
+ *
+ * \return Returns nothing but initializes various attributes of the About_Screen class.
+ */
 void About_Screen::_init_about_screen () {
     if(!this->back_button_texture_.loadFromFile("resources/back_button_spritesheet.png")) return;
     this->back_button_sprite_.setTexture(this->back_button_texture_);
@@ -52,6 +73,12 @@ void About_Screen::_init_about_screen () {
     this->back_button_sprite_.setPosition(this->box_sprite_.getPosition().x + 50.f, this->box_sprite_.getPosition().y + 30.f);
 }
 
+/**
+ * \fn void About_Screen::update()
+ * \brief This method handles event polling including window close and escape key press events.
+ *
+ * \return Returns nothing but processes events during each iteration of the main loop.
+ */
 void About_Screen::update() {
     sf::Event event;
     while (this->window_->pollEvent(event)) {
@@ -62,6 +89,12 @@ void About_Screen::update() {
     
 }
 
+/**
+ * \fn void About_Screen::render()
+ * \brief This method handles the rendering of all graphical elements onto the window.
+ *
+ * \return Returns nothing but draws various elements onto the window for each iteration of the main loop.
+ */
 void About_Screen::render() {
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
@@ -71,6 +104,12 @@ void About_Screen::render() {
     this->window_->display();
 }
 
+/**
+ * \fn bool About_Screen::is_back_button_hovered()
+ * \brief This method checks whether the back button is hovered by comparing the mouse position with the button's bounds.
+ *
+ * \return Returns true if the back button is hovered, otherwise returns false.
+ */
 bool About_Screen::is_back_button_hovered()
 {
     sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*this->window_).x, sf::Mouse::getPosition(*this->window_).y);
