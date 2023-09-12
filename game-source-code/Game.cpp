@@ -77,7 +77,7 @@ void Game::update() {
 void Game::render() {
     this->window_->clear(sf::Color(110,66,26));
     this->window_->draw(this->background_sprite_);
-    this->player_->render(*this->window_, this->background_movement_);
+    this->player_->render(*this->window_, this->background_movement_tracker);
     this->render_enemies();
     this->render_throwables();
     this->window_->display();

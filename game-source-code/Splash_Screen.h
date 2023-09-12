@@ -57,7 +57,6 @@ class Splash_Screen {
 
     public:
         Splash_Screen();
-
         void run();
 };
 

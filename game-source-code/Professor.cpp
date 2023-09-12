@@ -25,10 +25,7 @@
 #include "Professor_Assignment.h"
 #include "Throwable.h"
 
-/** \class Professor
- *  \brief Represents a Professor character in the game.
- */
-Professor::Professor() {}
+
 
 /** \class Professor
  *  \brief Represents a Professor character in the game.
