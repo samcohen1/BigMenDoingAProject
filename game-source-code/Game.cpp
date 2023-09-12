@@ -27,11 +27,8 @@
  */
 Game::Game(std::shared_ptr<sf::RenderWindow> window, float original_background_width, float original_background_height, float game_width, float game_height, float x_scale, float y_scale) : 
         window_(window), original_background_width_(original_background_width), original_background_height_(original_background_height), game_width_(game_width), game_height_(game_height), x_scale_(x_scale), y_scale_(y_scale) {
-    // this->_init_window();
     this->_init_background();
     this->_init_textures();
-    // this->_init_home_screen();
-    // this->_init_about_screen();
     this->_init_player();
     this->_init_professor();
 }
@@ -91,10 +88,6 @@ void Game::run() {
         this->render();
     }
 }
-
-// void Game::_init_window() {
-//     this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Byte Defenders", sf::Style::Titlebar | sf::Style::Close);
-// }
 
 /**
  * \fn void Game::_init_textures()
@@ -537,163 +530,3 @@ void Game::move_player() {
         return;
     } else this->internal_movement(x_right, x_left);
 }
-
-
-// SPLASH
-// void Game::update_home() {
-//     sf::Event event;
-//     this->mouse_over = false;
-
-//     while (this->window_->pollEvent(event)) {
-//         if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
-//             this->window_->close();
-//         }
-//     }
-//     if(home_option_selected < 2 && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !held_down) {
-//        this->shift_option_down();
-//     }
-//     if(home_option_selected > 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !held_down) {
-//        this->shift_option_up();
-//     }
-//     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
-//         this->held_down=false;
-//     }
-//     this->select_using_mouse();
-//     if((mouse_over && sf::Mouse::isButtonPressed(sf::Mouse::Left))  || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) {
-//         if(this->home_option_selected == 0) this->is_playing = true;
-//         if(this->home_option_selected == 1) {
-//             this->about_screen_showing = true;
-//             this->option_is_selected = true;
-//         }
-//         if(this->home_option_selected == 2); //Do how to play
-//     }
-// }
-
-// void Game::update_about() {
-//     sf::Event event;
-//     while (this->window_->pollEvent(event)) {
-//         if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
-//             this->window_->close();
-//         }
-//     }
-// }
-
-// void Game::render_home() {
-//     this->window_->clear();
-//     this->window_->draw(this->background_sprite_);
-//     for (auto i = 0; i<this->home_options.size(); i++) {
-//         this->window_->draw(this->home_sprites[i]);
-//         this->window_->draw(this->home_options[i]);
-//     }
-//     this->window_->display();
-// }
-
-// void Game::render_about() {
-//     this->window_->clear();
-//     this->window_->draw(this->background_sprite_);
-//     this->window_->draw(this->message_screen_sprite);
-//     this->window_->draw(this->messages_[0]);
-//     this->window_->draw(this->messages_[1]);
-//     this->window_->display();
-// }
-
-// void Game::_init_home_screen() {
-//     this->home_sprites = std::vector<sf::Sprite>(3);
-//     this->home_options = std::vector<sf::Text>(3);
-//     if(!this->options_texture.loadFromFile("resources/home_options_spritesheet.png")) return;
-//     if(!this->font.loadFromFile("resources/pixel_text.ttf")) return;
-//     float x_position = (this->window_->getSize().x/2.f) - 120.f;
-//     this->home_options[0].setFont(this->font);
-//     this->home_options[0].setFillColor(sf::Color::White);
-//     this->home_options[0].setCharacterSize(18.f);
-//     this->home_options[0].setString("Play");
-//     this->home_sprites[0].setTexture(this->options_texture);
-//     this->home_sprites[0].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-//     this->home_sprites[0].setScale(0.5f, 0.5f);
-//     float y_position_text = this->home_sprites[0].getGlobalBounds().height/2 - this->home_options[0].getGlobalBounds().height;
-//     float x_position_text = this->home_sprites[0].getGlobalBounds().width/2 - this->home_options[0].getGlobalBounds().width/2;
-//     this->home_sprites[0].setPosition(x_position, 100.f);
-//     this->home_options[0].setPosition(x_position + x_position_text, 105.f + y_position_text);
-//     this->home_sprites[1].setTexture(this->options_texture);
-//     this->home_sprites[1].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//     this->home_sprites[1].setPosition(x_position, 300.f);
-//     this->home_sprites[1].setScale(0.5f, 0.5f);
-//     this->home_options[1].setFont(this->font);
-//     this->home_options[1].setFillColor(sf::Color::White);
-//     this->home_options[1].setString("Backstory");
-//     this->home_options[1].setCharacterSize(18.f);
-//     x_position_text = this->home_sprites[1].getGlobalBounds().width/2 - this->home_options[1].getGlobalBounds().width/2;
-//     this->home_options[1].setPosition(x_position + x_position_text, 305.f + y_position_text);
-//     this->home_sprites[2].setTexture(this->options_texture);
-//     this->home_sprites[2].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//     this->home_sprites[2].setPosition(x_position, 500.f);
-//     this->home_sprites[2].setScale(0.5f, 0.5f);
-//     this->home_options[2].setFont(this->font);
-//     this->home_options[2].setFillColor(sf::Color::White);
-//     this->home_options[2].setString("How to Play");
-//     this->home_options[2].setCharacterSize(18.f);
-//     x_position_text = this->home_sprites[2].getGlobalBounds().width/2 - this->home_options[2].getGlobalBounds().width/2;
-//     this->home_options[2].setPosition(x_position + x_position_text, 505.f + y_position_text);
-// }
-
-// void Game::_init_about_screen() {
-//     this->messages_ = std::vector<sf::Text>(3);
-//     this->messages_[0].setFont(this->font);
-//     this->messages_[0].setFillColor(sf::Color::White);
-//     this->messages_[0].setString("About Graduation-Hat Hackers");
-//     this->messages_[0].setPosition(this->window_->getSize().x/2 - this->messages_[0].getGlobalBounds().width/2, 100.f);
-//     this->messages_[0].setCharacterSize(16.f);
-//     this->messages_[1].setFont(this->font);
-//     this->messages_[1].setFillColor(sf::Color::White);
-//     this->messages_[1].setCharacterSize(16.f);
-//     std::string about_message = "For a Wits University student the campus is a daunting place.\n";
-//     about_message += "The professors constantly attack students with assignments\nand the scientists are dangerous to be around in general.\n";
-//     about_message +="And we have not even mentioned the happenings on East Campus!\n";
-//     about_message +="But one brave group have found a way to survive through\nthis tough existence: The software developers.\n";
-//     about_message +="Your job is to become a software developer.\n";
-//     about_message +="You must shoot code at these treacherous enemies\nand protect the future of the university,\nwhile simultaneously avoiding becoming caught up\n";
-//     about_message +="by the bombs and assignments of the evil faculties.";
-//     this->messages_[1].setString(about_message);
-//     if(!this->message_screen_texture.loadFromFile("resources/splash_background.png")) return;
-//     this->message_screen_sprite.setTexture(this->message_screen_texture);
-//     this->message_screen_sprite.setScale(1.3f, 0.7f);
-//     this->message_screen_sprite.setPosition(this->window_->getSize().x/2 - this->message_screen_sprite.getGlobalBounds().width/2, 80.f);
-//     this->messages_[1].setPosition(this->window_->getSize().x/2 - this->messages_[1].getGlobalBounds().width/2, 300.f);
-//     this->messages_[0].setPosition(this->window_->getSize().x/2 - this->messages_[0].getGlobalBounds().width/2, 150.f);
-// }
-
-// void Game::shift_option_down() {
-//     this->held_down = true;
-//     this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//     this->home_option_selected++;
-//     this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-// }
-
-// void Game::shift_option_up() {
-//     this->held_down = true;
-//     this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//     this->home_option_selected--;
-//     this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-// }
-
-// void Game::select_using_mouse() {
-//     sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*this->window_).x, sf::Mouse::getPosition(*this->window_).y);
-//     if(this->home_sprites[0].getGlobalBounds().contains(mouse_position)){
-//         this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//         this->home_option_selected = 0;
-//         this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-//         this->mouse_over = true;
-//     }
-//     else if(this->home_sprites[1].getGlobalBounds().contains(mouse_position)){
-//         this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//         this->home_option_selected = 1;
-//         this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-//         this->mouse_over = true;
-//     }
-//     else if(this->home_sprites[2].getGlobalBounds().contains(mouse_position)){
-//         this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-//         this->home_option_selected = 2;
-//         this->home_sprites[this->home_option_selected].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-//         this->mouse_over = true;
-//     }
-// }
