@@ -30,7 +30,7 @@ Splash_Screen::Splash_Screen() {
  *  This function loads and sets up the background texture for the splash screen.
  */
 void Splash_Screen::_init_background() {
-    if(!(this->background_texture_.loadFromFile("resources/Background.png"))) return;
+    if(!(this->background_texture_.loadFromFile("resources/background_all.png"))) return;
     this->background_sprite_.setTexture(this->background_texture_);
     this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
     this->background_sprite_.setScale(this->x_scale_, this->y_scale_);

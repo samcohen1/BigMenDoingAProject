@@ -128,7 +128,7 @@ void Game::_init_textures () {
  * \return No return value (void function), but exits early if the background texture fails to load.
  */
 void Game::_init_background() {
-    if(!(this->background_texture_.loadFromFile("resources/background_infinite.png"))) return;
+    if(!(this->background_texture_.loadFromFile("resources/background_all.png"))) return;
     this->background_sprite_.setTexture(this->background_texture_);
     this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
     this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
@@ -397,27 +397,22 @@ void Game::check_enemies_shoot() {
  */
 void Game::handle_boundary_background_movement () {
     float tolerance = 0.0001f;
-    // if (this->background_location_<2*this->game_width_ && this->background_location_>-2*this->game_width_) {
-        if (this->background_movement_ > tolerance) {
-            this->background_movement_ -= background_acceleration_;
-            this->background_movement_tracker = this->background_movement_;
-            this->background_sprite_.move(this->background_movement_,0.f);
-            wrap();
-        }
-        else if (this->background_movement_ < -tolerance) {
-            this->background_movement_ += background_acceleration_;
-            this->background_movement_tracker = this->background_movement_;
-            this->background_sprite_.move(this->background_movement_,0.f); 
-            wrap();
-        } else {
-            this->background_movement_ = 0;
-            this->background_movement_tracker = this->background_movement_;
-            wrap();
-        }
-    // } else {
-    //     this->background_movement_ = 0;
-    //     this->background_movement_tracker = this->background_movement_;
-    // }
+    if (this->background_movement_ > tolerance) {
+        this->background_movement_ -= background_acceleration_;
+        this->background_movement_tracker = this->background_movement_;
+        this->background_sprite_.move(this->background_movement_,0.f);
+        this->wrap();
+    }
+    else if (this->background_movement_ < -tolerance) {
+        this->background_movement_ += background_acceleration_;
+        this->background_movement_tracker = this->background_movement_;
+        this->background_sprite_.move(this->background_movement_,0.f); 
+        this->wrap();
+    } else {
+        this->background_movement_ = 0;
+        this->background_movement_tracker = this->background_movement_;
+        this->wrap();
+    }
 }
 
 /** 
@@ -434,6 +429,7 @@ void Game::handle_internal_background_movement () {
     this->background_movement_tracker = -player_internal_movement;
     this->background_sprite_.move(-player_internal_movement, 0.f);
     this->background_location_ += -player_internal_movement;
+    this->wrap();
 }
 
 /** 
@@ -450,16 +446,12 @@ void Game::internal_movement (float x_right, float x_left) {
             this->player_->move_player_horizontal(Direction::LEFT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
-        }
-        else if (this->background_location_ > -2*this->game_width_ - 0) {
+            this->wrap();
+        } else {
             this->background_sprite_.move(-this->background_base_speed_, 0.f);
             this->background_movement_ = -this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
-            wrap();
-        } else {
-            this->background_location_ = 2*this->game_width_ + 0;
-            this->background_sprite_.setPosition(1400.f,0.f);
-            wrap();
+            this->wrap();
         }
     }
 
@@ -468,16 +460,12 @@ void Game::internal_movement (float x_right, float x_left) {
             this->player_->move_player_horizontal(Direction::RIGHT);
             this->handle_internal_background_movement();
             this->background_movement_ = 0.f;
-        }
-        else if (this->background_location_ < 2*this->game_width_ + 0)  {
+            this->wrap();
+        } else {
             this->background_sprite_.move(this->background_base_speed_, 0.f);
             this->background_movement_ = this->background_base_speed_;
             this->background_movement_tracker = this->background_movement_;
-            wrap();
-        } else {
-            this->background_location_= -2*game_width_ - 0;
-            this->background_sprite_.setPosition(-4*game_width_ - 0.f,0.f);
-            wrap();
+            this->wrap();
         }
     }
 
@@ -489,23 +477,30 @@ void Game::internal_movement (float x_right, float x_left) {
             } else this->handle_boundary_background_movement();
     }
     this->background_location_ += this->background_movement_;
-    wrap();
+    this->wrap();
 }
 
-void Game::wrap () {
-    std::cout << "BEFORE: " << this->background_location_ << std::endl;
-    // if (this->background_location_ <= -2800.f) {
-    //     this->background_movement_ += 2800.f;
-    //     this->background_location_ += 2*2800.f;
-    //     this->background_sprite_.move(this->background_movement_, 0.f);
-    // } else if (this->background_location_ >= 2800.f) {
-    //     this->background_movement_ -= 2800.f;
-    //     this->background_location_ -= 2*2800.f;
-    //     this->background_sprite_.move(this->background_movement_, 0.f);
-    // }
-    std::cout << "AFTER: " << this->background_location_ << std::endl;
+/** 
+ * \fn void Game::wrap()
+ * \brief Controls background movement to wrap back around creating infinite scrolling
+ * 
+ * \return void
+ */
+void Game::wrap() {
+    auto left_bounds = 2600.f;
+    auto right_bounds = -4350.f;
+    auto correction = 6950.f;
+    std::cout << "width: " << this->game_width_ << std::endl;
+    if (this->background_location_ >= left_bounds) {
+        this->background_location_ += -correction;
+        this->background_sprite_.move(-correction, 0.f);
+    }
+    if (this->background_location_ <= right_bounds) {
+        std::cout << "enetered" << std::endl;
+        this->background_location_ += correction;
+        this->background_sprite_.move(correction, 0.f);
+    }
 }
-
 
 /** 
  * \fn void Game::move_player()

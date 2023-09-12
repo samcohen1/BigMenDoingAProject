@@ -55,6 +55,7 @@ class Game {
         const float y_scale_;
 
         float background_base_speed_ = 0.5f;
+        // float background_base_speed_ = 5.f;
         float background_location_ = 0.f;
         float background_movement_ = 0.f;
         float background_acceleration_ = 0.0003f;
