@@ -1,6 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <random>

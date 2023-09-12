@@ -1,6 +1,9 @@
 #ifndef PROFESSOR_ASSIGNMENT_H
 #define PROFESSOR_ASSIGNMENT_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "Throwable.h"

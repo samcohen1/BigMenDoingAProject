@@ -1,6 +1,9 @@
 #ifndef THROWABLE_H
 #define THROWABLE_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>

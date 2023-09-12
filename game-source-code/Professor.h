@@ -1,6 +1,9 @@
 #ifndef PROFESSOR_H
 #define PROFESSOR_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>

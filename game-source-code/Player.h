@@ -1,6 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>

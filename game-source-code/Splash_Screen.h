@@ -1,6 +1,9 @@
 #ifndef SPLASH_SCREEN_H
 #define SPLASH_SCREEN_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>

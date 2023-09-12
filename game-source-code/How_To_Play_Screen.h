@@ -1,6 +1,9 @@
 #ifndef HOW_TO_PLAY_SCREEN_H
 #define HOW_TO_PLAY_SCREEN_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>

@@ -4,6 +4,10 @@
  *  This class represents a professor's assignment object, which is a projectile fired by the professor character.
  *  It manages the assignment's movement, rendering, and other properties.
  */
+
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <cmath>

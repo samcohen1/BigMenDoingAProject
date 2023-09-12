@@ -1,6 +1,9 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 

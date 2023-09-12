@@ -1,6 +1,9 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>

@@ -1,7 +1,12 @@
-#include "Bullet.h"
+
+///////////////////////////////////////
+///// HEADERS
+///////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <iostream>
+
+#include "Bullet.h"
 
 /**
  * \fn Bullet::Bullet(float x_location, float y_location, Direction direction, sf::Texture& texture, sf::FloatRect player_world_position)
