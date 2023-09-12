@@ -1,3 +1,7 @@
+/** \file Professor_Assignment.h
+    \brief Contains the definitions of the professor's assignment object
+ */
+
 #ifndef PROFESSOR_ASSIGNMENT_H
 #define PROFESSOR_ASSIGNMENT_H
 

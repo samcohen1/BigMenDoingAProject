@@ -1,3 +1,7 @@
+/** \file Player.h
+    \brief Contains the definitions of the player
+ */
+
 #ifndef PLAYER_H
 #define PLAYER_H
 

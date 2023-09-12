@@ -1,3 +1,7 @@
+/** \file Throwable.h
+    \brief Contains the definitions of the parent type Throwable
+ */
+
 #ifndef THROWABLE_H
 #define THROWABLE_H
 

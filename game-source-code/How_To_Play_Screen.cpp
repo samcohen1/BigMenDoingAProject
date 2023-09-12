@@ -1,3 +1,6 @@
+/** \file How_To_Play.cpp
+    \brief Contains the implementation of the how to play screen
+ */
 
 ///////////////////////////////////////
 ///// HEADERS

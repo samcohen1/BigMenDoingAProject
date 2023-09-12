@@ -1,3 +1,7 @@
+/** \file How_To_Play.h
+    \brief Contains the definitions of the how to play screen
+ */
+
 #ifndef HOW_TO_PLAY_SCREEN_H
 #define HOW_TO_PLAY_SCREEN_H
 

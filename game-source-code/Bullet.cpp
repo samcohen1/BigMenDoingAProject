@@ -1,3 +1,6 @@
+/** \file Bullet.cpp
+    \brief Contains the implementation of the player's bullet
+ */
 
 ///////////////////////////////////////
 ///// HEADERS

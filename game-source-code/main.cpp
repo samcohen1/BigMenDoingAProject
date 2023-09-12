@@ -1,8 +1,5 @@
-/** \file pong-main.cpp
+/** \file main.cpp
     \brief Contains the main function
-
-    NB:to document global objects (functions, typedefs, enum, macros, etc), you must document the file in which they are defined. That is,
-    you must provide this file comment block.
  */
 
 
@@ -20,7 +17,7 @@
 
 
 /** \fn int main()
- *  \brief This function contains the majority of the code for the game
+ *  \brief This function instantiates a splash screen object and runs it.
  *
  *  \return The application exit code: 0 for successful completion; a negative number to indicate an error
  *

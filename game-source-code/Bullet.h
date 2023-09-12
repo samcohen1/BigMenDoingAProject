@@ -1,3 +1,7 @@
+/** \file Bullet.h
+    \brief Contains the definitions of the player's bullet
+ */
+
 #ifndef BULLET_H
 #define BULLET_H
 

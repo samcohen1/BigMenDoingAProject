@@ -1,3 +1,7 @@
+/** \file Splash_Screen.h
+    \brief Contains the definitions of the splash screen which serves as the main menu.
+ */
+
 #ifndef SPLASH_SCREEN_H
 #define SPLASH_SCREEN_H
 

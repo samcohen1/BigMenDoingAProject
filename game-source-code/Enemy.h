@@ -1,3 +1,7 @@
+/** \file Enemy.h
+    \brief Contains the definitions of the parent Enemy type
+ */
+
 #ifndef ENEMY_H
 #define ENEMY_H
 

@@ -1,3 +1,6 @@
+/** \file Player.cpp
+    \brief Contains the implementation of the player
+ */
 
 ///////////////////////////////////////
 ///// HEADERS

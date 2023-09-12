@@ -1,3 +1,6 @@
+/** \file About_Screen.cpp
+    \brief Contains the implementation of the about screen
+ */
 
 ///////////////////////////////////////
 ///// HEADERS

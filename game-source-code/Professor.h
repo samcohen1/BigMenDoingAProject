@@ -1,3 +1,7 @@
+/** \file Professor.h
+    \brief Contains the definitions of the professor
+ */
+
 #ifndef PROFESSOR_H
 #define PROFESSOR_H
 

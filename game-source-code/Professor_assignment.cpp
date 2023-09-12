@@ -1,8 +1,5 @@
-/** \class Professor_Assignment
- *  \brief Represents a professor's assignment object.
- * 
- *  This class represents a professor's assignment object, which is a projectile fired by the professor character.
- *  It manages the assignment's movement, rendering, and other properties.
+/** \file Professor_Assignment.cpp
+    \brief Contains the implementation of the professor's assignment object
  */
 
 ///////////////////////////////////////

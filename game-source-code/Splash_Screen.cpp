@@ -1,8 +1,5 @@
-/** \class Splash_Screen
- *  \brief Represents the game's splash screen.
- * 
- *  This class represents the splash screen of the game, which serves as the main menu.
- *  It manages user input and transitions to other screens like the game, about, and how to play screens.
+/** \file Splash_Screen.cpp
+    \brief Contains the implementation of the splash screen which serves as the main menu.
  */
 
 ///////////////////////////////////////

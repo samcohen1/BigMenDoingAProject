@@ -1,3 +1,7 @@
+/** \file About_Screen.h
+    \brief Contains the definitions of the about screen
+ */
+
 #ifndef ABOUT_SCREEN_H
 #define ABOUT_SCREEN_H
 

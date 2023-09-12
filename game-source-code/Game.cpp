@@ -1,3 +1,6 @@
+/** \file Game.cpp
+    \brief Contains the implementation of the game
+ */
 
 ///////////////////////////////////////
 ///// HEADERS

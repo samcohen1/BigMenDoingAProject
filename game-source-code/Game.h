@@ -1,3 +1,7 @@
+/** \file Game.h
+    \brief Contains the definitions of the game
+ */
+
 #ifndef GAME_H
 #define GAME_H
 
