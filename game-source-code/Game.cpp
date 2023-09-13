@@ -204,10 +204,6 @@ void Game::move_enemies () {
  */
 void Game::bin_vicinities (std::vector<int> vicinities, std::shared_ptr<Enemy> enemy) {
     for (auto actual_vicinity_index : vicinities) {
-        // std::cout << "vicinity index = " << actual_vicinity_index << std::endl;
-        // if(actual_vicinity_index > 498 || actual_vicinity_index < 0) {
-        //     std::cout << "vicinity index = " << actual_vicinity_index << std::endl;
-        // }
         this->actual_enemy_vicinities_[actual_vicinity_index].push_back(enemy);
     }
 }
@@ -231,10 +227,6 @@ std::vector<int> Game::get_vicinities (sf::FloatRect rect, int position) {
     vicinities.push_back(top_location*70 + 1 + right_location);
     vicinities.push_back(bottom_location*70 + 1 + left_location);
     vicinities.push_back(bottom_location*70 + 1 + right_location);
-
-    if(vicinities[0] < 0) {
-        std::cout << "rect.left = " << rect.left << "\trect.top = " << rect.top << std::endl;
-     }
 
     sort(vicinities.begin(), vicinities.end());
     auto new_end = unique(vicinities.begin(), vicinities.end());

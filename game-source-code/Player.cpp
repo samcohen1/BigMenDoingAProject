@@ -228,7 +228,7 @@ void Player::shoot_bullet(sf::Texture& texture) {
     auto y_position = this->player_sprite_.getGlobalBounds().top + this->player_sprite_.getGlobalBounds().height - 11.f;
 
     if (this->prev_direction_ == Direction::LEFT) {
-        x_position = this->player_sprite_.getGlobalBounds().left + 2 * this->player_sprite_.getGlobalBounds().width;
+        x_position = this->player_sprite_.getGlobalBounds().left + 1 * this->player_sprite_.getGlobalBounds().width;
     } else
         x_position = this->player_sprite_.getGlobalBounds().left;
 
