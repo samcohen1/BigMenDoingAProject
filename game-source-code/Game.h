@@ -35,10 +35,10 @@ class Game {
         sf::Sprite background_sprite_;
         std::unique_ptr<Player> player_;
 
-        std::vector<std::unique_ptr<Enemy>> enemies_;
+        std::vector<std::shared_ptr<Enemy>> enemies_;
         std::vector<std::shared_ptr<Throwable>> throwables_;
 
-        std::vector<std::vector<int>> enemy_vicinities_;
+        std::vector<std::vector<std::shared_ptr<Enemy>>> actual_enemy_vicinities_;
 
         // PAUSE
         bool paused_ = false;
@@ -61,7 +61,7 @@ class Game {
         float background_acceleration_ = 0.0003f;
 
         int professor_cool_down = 0;
-        int max_professor_cool_down = 8000;
+        int max_professor_cool_down = 100;
 
         float background_movement_tracker = 0.f;
 
@@ -93,6 +93,7 @@ class Game {
 
         std::vector<int> get_vicinities(sf::FloatRect, int);
         void bin_vicinities(std::vector<int>, int);
+        void bin_vicinities(std::vector<int>, std::shared_ptr<Enemy>);
 
         void handle_collisions();
         void check_bullet_enemy_collision();

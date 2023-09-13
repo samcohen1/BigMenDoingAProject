@@ -9,8 +9,8 @@
 ///// HEADERS
 ///////////////////////////////////////
 
-#include <SFML/Graphics.hpp>
 #include <memory>
+#include <SFML/Graphics.hpp>
 #include <vector>
 
 class About_Screen {

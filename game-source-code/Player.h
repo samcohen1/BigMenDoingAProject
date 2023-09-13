@@ -75,6 +75,7 @@ class Player {
         std::vector<std::shared_ptr<Bullet>> get_bullets() const;
         void shoot_bullet(sf::Texture&);
         void erase_bullet(int);
+        void erase_bullet(std::shared_ptr<Bullet>);
 };
 
 #endif

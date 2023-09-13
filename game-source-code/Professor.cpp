@@ -76,6 +76,9 @@ void Professor::init_professor(sf::Texture& texture) {
     // Initialize world position to the starting position.
     this->world_position.x = initial_x_distributor(generator);
     this->world_position.y = initial_y_distributor(generator);
+    this->initial_x_position = this->world_position.x;
+    this->initial_y_position = this->world_position.y;
+    this->prev_y_position = this->world_position.y;
 
     int choose_direction = amplitude_distributor(generator);
     if (choose_direction > 0) {
@@ -105,7 +108,6 @@ void Professor::flip_professor() {
     this->professor_sprite_.setScale(-prev_direction_flag * this->scale_professor_, this->scale_professor_);
     this->professor_sprite_.setOrigin(((prev_direction_flag + 1) / 2.f) * this->professor_sprite_.getGlobalBounds().width / this->scale_professor_, 0.f);
     this->initial_x_position = this->world_position.x;
-    this->y_shift += this->movement_function();
     this->frames_since_spawn = 0;
 }
 
@@ -132,32 +134,56 @@ void Professor::face_player(sf::Vector2f player_position) {
  */
 bool Professor::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
 
+void Professor::move_vertical () {
+    this->frames_since_spawn++;
+    int y = static_cast<int>(this->initial_y_position + this->movement_function());
+    float move_y = y-this->prev_y_position;
+    auto temp_pos = this->world_position.y + move_y;
+    if (temp_pos <= this->y_min_pos_)  {
+        this->y_direction *= -1;
+    }
+    else if (temp_pos + this->professor_sprite_.getGlobalBounds().width >= this->y_max_pos_) {
+        this->y_direction *= -1;
+    }
+    this->world_position.y += this->y_direction*move_y;
+    this->professor_sprite_.move(0.f, this->y_direction*move_y);
+    this->prev_y_position = y;
+}
+
+void Professor::move_horizontal (float background_movement, float background_location) {
+    std::cout << this->professor_sprite_.getPosition().x<<std::endl;
+    float move_x = this->horizontal_speed_ + background_movement;
+    auto temp_pos = this->world_position.x += move_x;
+    this->wrap(background_location);
+    if (temp_pos <= -2800+this->professor_sprite_.getGlobalBounds().width) move_x += 8500.f;
+    else if (temp_pos >= 5700-this->professor_sprite_.getGlobalBounds().width) move_x -= 8500.f;
+    this->world_position.x += move_x;
+    this->professor_sprite_.move(move_x, 0.f);
+}
+
 /** \fn void Professor::move(float background_location, sf::Vector2f player_position)
  *  \brief Move the Professor character.
  *  \param background_location The location of the game background.
  *  \param player_position The position of the player character.
  *  This function updates the position of the Professor character based on its movement properties and player position.
  */
-void Professor::move(float background_location, sf::Vector2f player_position) {
-    this->frames_since_spawn++;
-    float x = this->frames_since_spawn * this->horizontal_speed_;
-    float y = this->initial_y_position + this->movement_function() + this->y_shift;
-    this->world_position.x += this->horizontal_speed_;
+void Professor::move(float background_movement, float background_location, sf::Vector2f player_position) {
+    this->move_vertical();
+    this->move_horizontal(background_movement, background_location);
+ }
 
-    // Keep Within Bounds
-    if (y <= this->y_min_pos_) {
-        y = y_min_pos_ + (y_min_pos_ - y);
-    } else if (y >= y_max_pos_) {
-        y = y_max_pos_ - (y - y_max_pos_);
+ void Professor::wrap (float background_location) {
+    auto left_bounds = 2600.f;
+    auto right_bounds = -4350.f;
+    auto correction = left_bounds-right_bounds;
+    if (background_location >= left_bounds) {
+        this->world_position.x += -correction;
+    this->professor_sprite_.move(-correction, 0.f);
     }
-
-    if (this->world_position.x <= -2775.f || this->world_position.x >= 4177.f - this->professor_sprite_.getGlobalBounds().width) {
-        this->flip_professor();
+    if (background_location <= right_bounds) {
+        this->world_position.x += correction;
+    this->professor_sprite_.move(correction, 0.f);
     }
-
-    this->world_position.y = y;
-    this->professor_sprite_.setPosition(this->initial_x_position + x + background_location, y);
-    this->face_player(player_position);
 }
 
 /** \fn void Professor::render(sf::RenderTarget &target, float background_movement)

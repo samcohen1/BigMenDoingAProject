@@ -254,6 +254,18 @@ void Player::erase_bullet(int position) {
     this->bullets_.erase(this->bullets_.begin() + position);
 }
 
+/** \fn void Player::erase_bullet(int position)
+ *  \brief Erase a bullet from the player's bullets.
+ *  \param bullet a pinter to the bullet to erase.
+ *  This function erases a bullet from the player's bullets vector.
+ */
+void Player::erase_bullet(std::shared_ptr<Bullet> bullet) {
+    auto it = std::find(this->bullets_.begin(), this->bullets_.end(), bullet);
+    if(it != this->bullets_.end()) {
+        this->bullets_.erase(it);
+    } else std::cout << "bullet non existant cannot erase\n";
+}
+
 /** \fn Direction Player::get_prev_vertical_direction()
  *  \brief Get the previous vertical direction of the player character.
  *  \return The previous vertical direction (UP or DOWN).
