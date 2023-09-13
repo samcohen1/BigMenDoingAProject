@@ -161,7 +161,7 @@ void Game::_init_professor() {
  * \return No return value (void function).
  */
 void Game::teleport_enemies () {
-    if (Professor::get_num_professors() < 300) {
+    if (Professor::get_num_professors() < 100) {
         if(this->professor_cool_down > this->max_professor_cool_down) {
             this->_init_professor();
             this->professor_cool_down = 0;
@@ -180,7 +180,7 @@ void Game::teleport_enemies () {
  */
 void Game::move_enemies () {
     std::vector<std::shared_ptr<Enemy>> actual_empty_bin;
-    this->actual_enemy_vicinities_ = std::vector<std::vector<std::shared_ptr<Enemy>>>(1000, actual_empty_bin);
+    this->actual_enemy_vicinities_ = std::vector<std::vector<std::shared_ptr<Enemy>>>(576, actual_empty_bin);
     for (auto i = 0; i < this->enemies_.size(); i++) {
         if (!this->enemies_[i]->is_dying()) {
             this->enemies_[i]->move(this->background_movement_tracker, this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));

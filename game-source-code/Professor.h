@@ -27,8 +27,8 @@ class Professor : public Enemy {
         sf::Texture professor_texture_;
         sf::Sprite professor_sprite_;
 
-        float y_min_pos_ = 100.f;
-        float y_max_pos_ = 800.f-this->professor_sprite_.getGlobalBounds().height;
+        float y_min_pos_ = 140.f;
+        float y_max_pos_ = 760.f-this->professor_sprite_.getGlobalBounds().height;
 
         int frames_since_spawn = 0;
         float vertical_speed_ = 0.02f;
