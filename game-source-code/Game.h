@@ -55,7 +55,6 @@ class Game {
         const float y_scale_;
 
         float background_base_speed_ = 0.5f;
-        // float background_base_speed_ = 5.f;
         float background_location_ = 0.f;
         float background_movement_ = 0.f;
         float background_acceleration_ = 0.0003f;
@@ -83,13 +82,9 @@ class Game {
         void handle_internal_background_movement();
         void wrap();
 
-        void teleport_enemies();
-        void move_enemies();
         void render_enemies();
         void move_throwables();
         void render_throwables();
-        void erase_enemy(int);
-        void erase_throwable(int);
 
         std::vector<int> get_vicinities(sf::FloatRect, int);
         void bin_vicinities(std::vector<int>, std::shared_ptr<Enemy>);
@@ -99,12 +94,17 @@ class Game {
 
         void check_player_shoot();
         void check_enemies_shoot();
+        
+        void teleport_enemies(int);
+        void move_enemies();
+
+        void erase_enemy(int);
+        void erase_throwable(int);
 
     public:
         Game(std::shared_ptr<sf::RenderWindow>, float, float, float, float, float, float);
         Game();
         void run();
-        
 };
 
 

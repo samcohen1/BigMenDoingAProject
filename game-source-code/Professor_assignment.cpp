@@ -95,3 +95,9 @@ sf::FloatRect Professor_Assignment::get_bounds() { return this->assignment_sprit
 sf::FloatRect Professor_Assignment::get_world_bounds() {
     return this->world_bounds_;
 }
+
+/** \fn float Professor_Assignment::get_angle()
+ *  \brief Get the angle of the assignment.
+ *  \return The angle in radians
+ */
+float Professor_Assignment::get_angle() { return this->angle_; }

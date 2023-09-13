@@ -66,7 +66,7 @@ void Professor::init_professor(sf::Texture& texture) {
     std::uniform_int_distribution<> amplitude_distributor(-400, 400);
     std::uniform_int_distribution<> period_distributor(10, 20);
     std::uniform_int_distribution<> gradient_distributor(-10, 10);
-    std::uniform_int_distribution<> initial_x_distributor(-2777, 2777);
+    std::uniform_int_distribution<> initial_x_distributor(-2777, 5650);
     std::uniform_int_distribution<> initial_y_distributor(120, 750);
 
     this->movement_amplitude = amplitude_distributor(generator);

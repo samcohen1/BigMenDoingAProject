@@ -22,6 +22,7 @@ class Throwable {
 
         virtual sf::FloatRect get_bounds() = 0;
         virtual sf::FloatRect get_world_bounds() = 0;
+        virtual float get_angle() = 0;
 };
 
 #endif

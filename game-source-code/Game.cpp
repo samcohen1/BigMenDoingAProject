@@ -60,7 +60,7 @@ void Game::update() {
     this->player_->communicate_position(this->background_location_);
     this->check_player_shoot();
     this->check_enemies_shoot();
-    this->teleport_enemies();
+    this->teleport_enemies(3);
     this->move_enemies();
     this->move_throwables();
 
@@ -160,8 +160,8 @@ void Game::_init_professor() {
  *
  * \return No return value (void function).
  */
-void Game::teleport_enemies () {
-    if (Professor::get_num_professors() < 100) {
+void Game::teleport_enemies (int num_enemies) {
+    if (Professor::get_num_professors() < num_enemies) {
         if(this->professor_cool_down > this->max_professor_cool_down) {
             this->_init_professor();
             this->professor_cool_down = 0;

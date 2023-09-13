@@ -37,6 +37,7 @@ class Professor_Assignment : public Throwable {
 
         virtual sf::FloatRect get_bounds() override;
         virtual sf::FloatRect get_world_bounds() override;
+        virtual float get_angle() override;
 };
 
 
