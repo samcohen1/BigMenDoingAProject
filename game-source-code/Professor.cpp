@@ -117,7 +117,7 @@ void Professor::flip_professor() {
  *  This function flips the Professor's sprite to make it face the player character.
  */
 void Professor::face_player(sf::Vector2f player_position) {
-    if (this->professor_sprite_.getGlobalBounds().left < player_position.x) {
+    if (this->professor_sprite_.getPosition().x < player_position.x) {
         this->professor_sprite_.setScale(-this->scale_professor_, this->scale_professor_);
         this->professor_sprite_.setOrigin(this->professor_sprite_.getGlobalBounds().width / this->scale_professor_, 0.f);
     } else {
@@ -151,12 +151,10 @@ void Professor::move_vertical () {
 }
 
 void Professor::move_horizontal (float background_movement, float background_location) {
-    std::cout << this->professor_sprite_.getPosition().x<<std::endl;
     float move_x = this->horizontal_speed_ + background_movement;
-    auto temp_pos = this->world_position.x += move_x;
-    this->wrap(background_location);
-    if (temp_pos <= -2800+this->professor_sprite_.getGlobalBounds().width) move_x += 8500.f;
-    else if (temp_pos >= 5700-this->professor_sprite_.getGlobalBounds().width) move_x -= 8500.f;
+    auto temp_pos = this->world_position.x + move_x;
+    if (temp_pos <= -2800+this->professor_sprite_.getGlobalBounds().width) move_x += 8500.f-1400.f;
+    else if (temp_pos >= 5700-this->professor_sprite_.getGlobalBounds().width) move_x -= 8500.f-1400.f;
     this->world_position.x += move_x;
     this->professor_sprite_.move(move_x, 0.f);
 }
@@ -170,21 +168,8 @@ void Professor::move_horizontal (float background_movement, float background_loc
 void Professor::move(float background_movement, float background_location, sf::Vector2f player_position) {
     this->move_vertical();
     this->move_horizontal(background_movement, background_location);
+    this->face_player(player_position);
  }
-
- void Professor::wrap (float background_location) {
-    auto left_bounds = 2600.f;
-    auto right_bounds = -4350.f;
-    auto correction = left_bounds-right_bounds;
-    if (background_location >= left_bounds) {
-        this->world_position.x += -correction;
-    this->professor_sprite_.move(-correction, 0.f);
-    }
-    if (background_location <= right_bounds) {
-        this->world_position.x += correction;
-    this->professor_sprite_.move(correction, 0.f);
-    }
-}
 
 /** \fn void Professor::render(sf::RenderTarget &target, float background_movement)
  *  \brief Render the Professor on the game screen.
@@ -259,7 +244,8 @@ bool Professor::is_dying() { return this->is_dying_counter > 0; }
  *  This function returns the bounding box of the Professor character in the game world.
  */
 sf::FloatRect Professor::get_world_bounds() {
-    auto world_bounds = sf::FloatRect(this->world_position.x + 20.f, this->world_position.y + 5.f, this->professor_sprite_.getGlobalBounds().width - 40.f, this->professor_sprite_.getGlobalBounds().height - 10.f);
+    // auto world_bounds = sf::FloatRect(this->world_position.x + 20.f, this->world_position.y + 5.f, this->professor_sprite_.getGlobalBounds().width - 40.f, this->professor_sprite_.getGlobalBounds().height - 10.f);
+    auto world_bounds = sf::FloatRect(this->professor_sprite_.getPosition().x + 20.f, this->professor_sprite_.getPosition().y + 5.f, this->professor_sprite_.getGlobalBounds().width - 40.f, this->professor_sprite_.getGlobalBounds().height - 10.f);
     return world_bounds;
 }
 
@@ -269,16 +255,5 @@ sf::FloatRect Professor::get_world_bounds() {
  *  This function returns the current location of the Professor character.
  */
 sf::Vector2f Professor::get_location() { return this->professor_sprite_.getPosition(); }
-
-/** \fn sf::FloatRect Professor::get_bounds()
- *  \brief Get the bounding box of the Professor's sprite.
- *  \return The bounding box of the Professor's sprite.
- *  This function returns the bounding box of the Professor's sprite, excluding a margin.
- */
-sf::FloatRect Professor::get_bounds() {
-    auto global = this->professor_sprite_.getGlobalBounds();
-    auto tight_bounds = sf::FloatRect(global.left + 20.f, global.top, global.width - 40.f, global.height);
-    return tight_bounds;
-}
 
 

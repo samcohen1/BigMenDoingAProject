@@ -64,16 +64,9 @@ void Bullet::draw(sf::RenderTarget& target) {
  * \return Returns the current position of the bullet sprite as a vector of floats.
  * 
  */
-sf::Vector2f Bullet::get_location() { return this->bullet_sprite_.getPosition(); }
-
-/**
- * \fn sf::FloatRect Bullet::get_bounds()
- * \brief This method retrieves the global bounds of the bullet sprite.
- * 
- * \return Returns the global bounds of the bullet sprite as a floating point rectangle.
- * 
- */
-sf::FloatRect Bullet::get_bounds() { return this->bullet_sprite_.getGlobalBounds(); }
+sf::Vector2f Bullet::get_location() { 
+    return this->bullet_sprite_.getPosition(); 
+}
 
 /**
  * \fn sf::FloatRect Bullet::get_world_bounds()
@@ -83,5 +76,6 @@ sf::FloatRect Bullet::get_bounds() { return this->bullet_sprite_.getGlobalBounds
  * 
  */
 sf::FloatRect Bullet::get_world_bounds() { 
-    return world_bounds_;
+    auto pos = this->bullet_sprite_.getPosition();
+    return sf::FloatRect(pos.x, pos.y, this->bullet_sprite_.getGlobalBounds().width, this->bullet_sprite_.getGlobalBounds().height);
 }

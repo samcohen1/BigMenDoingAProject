@@ -74,9 +74,7 @@ class Professor : public Enemy {
         virtual void increment_cool_down() override;
 
         virtual sf::Vector2f get_location() override;  
-        virtual sf::FloatRect get_world_bounds() override;
-        virtual sf::FloatRect get_bounds() override;    
-        virtual void wrap(float) override;
+        virtual sf::FloatRect get_world_bounds() override;  
         virtual bool get_is_dead() override;
         virtual bool is_dying() override;
 

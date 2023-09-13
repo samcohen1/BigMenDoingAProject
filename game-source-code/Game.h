@@ -92,7 +92,6 @@ class Game {
         void erase_throwable(int);
 
         std::vector<int> get_vicinities(sf::FloatRect, int);
-        void bin_vicinities(std::vector<int>, int);
         void bin_vicinities(std::vector<int>, std::shared_ptr<Enemy>);
 
         void handle_collisions();

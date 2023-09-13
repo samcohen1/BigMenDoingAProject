@@ -161,7 +161,7 @@ void Game::_init_professor() {
  * \return No return value (void function).
  */
 void Game::teleport_enemies () {
-    if (Professor::get_num_professors() < 1) {
+    if (Professor::get_num_professors() < 300) {
         if(this->professor_cool_down > this->max_professor_cool_down) {
             this->_init_professor();
             this->professor_cool_down = 0;
@@ -180,10 +180,10 @@ void Game::teleport_enemies () {
  */
 void Game::move_enemies () {
     std::vector<std::shared_ptr<Enemy>> actual_empty_bin;
-    this->actual_enemy_vicinities_ = std::vector<std::vector<std::shared_ptr<Enemy>>>(595, actual_empty_bin);
+    this->actual_enemy_vicinities_ = std::vector<std::vector<std::shared_ptr<Enemy>>>(1000, actual_empty_bin);
     for (auto i = 0; i < this->enemies_.size(); i++) {
         if (!this->enemies_[i]->is_dying()) {
-            this->enemies_[i]->move(this->background_movement_tracker, this->background_location_, sf::Vector2f(this->player_->get_world_bounds().left, this->player_->get_world_bounds().top));
+            this->enemies_[i]->move(this->background_movement_tracker, this->background_location_, sf::Vector2f(this->player_->get_position().x_left, this->player_->get_position().y));
             this->bin_vicinities(this->get_vicinities(this->enemies_[i]->get_world_bounds(), i), this->enemies_[i]);
         } else if (!this->enemies_[i]->get_is_dead()) {
             this->enemies_[i]->destroy();
@@ -192,19 +192,6 @@ void Game::move_enemies () {
         }
     }
 }
-
-// /**
-//  * \fn void Game::bin_vicinities(std::vector<int> vicinities, int position)
-//  * \brief This function updates the enemy vicinities based on the given position and vicinity indices.
-//  *
-//  * \param vicinities A vector containing the indices of the vicinities.
-//  * \param position The position index.
-//  * 
-//  * \return No return value (void function).
-//  */
-// void Game::bin_vicinities (std::vector<int> vicinities, int position) {
-//     for (auto vicinity_index : vicinities) enemy_vicinities_[vicinity_index].push_back(position);
-// }
 
 /**
  * \fn void Game::bin_vicinities(std::vector<int> vicinities, int position)
@@ -216,7 +203,13 @@ void Game::move_enemies () {
  * \return No return value (void function).
  */
 void Game::bin_vicinities (std::vector<int> vicinities, std::shared_ptr<Enemy> enemy) {
-    for (auto actual_vicinity_index : vicinities)  this->actual_enemy_vicinities_[actual_vicinity_index].push_back(enemy);
+    for (auto actual_vicinity_index : vicinities) {
+        // std::cout << "vicinity index = " << actual_vicinity_index << std::endl;
+        // if(actual_vicinity_index > 498 || actual_vicinity_index < 0) {
+        //     std::cout << "vicinity index = " << actual_vicinity_index << std::endl;
+        // }
+        this->actual_enemy_vicinities_[actual_vicinity_index].push_back(enemy);
+    }
 }
 
 /**
@@ -232,12 +225,16 @@ std::vector<int> Game::get_vicinities (sf::FloatRect rect, int position) {
     std::vector<int> vicinities;
     int left_location = floor(rect.left/100)+28;
     int right_location = floor((rect.left + rect.width)/100)+28;
-    int top_location = floor((rect.top)/100)-1;
-    int bottom_location = floor((rect.top+rect.height)/100)-1;
-    vicinities.push_back(top_location*84 + 1 + left_location);
-    vicinities.push_back(top_location*84 + 1 + right_location);
-    vicinities.push_back(bottom_location*84 + 1 + left_location);
-    vicinities.push_back(bottom_location*84 + 1 + right_location);
+    int top_location = floor((rect.top)/100);
+    int bottom_location = floor((rect.top+rect.height)/100);
+    vicinities.push_back(top_location*70 + 1 + left_location);
+    vicinities.push_back(top_location*70 + 1 + right_location);
+    vicinities.push_back(bottom_location*70 + 1 + left_location);
+    vicinities.push_back(bottom_location*70 + 1 + right_location);
+
+    if(vicinities[0] < 0) {
+        std::cout << "rect.left = " << rect.left << "\trect.top = " << rect.top << std::endl;
+     }
 
     sort(vicinities.begin(), vicinities.end());
     auto new_end = unique(vicinities.begin(), vicinities.end());

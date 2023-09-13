@@ -39,7 +39,6 @@ class Bullet {
         void move(float);
         void draw(sf::RenderTarget& target);
         sf::FloatRect get_world_bounds();
-        sf::FloatRect get_bounds();
 };
 
 #endif
