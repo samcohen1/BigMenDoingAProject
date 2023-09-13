@@ -140,10 +140,12 @@ void Professor::move_vertical () {
     float move_y = y-this->prev_y_position;
     auto temp_pos = this->world_position.y + move_y;
     if (temp_pos <= this->y_min_pos_)  {
-        this->y_direction *= -1;
+        if(move_y < 0) this->y_direction = -1;
+        else this->y_direction = 1;
     }
-    else if (temp_pos + this->professor_sprite_.getGlobalBounds().width >= this->y_max_pos_) {
-        this->y_direction *= -1;
+    else if (temp_pos + this->professor_sprite_.getGlobalBounds().height >= this->y_max_pos_) {
+        if(move_y > 0) this->y_direction = -1;
+        else this->y_direction = 1;
     }
     this->world_position.y += this->y_direction*move_y;
     this->professor_sprite_.move(0.f, this->y_direction*move_y);
