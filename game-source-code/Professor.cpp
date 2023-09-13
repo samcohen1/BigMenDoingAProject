@@ -25,13 +25,7 @@
 #include "Professor_Assignment.h"
 #include "Throwable.h"
 
-
-
-/** \class Professor
- *  \brief Represents a Professor character in the game.
- *  \param texture The texture for the Professor's sprite.
- *  This constructor initializes a Professor character with the given texture.
- */
+//Constructor for the professor, increments the number of professors static variable and sets up the professor
 Professor::Professor(sf::Texture& texture) {
     num_professors_++;
     this->init_professor(texture);
@@ -40,27 +34,20 @@ Professor::Professor(sf::Texture& texture) {
     this->professor_sprite_.setPosition(this->initial_x_position, this->initial_y_position);
 }
 
-/** \class Professor
- *  \brief Destructor for the Professor class.
- */
+
 Professor::~Professor() {
+    //Decrement static number of professors
     num_professors_--;
 }
 
-/** \fn int Professor::get_num_professors()
- *  \brief Get the number of Professor objects.
- *  \return The number of Professor objects.
- */
+
 int Professor::get_num_professors() { return num_professors_; }
 
-/** \fn void Professor::init_professor(sf::Texture& texture)
- *  \brief Initialize the Professor object.
- *  \param texture The texture for the Professor's sprite.
- *  This function sets up the Professor's initial properties, including its world position.
- */
+
 void Professor::init_professor(sf::Texture& texture) {
     this->professor_sprite_.setTexture(texture);
 
+    //Generate and set the professors movement function which is a sine wave with a differing period, amplitude and gradient-shift
     std::random_device device;
     std::mt19937 generator(device());
     std::uniform_int_distribution<> amplitude_distributor(-400, 400);
@@ -88,21 +75,15 @@ void Professor::init_professor(sf::Texture& texture) {
         this->flip_professor();
 }
 
-/** \fn float Professor::movement_function()
- *  \brief Calculate the movement function for the Professor.
- *  \return The calculated movement value.
- *  This function calculates the vertical movement of the Professor character based on amplitude, period, and gradient.
- */
+
 float Professor::movement_function() {
+    //Calculate the professor's y-value using the number of frames since he was spawned
     float x = this->frames_since_spawn * this->vertical_speed_;
     return this->movement_amplitude * std::sin(this->movement_period * x) + this->movement_gradient * x;
 }
 
-/** \fn void Professor::flip_professor()
- *  \brief Flip the Professor's sprite to change direction.
- *  This function flips the Professor's sprite horizontally to change its direction of movement.
- */
 void Professor::flip_professor() {
+    //Turn the professor around when applicable and make him move in the other direction
     this->horizontal_speed_ *= -1.f;
     int prev_direction_flag = this->horizontal_speed_ >= 0 ? 1 : -1;
     this->professor_sprite_.setScale(-prev_direction_flag * this->scale_professor_, this->scale_professor_);
@@ -111,12 +92,10 @@ void Professor::flip_professor() {
     this->frames_since_spawn = 0;
 }
 
-/** \fn void Professor::face_player(sf::Vector2f player_position)
- *  \brief Make the Professor face the player character.
- *  \param player_position The position of the player character.
- *  This function flips the Professor's sprite to make it face the player character.
- */
+
 void Professor::face_player(sf::Vector2f player_position) {
+
+    //Turn the professor around to face the player
     if (this->professor_sprite_.getPosition().x < player_position.x) {
         this->professor_sprite_.setScale(-this->scale_professor_, this->scale_professor_);
         this->professor_sprite_.setOrigin(this->professor_sprite_.getGlobalBounds().width / this->scale_professor_, 0.f);
@@ -126,18 +105,17 @@ void Professor::face_player(sf::Vector2f player_position) {
     }
 }
 
-/** \fn bool Professor::direction_changed(Direction direction)
- *  \brief Check if the direction of the Professor has changed.
- *  \param direction The new direction to check against.
- *  \return True if the direction has changed; false otherwise.
- *  This function checks if the direction of the Professor has changed compared to the provided direction.
- */
+
 bool Professor::direction_changed(Direction direction) { return this->prev_direction_ != direction; }
 
 void Professor::move_vertical () {
+
+    //Check the total y-position and the difference from the previous y-position to know how much the professor should move
     this->frames_since_spawn++;
     int y = static_cast<int>(this->initial_y_position + this->movement_function());
     float move_y = y-this->prev_y_position;
+
+    //Ensure the professor stays within bounds
     auto temp_pos = this->world_position.y + move_y;
     if (temp_pos <= this->y_min_pos_)  {
         if(move_y < 0) this->y_direction = -1;
@@ -153,44 +131,34 @@ void Professor::move_vertical () {
 }
 
 void Professor::move_horizontal (float background_movement, float background_location) {
+
+    //Calculate how much the professor should move
     float move_x = this->horizontal_speed_ + background_movement;
     auto temp_pos = this->world_position.x + move_x;
+
+    //Ensure the professor remains in bounds
     if (temp_pos <= -2800+this->professor_sprite_.getGlobalBounds().width) move_x += 8500.f-1400.f;
     else if (temp_pos >= 5700-this->professor_sprite_.getGlobalBounds().width) move_x -= 8500.f-1400.f;
     this->world_position.x += move_x;
     this->professor_sprite_.move(move_x, 0.f);
 }
 
-/** \fn void Professor::move(float background_location, sf::Vector2f player_position)
- *  \brief Move the Professor character.
- *  \param background_location The location of the game background.
- *  \param player_position The position of the player character.
- *  This function updates the position of the Professor character based on its movement properties and player position.
- */
+
 void Professor::move(float background_movement, float background_location, sf::Vector2f player_position) {
     this->move_vertical();
     this->move_horizontal(background_movement, background_location);
     this->face_player(player_position);
  }
 
-/** \fn void Professor::render(sf::RenderTarget &target, float background_movement)
- *  \brief Render the Professor on the game screen.
- *  \param target The render target to draw on.
- *  \param background_movement The movement of the game background.
- *  This function renders the Professor character on the game screen.
- */
+
 void Professor::render(sf::RenderTarget &target, float background_movement) {
     target.draw(this->professor_sprite_);
 }
 
-/** \fn std::shared_ptr<Throwable> Professor::shoot_throwable(sf::Texture& texture, sf::Vector2f player_position)
- *  \brief Create and return a Throwable object.
- *  \param texture The texture for the Throwable.
- *  \param player_position The position of the player character.
- *  \return A shared pointer to the created Throwable object.
- *  This function creates and returns a Throwable object, representing an attack by the Professor character.
- */
+
 std::shared_ptr<Throwable> Professor::shoot_throwable(sf::Texture& texture, sf::Vector2f player_position) {
+
+    //Shoot the professor assignment if he has cooled down after his throw
     if (this->current_cool_down < this->max_cool_down) return nullptr;
     this->current_cool_down = 0;
     std::random_device device;
@@ -201,23 +169,17 @@ std::shared_ptr<Throwable> Professor::shoot_throwable(sf::Texture& texture, sf::
     return assignment;
 }
 
-// ...
 
-/** \fn void Professor::increment_cool_down()
- *  \brief Increment the cooldown for the Professor's attacks.
- *  This function increments the cooldown timer for the Professor's attacks.
- */
 void Professor::increment_cool_down() {
     if (this->professor_sprite_.getGlobalBounds().left > 0 && this->professor_sprite_.getGlobalBounds().left < 1400.f) {
         this->current_cool_down++;
     }
 }
 
-/** \fn void Professor::destroy()
- *  \brief Destroy the Professor character.
- *  This function handles the destruction of the Professor character, including the sprite animation.
- */
+
 void Professor::destroy() {
+
+    //CHange the sprite shown to produce a dying animation
     if (this->is_dying_counter++ < 100)
         this->professor_sprite_.setTextureRect(sf::IntRect(0.f, 870.f, 334.f, 275.f));
     else if (this->is_dying_counter++ < 500) {
@@ -226,36 +188,20 @@ void Professor::destroy() {
         this->is_dead = true;
 }
 
-/** \fn bool Professor::get_is_dead()
- *  \brief Check if the Professor character is dead.
- *  \return True if the Professor character is dead; false otherwise.
- *  This function checks whether the Professor character is dead.
- */
+
 bool Professor::get_is_dead() { return this->is_dead; }
 
-/** \fn bool Professor::is_dying()
- *  \brief Check if the Professor character is in the process of dying.
- *  \return True if the Professor character is in the process of dying; false otherwise.
- *  This function checks if the Professor character is in the process of dying.
- */
+
 bool Professor::is_dying() { return this->is_dying_counter > 0; }
 
-/** \fn sf::FloatRect Professor::get_world_bounds()
- *  \brief Get the bounding box of the Professor in the game world.
- *  \return The bounding box of the Professor in the game world.
- *  This function returns the bounding box of the Professor character in the game world.
- */
+
 sf::FloatRect Professor::get_world_bounds() {
     // auto world_bounds = sf::FloatRect(this->world_position.x + 20.f, this->world_position.y + 5.f, this->professor_sprite_.getGlobalBounds().width - 40.f, this->professor_sprite_.getGlobalBounds().height - 10.f);
     auto world_bounds = sf::FloatRect(this->professor_sprite_.getPosition().x + 20.f, this->professor_sprite_.getPosition().y + 5.f, this->professor_sprite_.getGlobalBounds().width - 40.f, this->professor_sprite_.getGlobalBounds().height - 10.f);
     return world_bounds;
 }
 
-/** \fn sf::Vector2f Professor::get_location()
- *  \brief Get the current location of the Professor character.
- *  \return The current location of the Professor character.
- *  This function returns the current location of the Professor character.
- */
+
 sf::Vector2f Professor::get_location() { return this->professor_sprite_.getPosition(); }
 
 

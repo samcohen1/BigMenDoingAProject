@@ -15,59 +15,56 @@
 #include "How_To_Play_Screen.h"
 #include "Game.h"
 
-/** \fn Splash_Screen::Splash_Screen()
- *  \brief Constructor for Splash_Screen.
- *  This constructor initializes a Splash_Screen object by setting up the game window, background, and splash screen elements.
- */
+
 Splash_Screen::Splash_Screen() {
+
+    //Initialise the various components required for the program and splash screen
     this->_init_window();
     this->_init_background();
     this->_init_splash_screen();
 }
 
-/** \fn void Splash_Screen::_init_background()
- *  \brief Initialize the background of the splash screen.
- *  This function loads and sets up the background texture for the splash screen.
- */
+
 void Splash_Screen::_init_background() {
+
+    //Load the background texture and set the sprite's position and scale
     if(!(this->background_texture_.loadFromFile("resources/background_all.png"))) return;
     this->background_sprite_.setTexture(this->background_texture_);
     this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
     this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
 }
 
-/** \fn void Splash_Screen::_init_window()
- *  \brief Initialize the game window.
- *  This function creates and initializes the game window with a specified size and title.
- */
+
 void Splash_Screen::_init_window() {
+
+    //Create the window in which the game will run
     this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Graduation-Hat Hackers", sf::Style::Titlebar | sf::Style::Close);
 }
 
-/** \fn void Splash_Screen::run()
- *  \brief Run the splash screen.
- *  This function starts the main loop for the splash screen, handling user input and rendering.
- */
+
 void Splash_Screen::run() {
+
+    //Run while the window is open
     while(this->window_->isOpen()) {
         this->update();
         this->render();
     }
 }
 
-/** \fn void Splash_Screen::update()
- *  \brief Update the splash screen.
- *  This function handles user input and transitions to other screens based on user selections.
- */
+
 void Splash_Screen::update() {
+
     sf::Event event;
     this->mouse_is_over_ = false;
 
+    //Check if the window is closed by pressing the escape key or close button
     while (this->window_->pollEvent(event)) {
         if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
             this->window_->close();
         }
     }
+
+    //Shift option selected using the mouse or up and down arrow keys
     if(static_cast<int>(this->option_selected_) < static_cast<int>(Option::HOW_TO_PLAY) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !key_held_down_) {
        this->shift_option_down();
     }
@@ -78,6 +75,8 @@ void Splash_Screen::update() {
         this->key_held_down_=false;
     }
     this->select_using_mouse();
+
+    //Go into the chosen option if it is clicked on or the enter key is pressed
     if((mouse_is_over_ && sf::Mouse::isButtonPressed(sf::Mouse::Left))  || (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && !this->key_held_down_)) {
         if(this->option_selected_ == Option::PLAY) {
             // GO INTO GAME
@@ -98,11 +97,10 @@ void Splash_Screen::update() {
     }
 }
 
-/** \fn void Splash_Screen::render()
- *  \brief Render the splash screen.
- *  This function clears the window, draws all the splash screen elements, and displays the window.
- */
+
 void Splash_Screen::render() { 
+
+    //Render the objects on the screen
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
     this->window_->draw(this->heading_);
@@ -113,11 +111,10 @@ void Splash_Screen::render() {
     this->window_->display();
 }
 
-/** \fn void Splash_Screen::_init_splash_screen()
- *  \brief Initialize the splash screen elements.
- *  This function loads and sets up the splash screen's options, text, and fonts.
- */
+
 void Splash_Screen::_init_splash_screen() {
+
+    //Initialise the splash screen elements, the text and boxes
     this->option_sprites_ = std::vector<sf::Sprite>(3);
     this->texts_ = std::vector<sf::Text>(3);
     if(!this->options_texture_.loadFromFile("resources/home_options_spritesheet.png")) return;
@@ -163,33 +160,27 @@ void Splash_Screen::_init_splash_screen() {
     this->texts_[2].setPosition(x_position + x_position_text, 525.f + y_position_text);
 }
 
-/** \fn void Splash_Screen::shift_option_down()
- *  \brief Shift the selected option down.
- *  This function changes the selected option to the one below it and updates the visuals accordingly.
- */
+
 void Splash_Screen::shift_option_down() {
+    //Shift the option down if it is able to and change the colours of boxes
     this->key_held_down_ = true;
     this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
     this->option_selected_ = static_cast<Option>(static_cast<int>(this->option_selected_)+1);
     this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
 }
 
-/** \fn void Splash_Screen::shift_option_up()
- *  \brief Shift the selected option up.
- *  This function changes the selected option to the one above it and updates the visuals accordingly.
- */
+
 void Splash_Screen::shift_option_up() {
+    //Shift the option up if it is able to and change the colours of boxes
     this->key_held_down_ = true;
     this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
     this->option_selected_ = static_cast<Option>(static_cast<int>(this->option_selected_)-1);
     this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
 }
 
-/** \fn void Splash_Screen::select_using_mouse()
- *  \brief Select an option using the mouse.
- *  This function checks if the mouse pointer is over an option and updates the selected option accordingly.
- */
+
 void Splash_Screen::select_using_mouse() {
+    //Select the option using the mouse position and change the colours of boxes
     sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*this->window_).x, sf::Mouse::getPosition(*this->window_).y);
     if(this->option_sprites_[0].getGlobalBounds().contains(mouse_position)){
         this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
