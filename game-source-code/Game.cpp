@@ -60,7 +60,7 @@ void Game::update() {
     this->player_->communicate_position(this->background_location_);
     this->check_player_shoot();
     this->check_enemies_shoot();
-    this->teleport_enemies(3);
+    this->teleport_enemies(50);
     this->move_enemies();
     this->move_throwables();
 

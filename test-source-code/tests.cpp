@@ -1,16 +1,15 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/build/_deps/doctest-src/doctest/doctest.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Game.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Bullet.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Splash_Screen.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/About_Screen.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/How_To_Play_Screen.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Player.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Professor.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Professor_Assignment.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Enemy.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Throwable.h"
-
+#include "doctest.h"
+#include "Game.h"
+#include "Bullet.h"
+#include "Splash_Screen.h"
+#include "About_Screen.h"
+#include "How_To_Play_Screen.h"
+#include "Player.h"
+#include "Professor.h"
+#include "Professor_Assignment.h"
+#include "Enemy.h"
+#include "Throwable.h"
 #include<cmath>
 
 
