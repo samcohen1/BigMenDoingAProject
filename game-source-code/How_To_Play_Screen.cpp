@@ -12,25 +12,11 @@
 #include <vector>
 #include <iostream>
 
-/** 
- * \fn How_To_Play_Screen::How_To_Play_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font)
- * \brief Constructor for the How_To_Play_Screen class, initializes the screen with necessary parameters and calls initialization method
- *
- * \param window A shared pointer to the window object where the screen will be displayed
- * \param background_sprite The sprite used as the background for the screen
- * \param pixel_font The font used for text elements on the screen
- */
 How_To_Play_Screen::How_To_Play_Screen(std::shared_ptr<sf::RenderWindow> window, sf::Sprite background_sprite, sf::Font pixel_font) : 
         window_(window), background_sprite_(background_sprite), pixel_font_(pixel_font) {
     this->_init_how_to_play_screen();
 }
 
-/** 
- * \fn void How_To_Play_Screen::run()
- * \brief Runs the main loop for the How_To_Play screen, checking for user inputs and updating the display
- *
- * \return void
- */
 void How_To_Play_Screen::run() {
      while(this->window_->isOpen()) {
         if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)) this->key_held_down_ = false;
@@ -40,12 +26,57 @@ void How_To_Play_Screen::run() {
     }
 }
 
-/** 
- * \fn void How_To_Play_Screen::_init_how_to_play_screen()
- * \brief Initializes elements of the How_To_Play screen including textures, sprites and text elements
- * 
- * \return void
- */
+// void How_To_Play_Screen::_init_how_to_play_screen () {
+//     if(!load_textures()) return;
+//     set_sprites();
+//     set_texts();
+// }
+
+// bool How_To_Play_Screen::load_textures() {
+//     return this->back_button_texture_.loadFromFile("resources/back_button_spritesheet.png") 
+//         && this->arrow_keys_texture_.loadFromFile("resources/arrow_keys.png") 
+//         && this->space_bar_texture.loadFromFile("resources/space_bar.png")
+//         && this->box_texture_.loadFromFile("resources/splash_background.png");
+// }
+
+// void How_To_Play_Screen::set_sprites() {
+//     set_sprite(this->back_button_sprite_, this->back_button_texture_, sf::IntRect(0.f, 0.f, 346.f, 361.f), 0.2f, 0.2f);
+//     set_sprite(this->box_sprite_, this->box_texture_, sf::IntRect(), 1.3f, 0.7f);
+//     set_sprite(this->arrow_keys_sprite_, this->arrow_keys_texture_, sf::IntRect(), 0.25f, 0.25f);
+//     set_sprite(this->space_bar_sprite_, this->space_bar_texture, sf::IntRect(), 0.3f, 0.3f);
+// }
+
+// void How_To_Play_Screen::set_sprite(sf::Sprite &sprite, sf::Texture &texture, sf::IntRect rect, float x_sale, float y_sale) {
+//     sprite.setTexture(texture);
+//     if (rect.width != 0 && rect.height != 0) {
+//         sprite.setTextureRect(rect);
+//     }
+//     sprite.setScale(x_sale, y_sale);
+// }
+
+// void How_To_Play_Screen::set_texts() {
+//     this->texts_ = std::vector<sf::Text>(3);
+//     set_text(this->texts_[0], "How to Play!", 24.f, sf::Color::White, sf::Vector2f(this->window_->getSize().x/2 - this->texts_[0].getGlobalBounds().width/2, 100.f));
+//     set_text(this->texts_[1], get_instruction_message(), 16.f, sf::Color::White, sf::Vector2f(this->window_->getSize().x/2 - this->box_sprite_.getGlobalBounds().width/2, 80.f));
+//     set_text(this->texts_[2], "SPACE", 18.f, sf::Color(0, 192, 248), sf::Vector2f(this->window_->getSize().x/2 - this->texts_[2].getGlobalBounds().width/2 + 25, this->space_bar_sprite_.getGlobalBounds().top+13));
+// }
+
+// void How_To_Play_Screen::set_text(sf::Text &text, const std::string &message, float character_size, const sf::Color &color, sf::Vector2f position) {
+//     text.setFont(this->pixel_font_);
+//     text.setFillColor(color);
+//     text.setCharacterSize(character_size);
+//     text.setString(message);
+//     text.setPosition(position);
+// }
+
+// std::string How_To_Play_Screen::get_instruction_message() {
+//     std::string instruction_message = "Your task is to control Software-Dev Dude as he flies around the\n\nscreen avoiding enemy fire and prtecting the engineering students!\n\n\n\n";
+//     instruction_message += "-> To move around use the arrow keys on your keyboard!\n\n\n\n\n\n\n\n\n\n";
+//     instruction_message +="-> To shoot the enemies use your space-bar!\n\n\n\n\n\n\n\n\n\n";
+//     instruction_message +="-> You can pause the game anytime by pressing 'P' on your keyboard!\n\n";
+//     return instruction_message;
+// }
+
 void How_To_Play_Screen::_init_how_to_play_screen () {
     if(!this->back_button_texture_.loadFromFile("resources/back_button_spritesheet.png") || !this->arrow_keys_texture_.loadFromFile("resources/arrow_keys.png") || !this->space_bar_texture.loadFromFile("resources/space_bar.png")) return;
     this->back_button_sprite_.setTexture(this->back_button_texture_);
@@ -89,12 +120,6 @@ void How_To_Play_Screen::_init_how_to_play_screen () {
     this->texts_[2].setCharacterSize(18.f);
 }
 
-/** 
- * \fn void How_To_Play_Screen::update()
- * \brief Handles events during the runtime of the How_To_Play screen, including window close and escape key press events
- * 
- * \return void
- */
 void How_To_Play_Screen::update() {
     sf::Event event;
     while (this->window_->pollEvent(event)) {
@@ -105,12 +130,6 @@ void How_To_Play_Screen::update() {
     
 }
 
-/** 
- * \fn void How_To_Play_Screen::render()
- * \brief Renders all the elements of the How_To_Play screen to the window
- * 
- * \return void
- */
 void How_To_Play_Screen::render() {
     this->window_->clear();
     this->window_->draw(this->background_sprite_);
@@ -122,13 +141,6 @@ void How_To_Play_Screen::render() {
     this->window_->display();
 }
 
-/** 
- * \fn bool How_To_Play_Screen::is_back_button_hovered()
- * \brief Checks if the back button is hovered over by the mouse and updates the button's texture accordingly
- *
- * \return true If the back button is hovered over
- * \return false Otherwise
- */
 bool How_To_Play_Screen::is_back_button_hovered()
 {
     sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*this->window_).x, sf::Mouse::getPosition(*this->window_).y);
