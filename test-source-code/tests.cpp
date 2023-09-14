@@ -1,15 +1,15 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/build/_deps/doctest-src/doctest/doctest.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Game.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Bullet.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Splash_Screen.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/About_Screen.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/How_To_Play_Screen.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Player.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Professor.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Professor_Assignment.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Enemy.h"
-#include "/Users/yishaibasserabie/Desktop/Experiment_Big_men/BigMenDoingAProject/game-source-code/Throwable.h"
+#include "doctest.h"
+#include "Game.h"
+#include "Bullet.h"
+#include "Splash_Screen.h"
+#include "About_Screen.h"
+#include "How_To_Play_Screen.h"
+#include "Player.h"
+#include "Professor.h"
+#include "Professor_Assignment.h"
+#include "Enemy.h"
+#include "Throwable.h"
 #include<cmath>
 
 
@@ -538,7 +538,9 @@ TEST_CASE("check that the professor is dead after a certain amount of time dying
 //////////////////////////////////
 //Tests for the game class
 //////////////////////////////////
+
 TEST_CASE("Testing that the professor vector is incremented when the professor cool down has been reached") {
+
     std::shared_ptr<sf::RenderWindow> window;
     auto game = Game(window, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f);
 
@@ -558,11 +560,12 @@ TEST_CASE("Testing that the professor vector is incremented again when cool down
     for(auto i = 0; i<220; i++){
         game.teleport_enemies(3);
     }
-    CHECK(game.get_enemies().size() == 2);
+    CHECK(game.get_enemies().size()==2);
 }
 
 
 TEST_CASE("Testing that the professor vector is not incremented when the maximum number of professors have been reached") {
+
     std::shared_ptr<sf::RenderWindow> window;
     auto game = Game(window, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f);
 
@@ -570,10 +573,11 @@ TEST_CASE("Testing that the professor vector is not incremented when the maximum
     for(auto i = 0; i<220; i++){
         game.teleport_enemies(1);
     }
-    CHECK(game.get_enemies().size() == 1);
+    CHECK(game.get_enemies().size()==1);
 }
 
 TEST_CASE("Testing the erase enemy function - that it removes an enemy after being shot") {
+
     std::shared_ptr<sf::RenderWindow> window;
     auto game = Game(window, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f);
 
@@ -583,5 +587,5 @@ TEST_CASE("Testing the erase enemy function - that it removes an enemy after bei
     }
 
     game.erase_enemy(0);
-    CHECK(game.get_enemies().size() == 1);
+    CHECK(game.get_enemies().size()==1);
 }
