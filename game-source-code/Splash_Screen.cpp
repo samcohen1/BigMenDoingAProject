@@ -19,35 +19,35 @@
 Splash_Screen::Splash_Screen() {
 
     //Initialise the various components required for the program and splash screen
-    this->_init_window();
-    this->_init_background();
-    this->_init_splash_screen();
+    _init_window();
+    _init_background();
+    _init_splash_screen();
 }
 
 
 void Splash_Screen::_init_background() {
 
     //Load the background texture and set the sprite's position and scale
-    if(!(this->background_texture_.loadFromFile("resources/background_all.png"))) return;
-    this->background_sprite_.setTexture(this->background_texture_);
-    this->background_sprite_.setPosition(-2.f*this->game_width_, 0.f);
-    this->background_sprite_.setScale(this->x_scale_, this->y_scale_);
+    if(!(background_texture_.loadFromFile("resources/background_all.png"))) return;
+    background_sprite_.setTexture(background_texture_);
+    background_sprite_.setPosition(-2.f*game_width_, 0.f);
+    background_sprite_.setScale(x_scale_, y_scale_);
 }
 
 
 void Splash_Screen::_init_window() {
 
     //Create the window in which the game will run
-    this->window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->game_width_, this->game_height_, 32), "Graduation-Hat Hackers", sf::Style::Titlebar | sf::Style::Close);
+    window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(game_width_, game_height_, 32), "Graduation-Hat Hackers", sf::Style::Titlebar | sf::Style::Close);
 }
 
 
 void Splash_Screen::run() {
 
     //Run while the window is open
-    while(this->window_->isOpen()) {
-        this->update();
-        this->render();
+    while(window_->isOpen()) {
+        update();
+        render();
     }
 }
 
@@ -55,43 +55,43 @@ void Splash_Screen::run() {
 void Splash_Screen::update() {
 
     sf::Event event;
-    this->mouse_is_over_ = false;
+    mouse_is_over_ = false;
 
     //Check if the window is closed by pressing the escape key or close button
-    while (this->window_->pollEvent(event)) {
+    while (window_->pollEvent(event)) {
         if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
-            this->window_->close();
+            window_->close();
         }
     }
 
     //Shift option selected using the mouse or up and down arrow keys
-    if(static_cast<int>(this->option_selected_) < static_cast<int>(Option::HOW_TO_PLAY) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !key_held_down_) {
-       this->shift_option_down();
+    if(static_cast<int>(option_selected_) < static_cast<int>(Option::HOW_TO_PLAY) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !key_held_down_) {
+       shift_option_down();
     }
-    if(static_cast<int>(this->option_selected_) > static_cast<int>(Option::PLAY) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !key_held_down_) {
-       this->shift_option_up();
+    if(static_cast<int>(option_selected_) > static_cast<int>(Option::PLAY) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !key_held_down_) {
+       shift_option_up();
     }
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){
-        this->key_held_down_=false;
+        key_held_down_=false;
     }
-    this->select_using_mouse();
+    select_using_mouse();
 
     //Go into the chosen option if it is clicked on or the enter key is pressed
-    if((mouse_is_over_ && sf::Mouse::isButtonPressed(sf::Mouse::Left))  || (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && !this->key_held_down_)) {
-        if(this->option_selected_ == Option::PLAY) {
+    if((mouse_is_over_ && sf::Mouse::isButtonPressed(sf::Mouse::Left))  || (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && !key_held_down_)) {
+        if(option_selected_ == Option::PLAY) {
             // GO INTO GAME
-            auto game = Game(this->window_, original_background_width_, original_background_height_, game_width_, game_height_, x_scale_, y_scale_);
+            auto game = Game(window_, original_background_width_, original_background_height_, game_width_, game_height_, x_scale_, y_scale_);
             game.run();
         }
-        if(this->option_selected_ == Option::ABOUT) {
+        if(option_selected_ == Option::ABOUT) {
             // GO INTO ABOUT
-            this->key_held_down_ = true;
-            auto about_screen = About_Screen(this->window_, this->background_sprite_, this->pixel_font_);
+            key_held_down_ = true;
+            auto about_screen = About_Screen(window_, background_sprite_, pixel_font_);
             about_screen.run();
         }
-        if(this->option_selected_ == Option::HOW_TO_PLAY) {
-            this->key_held_down_ = true;
-            auto how_to_play_screen = How_To_Play_Screen(this->window_, this->background_sprite_, this->pixel_font_);
+        if(option_selected_ == Option::HOW_TO_PLAY) {
+            key_held_down_ = true;
+            auto how_to_play_screen = How_To_Play_Screen(window_, background_sprite_, pixel_font_);
             how_to_play_screen.run();
         }
     }
@@ -101,103 +101,103 @@ void Splash_Screen::update() {
 void Splash_Screen::render() { 
 
     //Render the objects on the screen
-    this->window_->clear();
-    this->window_->draw(this->background_sprite_);
-    this->window_->draw(this->heading_);
-    for (auto i = 0; i < this->option_sprites_.size(); i++) {
-        this->window_->draw(this->option_sprites_[i]);
-        this->window_->draw(this->texts_[i]);
+    window_->clear();
+    window_->draw(background_sprite_);
+    window_->draw(heading_);
+    for (auto i = 0; i < option_sprites_.size(); i++) {
+        window_->draw(option_sprites_[i]);
+        window_->draw(texts_[i]);
     }
-    this->window_->display();
+    window_->display();
 }
 
 
 void Splash_Screen::_init_splash_screen() {
 
     //Initialise the splash screen elements, the text and boxes
-    this->option_sprites_ = std::vector<sf::Sprite>(3);
-    this->texts_ = std::vector<sf::Text>(3);
-    if(!this->options_texture_.loadFromFile("resources/home_options_spritesheet.png")) return;
-    if(!this->pixel_font_.loadFromFile("resources/pixel_text.ttf")) return;
-    this->heading_.setFont(this->pixel_font_);
-    this->heading_.setFillColor(sf::Color::Black);
-    this->heading_.setCharacterSize(40.f);
-    this->heading_.setString("Graduation-Hat Hackers");
-    this->heading_.setPosition(this->window_->getSize().x/2 - this->heading_.getGlobalBounds().width/2, 80.f);
-    this->heading_.setOutlineColor(sf::Color(0, 192, 248));
-    this->heading_.setOutlineThickness(3.f);
-    float x_position = (this->window_->getSize().x/2.f) - 120.f;
-    this->texts_[0].setFont(this->pixel_font_);
-    this->texts_[0].setFillColor(sf::Color::White);
-    this->texts_[0].setCharacterSize(18.f);
-    this->texts_[0].setString("Play");
-    this->option_sprites_[0].setTexture(this->options_texture_);
-    this->option_sprites_[0].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-    this->option_sprites_[0].setScale(0.5f, 0.5f);
-    float y_position_text = this->option_sprites_[0].getGlobalBounds().height/2 - this->texts_[0].getGlobalBounds().height;
-    float x_position_text = this->option_sprites_[0].getGlobalBounds().width/2 - this->texts_[0].getGlobalBounds().width/2;
-    this->option_sprites_[0].setPosition(x_position, 220.f);
-    this->texts_[0].setPosition(x_position + x_position_text, 225.f + y_position_text);
-    this->option_sprites_[1].setTexture(this->options_texture_);
-    this->option_sprites_[1].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-    this->option_sprites_[1].setPosition(x_position, 370.f);
-    this->option_sprites_[1].setScale(0.5f, 0.5f);
-    this->texts_[1].setFont(this->pixel_font_);
-    this->texts_[1].setFillColor(sf::Color::White);
-    this->texts_[1].setString("Backstory");
-    this->texts_[1].setCharacterSize(18.f);
-    x_position_text = this->option_sprites_[1].getGlobalBounds().width/2 - this->texts_[1].getGlobalBounds().width/2;
-    this->texts_[1].setPosition(x_position + x_position_text, 375.f + y_position_text);
-    this->option_sprites_[2].setTexture(this->options_texture_);
-    this->option_sprites_[2].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-    this->option_sprites_[2].setPosition(x_position, 520.f);
-    this->option_sprites_[2].setScale(0.5f, 0.5f);
-    this->texts_[2].setFont(this->pixel_font_);
-    this->texts_[2].setFillColor(sf::Color::White);
-    this->texts_[2].setString("How to Play");
-    this->texts_[2].setCharacterSize(18.f);
-    x_position_text = this->option_sprites_[2].getGlobalBounds().width/2 - this->texts_[2].getGlobalBounds().width/2;
-    this->texts_[2].setPosition(x_position + x_position_text, 525.f + y_position_text);
+    option_sprites_ = std::vector<sf::Sprite>(3);
+    texts_ = std::vector<sf::Text>(3);
+    if(!options_texture_.loadFromFile("resources/home_options_spritesheet.png")) return;
+    if(!pixel_font_.loadFromFile("resources/pixel_text.ttf")) return;
+    heading_.setFont(pixel_font_);
+    heading_.setFillColor(sf::Color::Black);
+    heading_.setCharacterSize(40.f);
+    heading_.setString("Graduation-Hat Hackers");
+    heading_.setPosition(window_->getSize().x/2 - heading_.getGlobalBounds().width/2, 80.f);
+    heading_.setOutlineColor(sf::Color(0, 192, 248));
+    heading_.setOutlineThickness(3.f);
+    float x_position = (window_->getSize().x/2.f) - 120.f;
+    texts_[0].setFont(pixel_font_);
+    texts_[0].setFillColor(sf::Color::White);
+    texts_[0].setCharacterSize(18.f);
+    texts_[0].setString("Play");
+    option_sprites_[0].setTexture(options_texture_);
+    option_sprites_[0].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
+    option_sprites_[0].setScale(0.5f, 0.5f);
+    float y_position_text = option_sprites_[0].getGlobalBounds().height/2 - texts_[0].getGlobalBounds().height;
+    float x_position_text = option_sprites_[0].getGlobalBounds().width/2 - texts_[0].getGlobalBounds().width/2;
+    option_sprites_[0].setPosition(x_position, 220.f);
+    texts_[0].setPosition(x_position + x_position_text, 225.f + y_position_text);
+    option_sprites_[1].setTexture(options_texture_);
+    option_sprites_[1].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+    option_sprites_[1].setPosition(x_position, 370.f);
+    option_sprites_[1].setScale(0.5f, 0.5f);
+    texts_[1].setFont(pixel_font_);
+    texts_[1].setFillColor(sf::Color::White);
+    texts_[1].setString("Backstory");
+    texts_[1].setCharacterSize(18.f);
+    x_position_text = option_sprites_[1].getGlobalBounds().width/2 - texts_[1].getGlobalBounds().width/2;
+    texts_[1].setPosition(x_position + x_position_text, 375.f + y_position_text);
+    option_sprites_[2].setTexture(options_texture_);
+    option_sprites_[2].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+    option_sprites_[2].setPosition(x_position, 520.f);
+    option_sprites_[2].setScale(0.5f, 0.5f);
+    texts_[2].setFont(pixel_font_);
+    texts_[2].setFillColor(sf::Color::White);
+    texts_[2].setString("How to Play");
+    texts_[2].setCharacterSize(18.f);
+    x_position_text = option_sprites_[2].getGlobalBounds().width/2 - texts_[2].getGlobalBounds().width/2;
+    texts_[2].setPosition(x_position + x_position_text, 525.f + y_position_text);
 }
 
 
 void Splash_Screen::shift_option_down() {
     //Shift the option down if it is able to and change the colours of boxes
-    this->key_held_down_ = true;
-    this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-    this->option_selected_ = static_cast<Option>(static_cast<int>(this->option_selected_)+1);
-    this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
+    key_held_down_ = true;
+    option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+    option_selected_ = static_cast<Option>(static_cast<int>(option_selected_)+1);
+    option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
 }
 
 
 void Splash_Screen::shift_option_up() {
     //Shift the option up if it is able to and change the colours of boxes
-    this->key_held_down_ = true;
-    this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-    this->option_selected_ = static_cast<Option>(static_cast<int>(this->option_selected_)-1);
-    this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
+    key_held_down_ = true;
+    option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+    option_selected_ = static_cast<Option>(static_cast<int>(option_selected_)-1);
+    option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
 }
 
 
 void Splash_Screen::select_using_mouse() {
     //Select the option using the mouse position and change the colours of boxes
-    sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*this->window_).x, sf::Mouse::getPosition(*this->window_).y);
-    if(this->option_sprites_[0].getGlobalBounds().contains(mouse_position)){
-        this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-        this->option_selected_ = Option::PLAY;
-        this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-        this->mouse_is_over_ = true;
+    sf::Vector2f mouse_position = sf::Vector2f(sf::Mouse::getPosition(*window_).x, sf::Mouse::getPosition(*window_).y);
+    if(option_sprites_[0].getGlobalBounds().contains(mouse_position)){
+        option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+        option_selected_ = Option::PLAY;
+        option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
+        mouse_is_over_ = true;
     }
-    else if(this->option_sprites_[1].getGlobalBounds().contains(mouse_position)){
-        this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-        this->option_selected_ = Option::ABOUT;
-        this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-        this->mouse_is_over_ = true;
+    else if(option_sprites_[1].getGlobalBounds().contains(mouse_position)){
+        option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+        option_selected_ = Option::ABOUT;
+        option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
+        mouse_is_over_ = true;
     }
-    else if(this->option_sprites_[2].getGlobalBounds().contains(mouse_position)){
-        this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
-        this->option_selected_ = Option::HOW_TO_PLAY;
-        this->option_sprites_[static_cast<int>(this->option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
-        this->mouse_is_over_ = true;
+    else if(option_sprites_[2].getGlobalBounds().contains(mouse_position)){
+        option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 250.f, 479.f, 200.f));
+        option_selected_ = Option::HOW_TO_PLAY;
+        option_sprites_[static_cast<int>(option_selected_)].setTextureRect(sf::IntRect(0.f, 0.f, 479.f, 200.f));
+        mouse_is_over_ = true;
     }
 }
