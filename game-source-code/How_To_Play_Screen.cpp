@@ -26,57 +26,6 @@ void How_To_Play_Screen::run() {
     }
 }
 
-// void How_To_Play_Screen::_init_how_to_play_screen () {
-//     if(!load_textures()) return;
-//     set_sprites();
-//     set_texts();
-// }
-
-// bool How_To_Play_Screen::load_textures() {
-//     return back_button_texture_.loadFromFile("resources/back_button_spritesheet.png") 
-//         && arrow_keys_texture_.loadFromFile("resources/arrow_keys.png") 
-//         && space_bar_texture.loadFromFile("resources/space_bar.png")
-//         && box_texture_.loadFromFile("resources/splash_background.png");
-// }
-
-// void How_To_Play_Screen::set_sprites() {
-//     set_sprite(back_button_sprite_, back_button_texture_, sf::IntRect(0.f, 0.f, 346.f, 361.f), 0.2f, 0.2f);
-//     set_sprite(box_sprite_, box_texture_, sf::IntRect(), 1.3f, 0.7f);
-//     set_sprite(arrow_keys_sprite_, arrow_keys_texture_, sf::IntRect(), 0.25f, 0.25f);
-//     set_sprite(space_bar_sprite_, space_bar_texture, sf::IntRect(), 0.3f, 0.3f);
-// }
-
-// void How_To_Play_Screen::set_sprite(sf::Sprite &sprite, sf::Texture &texture, sf::IntRect rect, float x_sale, float y_sale) {
-//     sprite.setTexture(texture);
-//     if (rect.width != 0 && rect.height != 0) {
-//         sprite.setTextureRect(rect);
-//     }
-//     sprite.setScale(x_sale, y_sale);
-// }
-
-// void How_To_Play_Screen::set_texts() {
-//     texts_ = std::vector<sf::Text>(3);
-//     set_text(texts_[0], "How to Play!", 24.f, sf::Color::White, sf::Vector2f(window_->getSize().x/2 - texts_[0].getGlobalBounds().width/2, 100.f));
-//     set_text(texts_[1], get_instruction_message(), 16.f, sf::Color::White, sf::Vector2f(window_->getSize().x/2 - box_sprite_.getGlobalBounds().width/2, 80.f));
-//     set_text(texts_[2], "SPACE", 18.f, sf::Color(0, 192, 248), sf::Vector2f(window_->getSize().x/2 - texts_[2].getGlobalBounds().width/2 + 25, space_bar_sprite_.getGlobalBounds().top+13));
-// }
-
-// void How_To_Play_Screen::set_text(sf::Text &text, const std::string &message, float character_size, const sf::Color &color, sf::Vector2f position) {
-//     text.setFont(pixel_font_);
-//     text.setFillColor(color);
-//     text.setCharacterSize(character_size);
-//     text.setString(message);
-//     text.setPosition(position);
-// }
-
-// std::string How_To_Play_Screen::get_instruction_message() {
-//     std::string instruction_message = "Your task is to control Software-Dev Dude as he flies around the\n\nscreen avoiding enemy fire and prtecting the engineering students!\n\n\n\n";
-//     instruction_message += "-> To move around use the arrow keys on your keyboard!\n\n\n\n\n\n\n\n\n\n";
-//     instruction_message +="-> To shoot the enemies use your space-bar!\n\n\n\n\n\n\n\n\n\n";
-//     instruction_message +="-> You can pause the game anytime by pressing 'P' on your keyboard!\n\n";
-//     return instruction_message;
-// }
-
 void How_To_Play_Screen::_init_how_to_play_screen () {
     if(!back_button_texture_.loadFromFile("resources/back_button_spritesheet.png") || !arrow_keys_texture_.loadFromFile("resources/arrow_keys.png") || !space_bar_texture.loadFromFile("resources/space_bar.png")) return;
     back_button_sprite_.setTexture(back_button_texture_);

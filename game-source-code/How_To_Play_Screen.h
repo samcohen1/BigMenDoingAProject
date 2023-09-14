@@ -74,9 +74,10 @@ class How_To_Play_Screen {
 
         bool load_textures();
         void set_sprites();
-        void set_sprite(sf::Sprite&, sf::Texture&, sf::IntRect, float, float);
+        void set_sprite(sf::Sprite&, sf::Texture&, sf::IntRect, float, float, sf::Vector2f);
         void set_texts();
-        void set_text(sf::Text&, const std::string&, float, const sf::Color&, sf::Vector2f);
+        void set_text(sf::Text&, const sf::Color&, sf::Vector2f);
+        void set_strings();
         std::string get_instruction_message();
     public:
         /** 
